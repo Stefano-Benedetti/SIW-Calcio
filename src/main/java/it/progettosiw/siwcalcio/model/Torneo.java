@@ -82,6 +82,14 @@ public class Torneo {
         this.iscrizioni = iscrizioni;
     }
 
+    public SortedSet<SquadraIscritta> getClassifica() {
+        return classifica;
+    }
+
+    public void setClassifica(SortedSet<SquadraIscritta> classifica) {
+        this.classifica = classifica;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
