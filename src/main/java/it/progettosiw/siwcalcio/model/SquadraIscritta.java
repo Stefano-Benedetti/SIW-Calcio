@@ -5,19 +5,22 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Commento {
+public class SquadraIscritta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
-    private String testo;
+    private int vittorie;
 
     @ManyToOne
-    private Utente utente;
+    private Torneo torneo;
 
-    public Commento(){}
+    @ManyToOne
+    private Squadra squadra;
+
+    public SquadraIscritta(){}
 
     public Long getId() {
         return id;
@@ -27,27 +30,27 @@ public class Commento {
         this.id = id;
     }
 
-    public String getTesto() {
-        return testo;
+    public Torneo getTorneo() {
+        return torneo;
     }
 
-    public void setTesto(String testo) {
-        this.testo = testo;
+    public void setTorneo(Torneo torneo) {
+        this.torneo = torneo;
     }
 
-    public Utente getUtente() {
-        return utente;
+    public Squadra getSquadra() {
+        return squadra;
     }
 
-    public void setUtente(Utente utente) {
-        this.utente = utente;
+    public void setSquadra(Squadra squadra) {
+        this.squadra = squadra;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Commento commento = (Commento) o;
-        return Objects.equals(id, commento.id);
+        SquadraIscritta that = (SquadraIscritta) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override

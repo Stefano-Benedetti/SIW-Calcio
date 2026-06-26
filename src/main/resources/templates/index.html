@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+    <h1>Calcio calcio pallone eoeoeee gnegnegne</h1>
+    <h2 th:if="${username}" th:text="|Ciao, ${username}|">nome utente</h2>
+    <div th:unless="${username}">
+        <a href="/register">Registrazione</a>
+        <a href="/login">Login</a>
+    </div>
+    <p>
+        <form th:if="${username}" th:action="@{/logout}" method="post">
+            <button type="submit">Logout</button>
+        </form>
+    </p>
+</body>
+</html>

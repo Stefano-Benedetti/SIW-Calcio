@@ -1,11 +1,10 @@
 package it.progettosiw.siwcalcio.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.Year;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Squadra {
@@ -14,11 +13,20 @@ public class Squadra {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(nullable = false, unique = true)
     private String nome;
 
+    @Column(nullable = false)
     private Year fondazione;
 
+    @Column(nullable = false)
     private String citta;
+
+    @OneToMany
+    private List<Giocatore> giocatori;
+
+    @OneToMany
+    private List<SquadraIscritta> iscrizioni;
 
     public Squadra(){}
 
@@ -52,5 +60,33 @@ public class Squadra {
 
     public void setCitta(String citta) {
         this.citta = citta;
+    }
+
+    public List<Giocatore> getGiocatori() {
+        return giocatori;
+    }
+
+    public void setGiocatori(List<Giocatore> giocatori) {
+        this.giocatori = giocatori;
+    }
+
+    public List<SquadraIscritta> getIscrizioni() {
+        return iscrizioni;
+    }
+
+    public void setIscrizioni(List<SquadraIscritta> iscrizioni) {
+        this.iscrizioni = iscrizioni;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Squadra squadra = (Squadra) o;
+        return id == squadra.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

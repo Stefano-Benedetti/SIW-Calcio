@@ -1,11 +1,11 @@
 package it.progettosiw.siwcalcio.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.Year;
+import java.util.List;
+import java.util.Objects;
+import java.util.SortedSet;
 
 @Entity
 public class Torneo {
@@ -14,11 +14,23 @@ public class Torneo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false)
     private String nome;
 
+    @Column(nullable = false)
     private Year anno;
 
+    @Column(nullable = false)
     private String descrizione;
+
+    @OneToMany
+    private List<Partita> partite;
+
+    @OneToMany
+    private List<SquadraIscritta> iscrizioni;
+
+    @OneToMany
+    private SortedSet<SquadraIscritta> classifica;
 
     public Torneo(){}
 
@@ -52,5 +64,33 @@ public class Torneo {
 
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
+    }
+
+    public List<Partita> getPartite() {
+        return partite;
+    }
+
+    public void setPartite(List<Partita> partite) {
+        this.partite = partite;
+    }
+
+    public List<SquadraIscritta> getIscrizioni() {
+        return iscrizioni;
+    }
+
+    public void setIscrizioni(List<SquadraIscritta> iscrizioni) {
+        this.iscrizioni = iscrizioni;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Torneo torneo = (Torneo) o;
+        return Objects.equals(id, torneo.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
