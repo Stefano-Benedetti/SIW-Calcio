@@ -5,12 +5,16 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
+//una sola iscrizione per torneo
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"torneo_id","squadra_id"}))
 public class SquadraIscritta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(nullable = false)
+    private String nome;
 
     @Column(nullable = false)
     private int vittorie;
@@ -31,6 +35,14 @@ public class SquadraIscritta {
         this.id = id;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public Torneo getTorneo() {
         return torneo;
     }
@@ -45,6 +57,14 @@ public class SquadraIscritta {
 
     public void setSquadra(Squadra squadra) {
         this.squadra = squadra;
+    }
+
+    public int getVittorie() {
+        return vittorie;
+    }
+
+    public void setVittorie(int vittorie) {
+        this.vittorie = vittorie;
     }
 
     @Override

@@ -29,7 +29,7 @@ public class Partita {
     @ManyToOne
     private Arbitro arbitro;
 
-    @OneToMany
+    @OneToMany  //forse conviene EAGER?
     @JoinColumn(name="partita_id")
     private List<Commento> commenti;
 

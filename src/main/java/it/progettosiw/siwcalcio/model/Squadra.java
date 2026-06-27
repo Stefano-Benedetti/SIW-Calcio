@@ -22,11 +22,11 @@ public class Squadra {
     @Column(nullable = false)
     private String citta;
 
-    @OneToMany(mappedBy = "squadra")
+    @OneToMany(mappedBy = "squadra")    //probabilmente da lasciare LAZY
     private List<Giocatore> giocatori;
 
-    @OneToMany(mappedBy = "squadra")
-    private List<SquadraIscritta> iscrizioni;
+    @OneToMany(mappedBy = "squadra")    //non ho cascade perché se elimino la squadra la classifica deve rimanere uguale
+    private List<SquadraIscritta> iscrizioni;   //forse non servirà
 
     public Squadra(){}
 

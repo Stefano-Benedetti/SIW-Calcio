@@ -23,12 +23,13 @@ public class Torneo {
     @Column(nullable = false)
     private String descrizione;
 
-    @OneToMany
-    @JoinColumn(name = "torneo_id")
+    @OneToMany(cascade = CascadeType.REMOVE)    //non ha senso tenere le partite senza un torneo
+    @JoinColumn(name = "torneo_id")     //forse lascio LAZY perché il calendario è un'altra pagina
     private List<Partita> partite;
 
-    @OneToMany(mappedBy = "torneo")
-    private SortedSet<SquadraIscritta> classifica;
+    //forse EAGER (dipende se le metto nella pagina del torneo), REMOVE perché non ha senso l'iscrizione senza torneo
+    @OneToMany(mappedBy = "torneo", cascade = CascadeType.REMOVE)
+    private List<SquadraIscritta> iscrizioni;
 
     public Torneo(){}
 
@@ -72,12 +73,12 @@ public class Torneo {
         this.partite = partite;
     }
 
-    public SortedSet<SquadraIscritta> getClassifica() {
-        return classifica;
+    public List<SquadraIscritta> getIscrizioni() {
+        return iscrizioni;
     }
 
-    public void setClassifica(SortedSet<SquadraIscritta> classifica) {
-        this.classifica = classifica;
+    public void setIscrizioni(List<SquadraIscritta> iscrizioni) {
+        this.iscrizioni = iscrizioni;
     }
 
     @Override
