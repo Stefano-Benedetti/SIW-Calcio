@@ -24,12 +24,10 @@ public class Torneo {
     private String descrizione;
 
     @OneToMany
+    @JoinColumn(name = "torneo_id")
     private List<Partita> partite;
 
-    @OneToMany
-    private List<SquadraIscritta> iscrizioni;
-
-    @OneToMany
+    @OneToMany(mappedBy = "torneo")
     private SortedSet<SquadraIscritta> classifica;
 
     public Torneo(){}
@@ -72,14 +70,6 @@ public class Torneo {
 
     public void setPartite(List<Partita> partite) {
         this.partite = partite;
-    }
-
-    public List<SquadraIscritta> getIscrizioni() {
-        return iscrizioni;
-    }
-
-    public void setIscrizioni(List<SquadraIscritta> iscrizioni) {
-        this.iscrizioni = iscrizioni;
     }
 
     public SortedSet<SquadraIscritta> getClassifica() {

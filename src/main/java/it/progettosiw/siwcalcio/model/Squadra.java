@@ -22,10 +22,10 @@ public class Squadra {
     @Column(nullable = false)
     private String citta;
 
-    @OneToMany
+    @OneToMany(mappedBy = "squadra")
     private List<Giocatore> giocatori;
 
-    @OneToMany
+    @OneToMany(mappedBy = "squadra")
     private List<SquadraIscritta> iscrizioni;
 
     public Squadra(){}

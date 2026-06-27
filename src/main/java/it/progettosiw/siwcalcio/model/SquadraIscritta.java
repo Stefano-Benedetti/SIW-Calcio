@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"torneo_id","squadra_id"}))
 public class SquadraIscritta {
 
     @Id

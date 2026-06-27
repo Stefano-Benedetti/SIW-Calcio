@@ -30,6 +30,7 @@ public class Partita {
     private Arbitro arbitro;
 
     @OneToMany
+    @JoinColumn(name="partita_id")
     private List<Commento> commenti;
 
     @ManyToOne
