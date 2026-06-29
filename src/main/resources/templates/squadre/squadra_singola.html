@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+    <h1 th:text="${squadra.nome}">nome</h1>
+    <p> <span th:text="|Anno fondazione: ${squadra.fondazione}|">fondazione</span>  </p>
+    <p> <span th:text="|Città di appartenenza: ${squadra.citta}|">città</span>  </p>
+    Giocatori:
+    <ul>
+        <li th:each="giocatore : ${squadra.giocatori}">
+            <a th:href="|/giocatori/${giocatore.id}|"
+               th:text="|${giocatore.nome} ${giocatore.cognome}|">nome</a>
+        </li>
+    </ul>
+</body>
+</html>

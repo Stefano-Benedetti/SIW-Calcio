@@ -12,13 +12,13 @@ import java.util.Optional;
 public interface PartitaRepository extends CrudRepository<Partita,Long> {
 
     @Query(value = """
-       SELECT *
-       FROM Partita p
-       WHERE p.torneo_id = :torneoId
-         AND p.stato = 'SCHEDULED'
-         AND p.data >= :inizioGiorno
-         AND p.data < :inizioGiornoSuccessivo
-       """, nativeQuery = true)
-    List<Partita> findPartiteDiOggiScheduledByTorneo(@Param("torneoId") Long torneoId, @Param("inizioGiorno") LocalDateTime inizioGiorno, @Param("inizioGiornoSuccessivo") LocalDateTime inizioGiornoSuccessivo);
+       SELECT p
+        FROM Partita p
+        WHERE p.torneo.id = :torneoId
+            AND p.data >= :inizioGiorno
+            AND p.data < :inizioGiornoSuccessivo
+        ORDER BY p.data ASC
+       """)
+    List<Partita> findPartiteByDataByTorneo(@Param("torneoId") Long torneoId, @Param("inizioGiorno") LocalDateTime inizioGiorno, @Param("inizioGiornoSuccessivo") LocalDateTime inizioGiornoSuccessivo);
 
 }

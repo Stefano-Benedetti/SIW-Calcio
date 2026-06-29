@@ -40,6 +40,9 @@ public class Partita {
     @ManyToOne
     private Squadra squadraAway;
 
+    @ManyToOne
+    private Torneo torneo;
+
     public Partita(){}
 
     public Long getId() {
@@ -120,6 +123,14 @@ public class Partita {
 
     public void setSquadraAway(Squadra squadraAway) {
         this.squadraAway = squadraAway;
+    }
+
+    public Torneo getTorneo() {
+        return torneo;
+    }
+
+    public void setTorneo(Torneo torneo) {
+        this.torneo = torneo;
     }
 
     @Override

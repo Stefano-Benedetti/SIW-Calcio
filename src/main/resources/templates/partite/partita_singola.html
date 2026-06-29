@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+    <p>
+        <a th:href="|/tornei/${partita.torneo.id}|">Vai al torneo</a>
+    </p>
+    <h1>
+        <a th:href="|/squadre/${partita.squadraHome.id}|"
+           th:text="${partita.squadraHome.nome}">SquadraHome</a>
+        -
+        <a th:href="|/squadre/${partita.squadraAway.id}|"
+           th:text="${partita.squadraAway.nome}">SquadraAway</a>
+    </h1>
+    <p>
+        Quando: <span th:text="|${#temporals.format(partita.data, 'dd/MM/yyyy')} alle ${#temporals.format(partita.data, 'HH:mm')}|">dove</span>
+    </p>
+    <p>
+        Dove: <span th:text="${partita.luogo}">dove</span>
+    </p>
+    <p>
+        Arbitro (codice arbitrale): <span th:text="|${partita.arbitro.nome} ${partita.arbitro.cognome} (${partita.arbitro.codiceArbitrale})|">Nome Cognome</span>
+    </p>
+    <div th:if="${partita.stato.name() == 'SCHEDULED'}">
+        <p>Partita non ancora giocata</p>
+    </div>
+
+    <div th:if="${partita.stato.name() == 'PLAYED'}">
+        <p>
+            Risultato finale: <span th:text="|${partita.goalsHome} - ${partita.goalsAway}|"></span>
+        </p>
+        <div th:if="${partita.goalsHome > partita.goalsAway}">
+            <p>
+                Vincitori: <span th:text="|${partita.squadraHome.nome}|">squadraHome</span>
+            </p>
+        </div>
+        <div th:if="${partita.goalsHome < partita.goalsAway}">
+            <p>
+                Vincitori: <span th:text="|${partita.squadraAway.nome}|">squadraHome</span>
+            </p>
+        </div>
+        <div th:if="${partita.goalsHome == partita.goalsAway}">
+            <p>
+                PAREGGIO
+            </p>
+        </div>
+    </div>
+
+
+</body>
+</html>

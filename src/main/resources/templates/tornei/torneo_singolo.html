@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>SIW Calcio</title>
@@ -9,20 +9,26 @@
     <h1 th:text="|${torneo.nome} ${torneo.anno}|">Torneo 0000</h1>
     <h2 th:text="${torneo.descrizione}">Descrizione</h2>
     <p>
-        <a th:href="|/tornei/${torneo.id}/iscrizioni|">Squadre partecipanti</a>
-    </p>
-    <p>
         <a th:href="|/tornei/${torneo.id}/calendario|">Calendario delle partite</a>
     </p>
     <p>
         <a th:href="|/tornei/${torneo.id}/partitefinite|">Risultati delle partite terminate</a>
     </p>
+
+    <h2>Squadre partecipanti</h2>
+    <div th:if="${torneo.iscrizioni.isEmpty()}">Non ci sono squadre iscritte a questo torneo.</div>
+    <ul>
+        <li th:each="squadraiscritta : ${torneo.iscrizioni}">
+            <a th:href="|/squadre/${squadraiscritta.squadra.id}|" th:text="${squadraiscritta.nome}">squadra</a>
+        </li>
+    </ul>
+
     <h2>Partite di oggi</h2>
     <div th:if="${partiteOggi.isEmpty()}">Non ci sono partite programmate per oggi, consultare il calendario per ulteriori informazioni.</div>
     <ul>
         <li th:each="partita : ${partiteOggi}">
             <a th:href="|/partite/${partita.id}|"
-               th:text="|${partita.squadraHome.nome} vs ${partita.squadraAway.nome}|">sq1 CONTRO sq2</a>
+               th:text="|${partita.squadraHome.nome} - ${partita.squadraAway.nome}|">sq1 CONTRO sq2</a>
             <div th:text="|alle ore ${#temporals.format(partita.data, 'HH:mm')}|">alle ore 00:00</div>
         </li>
     </ul>

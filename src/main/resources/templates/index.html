@@ -5,11 +5,11 @@
     <title>SIW Calcio</title>
 </head>
 <body>
-    <h1>Calcio calcio pallone eoeoeee gnegnegne</h1>
+    <h1>Tornei di Calcio di Sistemi Informativi su Web</h1>
     <h2 th:if="${username}" th:text="|Ciao, ${username}|">nome utente</h2>
     <div th:unless="${username}">
-        <a href="/register">Registrazione</a>
-        <a href="/login">Login</a>
+        <p><a href="/register">Registrazione</a></p>
+        <p><a href="/login">Login</a></p>
     </div>
     <p>
         <a href="/tornei">Elenco tornei</a>

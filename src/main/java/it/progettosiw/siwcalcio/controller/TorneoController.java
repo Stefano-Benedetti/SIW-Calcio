@@ -27,7 +27,7 @@ public class TorneoController {
     @GetMapping("/tornei/{id}")
     public String show(@PathVariable("id") Long id, Model model){
         model.addAttribute("torneo", this.torneoService.getTorneoById(id));
-        model.addAttribute("partiteOggi", this.partitaService.getPartiteDiOggi(id));
+        model.addAttribute("partiteOggi", this.partitaService.getPartiteDiOggiPerTorneo(id));
         return "tornei/torneo_singolo.html";
     }
 

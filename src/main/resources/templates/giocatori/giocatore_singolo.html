@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+    <h1 th:text="|${giocatore.nome} ${giocatore.cognome}|">nome cognome</h1>
+    <p> <span th:text="|Nato il: ${#temporals.format(giocatore.nascita, 'dd/MM/yyyy')}|">nascita</span> </p>
+    <p> Ruolo: <span th:text="${#strings.toLowerCase(giocatore.ruolo.name())}">ruolo</span> </p>
+    <p> Altezza: <span th:text="|${giocatore.altezza} centimetri|">altezza</span> </p>
+    <p> Squadra: <a th:href="|/squadre/${giocatore.squadra.id}|" th:text="${giocatore.squadra.nome}">squadra</a> </p>
+</body>
+</html>

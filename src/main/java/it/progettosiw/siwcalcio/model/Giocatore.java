@@ -26,7 +26,7 @@ public class Giocatore {
     private RuoloGiocatore ruolo;
 
     @Column(nullable = false)
-    private int altezza;    //millimetri
+    private int altezza;    //centimetri
 
     @ManyToOne
     private Squadra squadra;

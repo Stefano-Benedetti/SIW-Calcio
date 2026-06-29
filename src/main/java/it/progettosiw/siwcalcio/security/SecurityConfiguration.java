@@ -42,7 +42,7 @@ public class SecurityConfiguration {
 
         httpSecurity.authorizeHttpRequests(authorize -> {
             authorize.requestMatchers(HttpMethod.GET, "/", "/index", "/register", "/login",
-                    "/tornei/{id}", "/tornei",
+                    "/tornei/**", "/tornei/{id}", "/partite/{id}", "/squadre/{id}","/giocatori/{id}",
                     "/css/**", "/images/**", "/favicon.ico").permitAll();
             authorize.requestMatchers(HttpMethod.POST, "/register", "/login").permitAll();
             authorize.requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(RuoloAutorizzazione.ADMIN.name());
