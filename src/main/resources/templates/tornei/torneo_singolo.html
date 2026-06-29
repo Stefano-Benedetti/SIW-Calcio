@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+    <a href="/tornei">Torna all'elenco dei tornei</a>
+    <h1 th:text="|${torneo.nome} ${torneo.anno}|">Torneo 0000</h1>
+    <h2 th:text="${torneo.descrizione}">Descrizione</h2>
+    <p>
+        <a th:href="|/tornei/${torneo.id}/iscrizioni|">Squadre partecipanti</a>
+    </p>
+    <p>
+        <a th:href="|/tornei/${torneo.id}/calendario|">Calendario delle partite</a>
+    </p>
+    <p>
+        <a th:href="|/tornei/${torneo.id}/partitefinite|">Risultati delle partite terminate</a>
+    </p>
+    <h2>Partite di oggi</h2>
+    <div th:if="${partiteOggi.isEmpty()}">Non ci sono partite programmate per oggi, consultare il calendario per ulteriori informazioni.</div>
+    <ul>
+        <li th:each="partita : ${partiteOggi}">
+            <a th:href="|/partite/${partita.id}|"
+               th:text="|${partita.squadraHome.nome} vs ${partita.squadraAway.nome}|">sq1 CONTRO sq2</a>
+            <div th:text="|alle ore ${#temporals.format(partita.data, 'HH:mm')}|">alle ore 00:00</div>
+        </li>
+    </ul>
+</body>
+</html>

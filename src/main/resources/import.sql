@@ -1,0 +1,90 @@
+-- =========================
+-- UTENTI
+-- =========================
+INSERT INTO utente (id, username) VALUES (nextval('utente_seq'), 'stefano');
+INSERT INTO utente (id, username) VALUES (nextval('utente_seq'), 'simone');
+INSERT INTO utente (id, username) VALUES (nextval('utente_seq'), 'admin');
+
+-- =========================
+-- CREDENZIALI
+-- NB: ruolo è EnumType.STRING -> valori tipo 'USER', 'ADMIN'
+-- =========================
+INSERT INTO credenziali (id, username, password, ruolo, utente_id) VALUES (nextval('credenziali_seq'), 'stefano', '$2a$12$RmbcqHce93KvHW3DhX46behoglmW.fi2aev6cnJmC0NkEN2t7FzsW', 'USER', 1); -- pwd = 123456
+INSERT INTO credenziali (id, username, password, ruolo, utente_id) VALUES (nextval('credenziali_seq'), 'simone', '$2a$12$RmbcqHce93KvHW3DhX46behoglmW.fi2aev6cnJmC0NkEN2t7FzsW', 'USER', 51); -- pwd = 123456
+INSERT INTO credenziali (id, username, password, ruolo, utente_id) VALUES (nextval('credenziali_seq'), 'admin', '$2a$12$mrluWy3HIjoXLzGKtlMVCe6oeNLWhZh8eiTtjdREntvpZ96MUNtdy', 'ADMIN', 101);  -- pwd = admin
+
+-- =========================
+-- ARBITRI
+-- =========================
+INSERT INTO arbitro (id, nome, cognome, codice_arbitrale) VALUES (nextval('arbitro_seq'), 'Orazio', 'Grinzosi', 6769420);
+INSERT INTO arbitro (id, nome, cognome, codice_arbitrale) VALUES (nextval('arbitro_seq'), 'Paolo', 'Ferrari', 6769421);
+INSERT INTO arbitro (id, nome, cognome, codice_arbitrale) VALUES (nextval('arbitro_seq'), 'Davide', 'Esposito', 6769422);
+
+-- =========================
+-- SQUADRE
+-- =========================
+INSERT INTO squadra (id, nome, fondazione, citta) VALUES (nextval('squadra_seq'), 'Lupi Roma', 1927, 'Roma');
+INSERT INTO squadra (id, nome, fondazione, citta) VALUES (nextval('squadra_seq'), 'Aquila Milano', 1908, 'Milano');
+INSERT INTO squadra (id, nome, fondazione, citta) VALUES (nextval('squadra_seq'), 'Stella Napoli', 1926, 'Napoli');
+INSERT INTO squadra (id, nome, fondazione, citta) VALUES (nextval('squadra_seq'), 'Toro Torino', 1906, 'Torino');
+
+-- =========================
+-- GIOCATORI (collegati alla squadra)
+-- ruolo: PORTIERE, DIFENSORE, CENTROCAMPISTA, ATTACCANTE
+-- altezza in millimetri
+-- =========================
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Marco', 'Leoni', '1997-03-12', 'PORTIERE', 1890, 1);
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Alessio', 'Riva', '1999-07-03', 'DIFENSORE', 1840, 1);
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Giorgio', 'Neri', '2000-01-21', 'CENTROCAMPISTA', 1780, 1);
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Tommaso', 'Greco', '1998-11-10', 'ATTACCANTE', 1820, 1);
+
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Matteo', 'Conti', '1996-05-18', 'PORTIERE', 1910, 51);
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Riccardo', 'Villa', '1997-09-09', 'DIFENSORE', 1860, 51);
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Emanuele', 'Lombardi', '2001-02-14', 'CENTROCAMPISTA', 1760, 51);
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Simone', 'Costa', '1998-12-01', 'ATTACCANTE', 1800, 51);
+
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Federico', 'Russo', '1995-04-04', 'PORTIERE', 1880, 101);
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Andrea', 'De Luca', '1999-06-30', 'DIFENSORE', 1830, 101);
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Lorenzo', 'Marino', '2000-10-22', 'CENTROCAMPISTA', 1770, 101);
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Nicolo', 'Romano', '1997-08-08', 'ATTACCANTE', 1810, 101);
+
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Daniele', 'Ferri', '1996-01-15', 'PORTIERE', 1900, 151);
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Pietro', 'Gallo', '1998-03-27', 'DIFENSORE', 1850, 151);
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Fabio', 'Serra', '2001-07-19', 'CENTROCAMPISTA', 1790, 151);
+INSERT INTO giocatore (id, nome, cognome, nascita, ruolo, altezza, squadra_id) VALUES (nextval('giocatore_seq'), 'Michele', 'Parisi', '1999-09-25', 'ATTACCANTE', 1830, 151);
+
+-- =========================
+-- TORNEI
+-- anno (Year) come numerico
+-- =========================
+INSERT INTO torneo (id, nome, anno, descrizione) VALUES (nextval('torneo_seq'), 'Coppa Primavera', 2026, 'Torneo nazionale giovanile');
+INSERT INTO torneo (id, nome, anno, descrizione) VALUES (nextval('torneo_seq'), 'Campionato Estivo', 2026, 'Competizione estiva tra club');
+
+-- =========================
+-- SQUADRE ISCRITTE
+-- ATTENZIONE: nome in squadraiscritta e squadra DEVE coincidere
+-- =========================
+INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 'Lupi Roma', 0, 1, 1);
+INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 'Aquila Milano', 0, 1, 51);
+INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 'Stella Napoli', 0, 1, 101);
+INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 'Toro Torino', 0, 1, 151);
+
+INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 'Lupi Roma', 1, 51, 1);
+INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 'Aquila Milano', 2, 51, 51);
+INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 'Stella Napoli', 1, 51, 101);
+
+-- =========================
+-- PARTITE (collegate a torneo, arbitro, squadra_home, squadra_away)
+-- =========================
+INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-05-10T18:00:00', 'Stadio Olimpico', 2, 1, 'PLAYED', 1, 1, 51, 1);
+
+INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-06-29T20:45:00', 'Stadio Maradona', 0, 0, 'SCHEDULED', 51, 101, 151, 1);
+
+INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-06-01T21:00:00', 'San Siro', 3, 2, 'PLAYED', 101, 51, 1, 51);
+
+-- =========================
+-- COMMENTI (collegati a utente e partita via partita_id)
+-- =========================
+INSERT INTO commento (id, testo, utente_id, partita_id) VALUES (nextval('commento_seq'), 'Partita bellissima, ritmo altissimo!', 1, 1);
+INSERT INTO commento (id, testo, utente_id, partita_id) VALUES (nextval('commento_seq'), 'Arbitraggio molto preciso.', 51, 1);
+INSERT INTO commento (id, testo, utente_id, partita_id) VALUES (nextval('commento_seq'), 'Ci aspettiamo tanti gol stasera.', 101, 51);

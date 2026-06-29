@@ -23,12 +23,12 @@ public class Torneo {
     @Column(nullable = false)
     private String descrizione;
 
-    @OneToMany(cascade = CascadeType.REMOVE)    //non ha senso tenere le partite senza un torneo
-    @JoinColumn(name = "torneo_id")     //forse lascio LAZY perché il calendario è un'altra pagina
+    @OneToMany(cascade = CascadeType.REMOVE)    //non ha senso tenere le partite senza un torneo, ma i tornei non andranno eliminati
+    @JoinColumn(name = "torneo_id")     //forse lascio LAZY, ma da testare per le partite giornaliere
     private List<Partita> partite;
 
-    //forse EAGER (dipende se le metto nella pagina del torneo), REMOVE perché non ha senso l'iscrizione senza torneo
-    @OneToMany(mappedBy = "torneo", cascade = CascadeType.REMOVE)
+    //forse lascio LAZY (dipende se le metto in una pagina dedicata), REMOVE perché non ha senso l'iscrizione senza torneo
+    @OneToMany(mappedBy = "torneo", cascade = CascadeType.REMOVE)   // in realtà i tornei non saranno eliminati
     private List<SquadraIscritta> iscrizioni;
 
     public Torneo(){}

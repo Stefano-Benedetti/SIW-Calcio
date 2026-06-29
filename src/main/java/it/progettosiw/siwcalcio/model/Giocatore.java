@@ -21,6 +21,7 @@ public class Giocatore {
     @Column(nullable = false)
     private LocalDate nascita;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RuoloGiocatore ruolo;
 

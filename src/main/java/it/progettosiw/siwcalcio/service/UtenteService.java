@@ -19,8 +19,6 @@ import java.util.Optional;
 @Service
 public class UtenteService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UtenteService.class);
-
     private CredenzialiRepository credenzialiRepository;
 
     private UtenteRepository utenteRepository;
@@ -33,7 +31,7 @@ public class UtenteService {
 
     public void register(RegistrationForm form){
         if (utenteRepository.existsByUsername(form.getUsername()))
-            throw new RuntimeException();
+            throw new RuntimeException("questo nome utente è già in uso");
         Utente utente = new Utente(form.getUsername());
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -50,8 +48,7 @@ public class UtenteService {
 
         Optional<Utente> optUser = utenteRepository.findByUsername(userDetails.getUsername());
         if(!optUser.isPresent()){
-            logger.error("utente corrente non trovato");
-            return null;
+            throw new RuntimeException("utente corrente non trovato");
         }
         return optUser.get();
     }

@@ -23,13 +23,14 @@ public class Partita {
 
     private int goalsAway;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatoPartita stato;
 
     @ManyToOne
     private Arbitro arbitro;
 
-    @OneToMany  //forse conviene EAGER?
+    @OneToMany  //conviene EAGER solo se carico i commenti sempre insieme alle partite
     @JoinColumn(name="partita_id")
     private List<Commento> commenti;
 
@@ -87,6 +88,38 @@ public class Partita {
 
     public void setStato(StatoPartita stato) {
         this.stato = stato;
+    }
+
+    public Arbitro getArbitro() {
+        return arbitro;
+    }
+
+    public void setArbitro(Arbitro arbitro) {
+        this.arbitro = arbitro;
+    }
+
+    public List<Commento> getCommenti() {
+        return commenti;
+    }
+
+    public void setCommenti(List<Commento> commenti) {
+        this.commenti = commenti;
+    }
+
+    public Squadra getSquadraHome() {
+        return squadraHome;
+    }
+
+    public void setSquadraHome(Squadra squadraHome) {
+        this.squadraHome = squadraHome;
+    }
+
+    public Squadra getSquadraAway() {
+        return squadraAway;
+    }
+
+    public void setSquadraAway(Squadra squadraAway) {
+        this.squadraAway = squadraAway;
     }
 
     @Override

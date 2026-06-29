@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+<p>
+    <a href="/">Torna alla home</a>
+</p>
+<h1>Elenco tornei</h1>
+<div th:if="${tornei.isEmpty()}">Non è stato registrato alcun torneo nel sistema.</div>
+<ul>
+    <li th:each="torneo : ${tornei}">
+        <a th:href="|/tornei/${torneo.id}|"
+           th:text="|${torneo.nome} ${torneo.anno}|">nome</a>
+    </li>
+</ul>
+</body>
+</html>
