@@ -1,6 +1,9 @@
 package it.progettosiw.siwcalcio.repository;
 
 import it.progettosiw.siwcalcio.model.Partita;
+import it.progettosiw.siwcalcio.model.StatoPartita;
+import it.progettosiw.siwcalcio.model.Torneo;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +24,5 @@ public interface PartitaRepository extends CrudRepository<Partita,Long> {
        """)
     List<Partita> findPartiteByDataByTorneo(@Param("torneoId") Long torneoId, @Param("inizioGiorno") LocalDateTime inizioGiorno, @Param("inizioGiornoSuccessivo") LocalDateTime inizioGiornoSuccessivo);
 
+    List<Partita> findPartitasByStatoAndTorneoId(StatoPartita stato, Long torneoId, Sort sort);
 }

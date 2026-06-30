@@ -31,4 +31,18 @@ public class TorneoController {
         return "tornei/torneo_singolo.html";
     }
 
+    @GetMapping("/tornei/{id}/calendario")
+    public String getCalendarioTorneo(@PathVariable("id") Long id, Model model){
+        model.addAttribute("torneo", this.torneoService.getTorneoById(id));
+        model.addAttribute("partiteScheduled", this.partitaService.getCalendarioPerTorneo(id));
+        return "tornei/calendario_torneo";
+    }
+
+    @GetMapping("/tornei/{id}/partiteterminate")
+    public String getPartiteTerminate(@PathVariable("id") Long id, Model model){
+        model.addAttribute("torneo", this.torneoService.getTorneoById(id));
+        model.addAttribute("partitePlayed", this.partitaService.getPartiteTerminatePerTorneo(id));
+        return "tornei/partite_terminate";
+    }
+
 }

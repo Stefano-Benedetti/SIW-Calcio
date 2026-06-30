@@ -78,9 +78,19 @@ INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES 
 -- =========================
 INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-05-10T18:00:00', 'Stadio Olimpico', 2, 1, 'PLAYED', 1, 1, 51, 1);
 
-INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-06-29T16:45:00', 'Stadio Maradona', 0, 0, 'PLAYED', 51, 101, 151, 1);
+INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-06-29T16:45:00', 'Stadio Maradona', 1, 1, 'PLAYED', 51, 101, 151, 1);
 
-INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-07-22T21:00:00', 'San Siro', 3, 2, 'SCHEDULED', 101, 51, 1, 51);
+INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-07-22T21:00:00', 'San Siro', 0, 0, 'SCHEDULED', 101, 151, 1, 1);
+
+INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-07-23T18:00:00', 'Stadio del Sium', 0, 0, 'SCHEDULED', 1, 1, 151, 1);
+
+INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-07-24T13:30:00', 'Stadio di Altrove', 0, 0, 'SCHEDULED', 51, 101, 1, 51);
+
+INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-07-25T09:00:00', 'Casa di Pino', 0, 0, 'SCHEDULED', 101, 1, 101, 51);
+
+INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-07-26T10:00:00', 'Circolo Sportivo The Pallon', 0, 0, 'SCHEDULED', 1, 51, 1, 51);
+
+INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-06-27T11:30:00', 'Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch', 14, 0, 'PLAYED', 1, 51, 1, 51);
 
 -- =========================
 -- COMMENTI (collegati a utente e partita via partita_id)
@@ -88,3 +98,4 @@ INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id,
 INSERT INTO commento (id, testo, utente_id, partita_id) VALUES (nextval('commento_seq'), 'Partita bellissima, ritmo altissimo!', 1, 1);
 INSERT INTO commento (id, testo, utente_id, partita_id) VALUES (nextval('commento_seq'), 'Arbitraggio molto preciso.', 51, 1);
 INSERT INTO commento (id, testo, utente_id, partita_id) VALUES (nextval('commento_seq'), 'Ci aspettiamo tanti gol stasera.', 101, 51);
+INSERT INTO commento (id, testo, utente_id, partita_id) VALUES (nextval('commento_seq'), 'ahahah che polli', 101, 351);

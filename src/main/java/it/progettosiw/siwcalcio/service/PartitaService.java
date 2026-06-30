@@ -1,8 +1,9 @@
 package it.progettosiw.siwcalcio.service;
 
 import it.progettosiw.siwcalcio.model.Partita;
-import it.progettosiw.siwcalcio.model.Torneo;
+import it.progettosiw.siwcalcio.model.StatoPartita;
 import it.progettosiw.siwcalcio.repository.PartitaRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,6 +30,16 @@ public class PartitaService {
             throw new RuntimeException("partita non trovata");
         }
         return partitaOpt.get();
+    }
+
+    public List<Partita> getCalendarioPerTorneo(Long id){
+        Sort sort = Sort.by(Sort.Direction.ASC, "data");
+        return this.partitaRepository.findPartitasByStatoAndTorneoId(StatoPartita.SCHEDULED, id, sort);
+    }
+
+    public List<Partita> getPartiteTerminatePerTorneo(Long id){
+        Sort sort = Sort.by(Sort.Direction.DESC, "data");
+        return this.partitaRepository.findPartitasByStatoAndTorneoId(StatoPartita.PLAYED, id, sort);
     }
 
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+    <h1 th:text="|Calendario Partite ${torneo.nome} ${torneo.anno}|">titolo</h1>
+    <div th:if="${partiteScheduled.isEmpty()}">Questo torneo non ha partite programmate.</div>
+    <ul>
+        <li th:each="partita : ${partiteScheduled}">
+            <h2>
+                <a th:href="|/partite/${partita.id}|"
+                   th:text="|${partita.squadraHome.nome} - ${partita.squadraAway.nome}|">sq1 CONTRO sq2</a>
+            </h2>
+            <p>
+                Quando: <span th:text="|${#temporals.format(partita.data, 'dd/MM/yyyy')} alle ${#temporals.format(partita.data, 'HH:mm')}|">quando</span>
+            </p>
+            <p>
+                Dove: <span th:text="${partita.luogo}">dove</span>
+            </p>
+        </li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+    <h1 th:text="|Classifica ${torneo.nome} ${torneo.anno}|">titolo</h1>
+    <div th:if="${classifica.isEmpty()}">Questo torneo non ha squadre iscritte.</div>
+    <ul>
+        <li th:each="squadraiscritta : ${classifica}">
+            <a th:href="|/squadre/${squadraiscritta.squadra.id}|" th:text="${squadraiscritta.nome}">squadra</a>
+        </li>
+    </ul>
+</body>
+</html>

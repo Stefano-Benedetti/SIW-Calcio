@@ -5,6 +5,36 @@
     <title>SIW Calcio</title>
 </head>
 <body>
-
+<h1 th:text="|Risultati Partite ${torneo.nome} ${torneo.anno}|">titolo</h1>
+<div th:if="${partitePlayed.isEmpty()}">Questo torneo non ha partite programmate.</div>
+<ul>
+    <li th:each="partita : ${partitePlayed}">
+        <h2>
+            <a th:href="|/partite/${partita.id}|"
+               th:text="|${partita.squadraHome.nome} - ${partita.squadraAway.nome}|">sq1 CONTRO sq2</a>
+        </h2>
+        <p>
+            Quando: <span th:text="|${#temporals.format(partita.data, 'dd/MM/yyyy')} alle ${#temporals.format(partita.data, 'HH:mm')}|">quando</span>
+        </p>
+        <p>
+            Risultato finale: <span th:text="|${partita.goalsHome} - ${partita.goalsAway}|"></span>
+        </p>
+        <div th:if="${partita.goalsHome > partita.goalsAway}">
+            <p>
+                Vincitori: <span th:text="|${partita.squadraHome.nome}|">squadraHome</span>
+            </p>
+        </div>
+        <div th:if="${partita.goalsHome < partita.goalsAway}">
+            <p>
+                Vincitori: <span th:text="|${partita.squadraAway.nome}|">squadraHome</span>
+            </p>
+        </div>
+        <div th:if="${partita.goalsHome == partita.goalsAway}">
+            <p>
+                PAREGGIO
+            </p>
+        </div>
+    </li>
+</ul>
 </body>
 </html>

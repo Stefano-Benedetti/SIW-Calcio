@@ -16,7 +16,7 @@
            th:text="${partita.squadraAway.nome}">SquadraAway</a>
     </h1>
     <p>
-        Quando: <span th:text="|${#temporals.format(partita.data, 'dd/MM/yyyy')} alle ${#temporals.format(partita.data, 'HH:mm')}|">dove</span>
+        Quando: <span th:text="|${#temporals.format(partita.data, 'dd/MM/yyyy')} alle ${#temporals.format(partita.data, 'HH:mm')}|">quando</span>
     </p>
     <p>
         Dove: <span th:text="${partita.luogo}">dove</span>
@@ -48,7 +48,18 @@
             </p>
         </div>
     </div>
-
+    <h2>Commenti</h2>
+    <div th:if="${partita.commenti.isEmpty()}">Ancora nessun commento.</div>
+    <ul>
+        <li th:each="commento : ${partita.commenti}">
+            <p>
+                <span th:text="|${commento.utente.username}|">utente</span>
+            </p>
+            <p>
+                <span th:text="|${commento.testo}|">commento</span>
+            </p>
+        </li>
+    </ul>
 
 </body>
 </html>
