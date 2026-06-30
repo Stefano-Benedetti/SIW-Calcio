@@ -49,4 +49,10 @@ public class SquadraController {
         this.squadraService.modify(squadra,id);
         return "redirect:/squadre/"+id.toString();
     }
+
+    @PostMapping("/admin/squadre/{id}/elimina")
+    public String deleteSquadra(@PathVariable("id") Long id, Model model){
+        this.squadraService.delete(id);
+        return "redirect:/";
+    }
 }

@@ -22,7 +22,7 @@ public class Squadra {
     @Column(nullable = false)
     private String citta;
 
-    @OneToMany(mappedBy = "squadra")    //probabilmente da lasciare LAZY
+    @OneToMany(mappedBy = "squadra", cascade = CascadeType.REMOVE)    //probabilmente da lasciare LAZY
     private List<Giocatore> giocatori;
 
     @OneToMany(mappedBy = "squadra", cascade = CascadeType.REMOVE)

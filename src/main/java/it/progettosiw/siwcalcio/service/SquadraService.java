@@ -45,4 +45,8 @@ public class SquadraService {
         squadra.setCitta(temp.getCitta());
         this.squadraRepository.save(squadra);
     }
+
+    public void delete(Long id){
+        this.squadraRepository.deleteById(id);
+    }
 }

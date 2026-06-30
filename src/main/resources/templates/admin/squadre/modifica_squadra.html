@@ -20,5 +20,10 @@
             <span><button type="submit">Conferma</button></span>
         </p>
     </form>
+    <p>ATTENZIONE: se elimini la squadra, verranno eliminate anche le iscrizioni, le partite, i punteggi associati e i giocatori registrati ad essa.
+        <form th:action="@{/admin/squadre/{id}/elimina(id=${id})}" method="post">
+            <button type="submit">Elimina</button>
+        </form>
+    </p>
 </body>
 </html>
