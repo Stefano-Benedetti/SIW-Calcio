@@ -14,12 +14,15 @@
     <p>
         <a th:href="|/tornei/${torneo.id}/partiteterminate|">Risultati delle partite terminate</a>
     </p>
+    <p>
+        <a th:href="|/tornei/${torneo.id}/classifica|">Classifica</a>
+    </p>
 
     <h2>Squadre partecipanti</h2>
     <div th:if="${torneo.iscrizioni.isEmpty()}">Non ci sono squadre iscritte a questo torneo.</div>
     <ul>
         <li th:each="squadraiscritta : ${torneo.iscrizioni}">
-            <a th:href="|/squadre/${squadraiscritta.squadra.id}|" th:text="${squadraiscritta.nome}">squadra</a>
+            <a th:href="|/squadre/${squadraiscritta.squadra.id}|" th:text="${squadraiscritta.squadra.nome}">squadra</a>
         </li>
     </ul>
 

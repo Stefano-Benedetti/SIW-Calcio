@@ -1,5 +1,6 @@
 package it.progettosiw.siwcalcio.model;
 
+import it.progettosiw.siwcalcio.dto.GiocatoreForm;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -32,6 +33,15 @@ public class Giocatore {
     private Squadra squadra;
 
     public Giocatore(){}
+
+    public Giocatore(GiocatoreForm gf, Squadra s){
+        this.nome = gf.getNome();
+        this.cognome = gf.getCognome();
+        this.nascita = gf.getNascita();
+        this.ruolo = gf.getRuolo();
+        this.altezza = gf.getAltezza();
+        this.squadra = s;
+    }
 
     public Long getId() {
         return id;

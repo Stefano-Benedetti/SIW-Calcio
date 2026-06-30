@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+    <h1>Aggiungi una squadra</h1>
+    <form th:action="@{/admin/squadre/crea}" method="POST" th:object="${squadra}">
+        <p>
+            <label>Nome:</label> <span><input type="text" th:field="${squadra.nome}"/></span>
+        </p>
+        <p>
+            <label>Anno di fondazione:</label> <span><input type="number" min="1900" max="2100" step="1" th:field="${squadra.fondazione}"/></span>
+        </p>
+        <p>
+            <label>Città di appartenenza:</label> <span><input type="text" th:field="${squadra.citta}"/></span>
+        </p>
+        <p>
+            <span><button type="submit">Conferma</button></span>
+        </p>
+    </form>
+</body>
+</html>

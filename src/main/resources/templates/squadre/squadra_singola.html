@@ -8,12 +8,15 @@
     <h1 th:text="${squadra.nome}">nome</h1>
     <p> <span th:text="|Anno fondazione: ${squadra.fondazione}|">fondazione</span>  </p>
     <p> <span th:text="|Città di appartenenza: ${squadra.citta}|">città</span>  </p>
-    Giocatori:
-    <ul>
-        <li th:each="giocatore : ${squadra.giocatori}">
-            <a th:href="|/giocatori/${giocatore.id}|"
-               th:text="|${giocatore.nome} ${giocatore.cognome}|">nome</a>
-        </li>
-    </ul>
+    <p>
+        <h2>Giocatori:</h2>
+        <div th:if="${squadra.giocatori.isEmpty()}">Al momento questa squadra non ha giocatori registrati</divth:unless></div>
+        <ul>
+            <li th:each="giocatore : ${squadra.giocatori}">
+                <a th:href="|/giocatori/${giocatore.id}|"
+                   th:text="|${giocatore.nome} ${giocatore.cognome}|">nome</a>
+            </li>
+        </ul>
+    </p>
 </body>
 </html>

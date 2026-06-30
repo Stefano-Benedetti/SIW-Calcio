@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+  <h1>Modifica il giocatore</h1>
+  <form th:action="@{/admin/giocatori/{id}/modifica(id=${id})}" method="post" th:object="${form}">
+    <p>
+      <label>Nome:</label> <span><input type="text" th:field="${form.nome}"/></span>
+    </p>
+    <p>
+      <label>Cognome:</label> <span><input type="text" th:field="${form.cognome}"/></span>
+    </p>
+    <p>
+      <label>Data di nascita:</label> <span><input type="date" th:field="${form.nascita}"/></span>
+    </p>
+    <p>
+      <label>Ruolo:</label>
+      <span><select th:field="${form.ruolo}">
+            <option value="">--Scegli un ruolo--</option>
+            <option value="PORTIERE">portiere</option>
+            <option value="DIFENSORE">difensore</option>
+            <option value="CENTROCAMPISTA">centrocampista</option>
+            <option value="ATTACCANTE">attaccante</option>
+        </select></span>
+    </p>
+    <p>
+      <label>Altezza (centimetri):</label> <span><input type="text" th:field="${form.altezza}"/></span>
+    </p>
+    <p>
+      <label>Squadra:</label>
+      <select th:field="${form.squadraId}" size="1">
+        <option value="">Seleziona una squadra</option>
+        <option th:each="squadra : ${squadre}" th:value="${squadra.id}" th:text="${squadra.nome}"></option>
+      </select>
+    </p>
+    <p>
+      <span><button type="submit">Conferma</button></span>
+    </p>
+  </form>
+</body>
+</html>

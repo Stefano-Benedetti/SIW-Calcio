@@ -30,7 +30,7 @@ public class Partita {
     @ManyToOne
     private Arbitro arbitro;
 
-    @OneToMany  //conviene EAGER solo se carico i commenti sempre insieme alle partite
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name="partita_id")
     private List<Commento> commenti;
 

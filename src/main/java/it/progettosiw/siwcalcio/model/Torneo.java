@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.time.Year;
 import java.util.List;
 import java.util.Objects;
-import java.util.SortedSet;
 
 @Entity
 public class Torneo {
@@ -27,7 +26,7 @@ public class Torneo {
     @JoinColumn(name = "torneo_id")     //forse lascio LAZY, ma da testare per le partite giornaliere
     private List<Partita> partite;
 
-    //forse lascio LAZY (dipende se le metto in una pagina dedicata), REMOVE perché non ha senso l'iscrizione senza torneo
+    //REMOVE perché non ha senso l'iscrizione senza torneo
     @OneToMany(mappedBy = "torneo", cascade = CascadeType.REMOVE)   // in realtà i tornei non saranno eliminati
     private List<SquadraIscritta> iscrizioni;
 

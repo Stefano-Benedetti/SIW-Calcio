@@ -25,8 +25,14 @@ public class Squadra {
     @OneToMany(mappedBy = "squadra")    //probabilmente da lasciare LAZY
     private List<Giocatore> giocatori;
 
-    @OneToMany(mappedBy = "squadra")    //non ho cascade perché se elimino la squadra la classifica deve rimanere uguale
-    private List<SquadraIscritta> iscrizioni;   //forse non servirà
+    @OneToMany(mappedBy = "squadra", cascade = CascadeType.REMOVE)
+    private List<SquadraIscritta> iscrizioni;
+
+    @OneToMany(mappedBy = "squadraHome", cascade = CascadeType.REMOVE)
+    private List<Partita> partiteInCasa;
+
+    @OneToMany(mappedBy = "squadraAway", cascade = CascadeType.REMOVE)
+    private List<Partita> partiteFuori;
 
     public Squadra(){}
 
@@ -34,7 +40,7 @@ public class Squadra {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -76,6 +82,22 @@ public class Squadra {
 
     public void setIscrizioni(List<SquadraIscritta> iscrizioni) {
         this.iscrizioni = iscrizioni;
+    }
+
+    public List<Partita> getPartiteInCasa() {
+        return partiteInCasa;
+    }
+
+    public void setPartiteInCasa(List<Partita> partiteInCasa) {
+        this.partiteInCasa = partiteInCasa;
+    }
+
+    public List<Partita> getPartiteFuori() {
+        return partiteFuori;
+    }
+
+    public void setPartiteFuori(List<Partita> partiteFuori) {
+        this.partiteFuori = partiteFuori;
     }
 
     @Override

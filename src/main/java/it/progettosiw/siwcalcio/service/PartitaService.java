@@ -20,8 +20,8 @@ public class PartitaService {
         this.partitaRepository = partitaRepository;
     }
 
-    public List<Partita> getPartiteDiOggiPerTorneo(Long torneo_id){
-        return this.partitaRepository.findPartiteByDataByTorneo(torneo_id, LocalDateTime.now().toLocalDate().atStartOfDay(), LocalDate.now().plusDays(1).atStartOfDay());
+    public List<Partita> getPartiteDiOggiPerTorneo(Long torneoId){
+        return this.partitaRepository.findPartiteByGiornoAndByTorneo(torneoId, LocalDateTime.now().toLocalDate().atStartOfDay(), LocalDate.now().plusDays(1).atStartOfDay());
     }
 
     public Partita getPartitaById(Long id){
@@ -32,14 +32,12 @@ public class PartitaService {
         return partitaOpt.get();
     }
 
-    public List<Partita> getCalendarioPerTorneo(Long id){
-        Sort sort = Sort.by(Sort.Direction.ASC, "data");
-        return this.partitaRepository.findPartitasByStatoAndTorneoId(StatoPartita.SCHEDULED, id, sort);
+    public List<Partita> getCalendarioPerTorneo(Long torneoId){
+        return this.partitaRepository.findPartitasByTorneoIdAndStatoOrderByDataAsc(torneoId, StatoPartita.SCHEDULED);
     }
 
-    public List<Partita> getPartiteTerminatePerTorneo(Long id){
-        Sort sort = Sort.by(Sort.Direction.DESC, "data");
-        return this.partitaRepository.findPartitasByStatoAndTorneoId(StatoPartita.PLAYED, id, sort);
+    public List<Partita> getPartiteTerminatePerTorneo(Long torneoId){
+        return this.partitaRepository.findPartitasByTorneoIdAndStatoOrderByDataDesc(torneoId, StatoPartita.PLAYED);
     }
 
 }

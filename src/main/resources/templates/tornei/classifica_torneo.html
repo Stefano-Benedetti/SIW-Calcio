@@ -7,10 +7,17 @@
 <body>
     <h1 th:text="|Classifica ${torneo.nome} ${torneo.anno}|">titolo</h1>
     <div th:if="${classifica.isEmpty()}">Questo torneo non ha squadre iscritte.</div>
-    <ul>
-        <li th:each="squadraiscritta : ${classifica}">
-            <a th:href="|/squadre/${squadraiscritta.squadra.id}|" th:text="${squadraiscritta.nome}">squadra</a>
-        </li>
-    </ul>
+    <table th:unless="${classifica.isEmpty()}"><!--tr = table row, td = table data, th = table header-->
+        <tr>
+            <th>Posizione</th>
+            <th>Squadra</th>
+            <th>Vittorie</th>
+        </tr>
+        <tr th:each="s, stat : ${classifica}">
+            <td style="text-align: center;" th:text="${posizioni[stat.index]}">1</td>
+            <td style="text-align: center;" th:text="${s.squadra.nome}">Squadra</td>
+            <td style="text-align: center;" th:text="${s.vittorie}">0</td>
+        </tr>
+    </table>
 </body>
 </html>

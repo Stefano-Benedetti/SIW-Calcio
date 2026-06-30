@@ -14,9 +14,6 @@ public class SquadraIscritta {
     private Long id;
 
     @Column(nullable = false)
-    private String nome;
-
-    @Column(nullable = false)
     private int vittorie;
 
     @ManyToOne
@@ -25,7 +22,9 @@ public class SquadraIscritta {
     @ManyToOne
     private Squadra squadra;
 
-    public SquadraIscritta(){}
+    public SquadraIscritta(){
+        this.vittorie = 0;
+    }
 
     public Long getId() {
         return id;
@@ -33,14 +32,6 @@ public class SquadraIscritta {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public Torneo getTorneo() {

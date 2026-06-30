@@ -22,7 +22,9 @@ public interface PartitaRepository extends CrudRepository<Partita,Long> {
             AND p.data < :inizioGiornoSuccessivo
         ORDER BY p.data ASC
        """)
-    List<Partita> findPartiteByDataByTorneo(@Param("torneoId") Long torneoId, @Param("inizioGiorno") LocalDateTime inizioGiorno, @Param("inizioGiornoSuccessivo") LocalDateTime inizioGiornoSuccessivo);
+    List<Partita> findPartiteByGiornoAndByTorneo(@Param("torneoId") Long torneoId, @Param("inizioGiorno") LocalDateTime inizioGiorno, @Param("inizioGiornoSuccessivo") LocalDateTime inizioGiornoSuccessivo);
 
-    List<Partita> findPartitasByStatoAndTorneoId(StatoPartita stato, Long torneoId, Sort sort);
+    List<Partita> findPartitasByTorneoIdAndStatoOrderByDataDesc(Long torneoId, StatoPartita stato);
+
+    List<Partita> findPartitasByTorneoIdAndStatoOrderByDataAsc(Long torneoId, StatoPartita stato);
 }

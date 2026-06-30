@@ -62,16 +62,15 @@ INSERT INTO torneo (id, nome, anno, descrizione) VALUES (nextval('torneo_seq'), 
 
 -- =========================
 -- SQUADRE ISCRITTE
--- ATTENZIONE: nome in squadraiscritta e squadra DEVE coincidere
 -- =========================
-INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 'Lupi Roma', 0, 1, 1);
-INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 'Aquila Milano', 0, 1, 51);
-INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 'Stella Napoli', 0, 1, 101);
-INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 'Toro Torino', 0, 1, 151);
+INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 1, 1, 1);
+INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 0, 1, 51);
+INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 0, 1, 101);
+INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 0, 1, 151);
 
-INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 'Lupi Roma', 1, 51, 1);
-INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 'Aquila Milano', 2, 51, 51);
-INSERT INTO squadra_iscritta (id, nome, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 'Stella Napoli', 1, 51, 101);
+INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 0, 51, 1);
+INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 1, 51, 51);
+INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 0, 51, 101);
 
 -- =========================
 -- PARTITE (collegate a torneo, arbitro, squadra_home, squadra_away)
