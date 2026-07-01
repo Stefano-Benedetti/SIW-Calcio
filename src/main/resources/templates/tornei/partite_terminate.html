@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1 th:text="|Risultati Partite ${torneo.nome} ${torneo.anno}|">titolo</h1>
-<div th:if="${partitePlayed.isEmpty()}">Questo torneo non ha partite programmate.</div>
+<div th:if="${partitePlayed.isEmpty()}">In questo torneo non sono state ancora svolte partite.</div>
 <ul>
     <li th:each="partita : ${partitePlayed}">
         <h2>

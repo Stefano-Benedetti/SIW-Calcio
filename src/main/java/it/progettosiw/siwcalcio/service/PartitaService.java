@@ -5,6 +5,7 @@ import it.progettosiw.siwcalcio.model.StatoPartita;
 import it.progettosiw.siwcalcio.repository.PartitaRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,6 +39,11 @@ public class PartitaService {
 
     public List<Partita> getPartiteTerminatePerTorneo(Long torneoId){
         return this.partitaRepository.findPartitasByTorneoIdAndStatoOrderByDataDesc(torneoId, StatoPartita.PLAYED);
+    }
+
+    @Transactional
+    public void removePartitaDiTorneoConSquadra(Long torneoId, Long squadraId){
+        this.partitaRepository.deleteAllByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(torneoId, squadraId, torneoId, squadraId);
     }
 
 }

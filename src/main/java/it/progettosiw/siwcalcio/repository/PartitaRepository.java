@@ -27,4 +27,6 @@ public interface PartitaRepository extends CrudRepository<Partita,Long> {
     List<Partita> findPartitasByTorneoIdAndStatoOrderByDataDesc(Long torneoId, StatoPartita stato);
 
     List<Partita> findPartitasByTorneoIdAndStatoOrderByDataAsc(Long torneoId, StatoPartita stato);
+
+    void deleteAllByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(Long torneoId, Long squadraId, Long torneoId2, Long squadraId2);
 }

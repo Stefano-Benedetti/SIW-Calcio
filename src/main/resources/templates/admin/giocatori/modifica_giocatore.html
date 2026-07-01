@@ -6,7 +6,7 @@
 </head>
 <body>
   <h1>Modifica il giocatore</h1>
-  <form th:action="@{/admin/giocatori/{id}/modifica(id=${id})}" method="post" th:object="${form}">
+  <form th:action="@{/admin/giocatori/{id}/modifica(id=${id})}" method="POST" th:object="${form}">
     <p>
       <label>Nome:</label> <span><input type="text" th:field="${form.nome}"/></span>
     </p>

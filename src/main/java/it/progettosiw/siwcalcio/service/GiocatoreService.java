@@ -16,9 +16,12 @@ public class GiocatoreService {
 
     private SquadraRepository squadraRepository;
 
-    public GiocatoreService(GiocatoreRepository giocatoreRepository, SquadraRepository squadraRepository) {
+    private SquadraService squadraService;
+
+    public GiocatoreService(GiocatoreRepository giocatoreRepository, SquadraRepository squadraRepository, SquadraService squadraService) {
         this.giocatoreRepository = giocatoreRepository;
         this.squadraRepository = squadraRepository;
+        this.squadraService = squadraService;
     }
 
     public Giocatore getGiocatoreById(Long id) {
@@ -34,17 +37,10 @@ public class GiocatoreService {
     }
 
     public void modify(GiocatoreForm gf, Long giocatoreId){
-        Optional<Giocatore> optGiocatore = this.giocatoreRepository.findById(giocatoreId);
-        if(!optGiocatore.isPresent()){
-            throw new RuntimeException("giocatore per modifica non trovato");
-        }
-        Giocatore g = optGiocatore.get();
 
-        Optional<Squadra> optSquadra = this.squadraRepository.findById(gf.getSquadraId());
-        if(!optSquadra.isPresent()){
-            throw new RuntimeException("squadra non trovata");
-        }
-        Squadra s = optSquadra.get();
+        Giocatore g = getGiocatoreById(giocatoreId);
+
+        Squadra s = this.squadraService.getSquadraById((gf.getSquadraId()));
 
         g.setNome(gf.getNome());
         g.setCognome(gf.getCognome());

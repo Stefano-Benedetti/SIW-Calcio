@@ -1,14 +1,14 @@
 package it.progettosiw.siwcalcio.controller;
 
 import it.progettosiw.siwcalcio.model.SquadraIscritta;
+import it.progettosiw.siwcalcio.model.Torneo;
 import it.progettosiw.siwcalcio.service.PartitaService;
 import it.progettosiw.siwcalcio.service.SquadraIscrittaService;
 import it.progettosiw.siwcalcio.service.SquadraService;
 import it.progettosiw.siwcalcio.service.TorneoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -64,6 +64,46 @@ public class TorneoController {
         model.addAttribute("posizioni", this.squadraIscrittaService.getPosizioniClassifica(classifica));
 
         return "tornei/classifica_torneo.html";
+    }
+
+    @GetMapping("/admin/tornei/crea")
+    public String getFormCreazioneTorneo(Model model){
+        model.addAttribute("torneo", new Torneo());
+        return "admin/tornei/crea_torneo.html";
+    }
+
+    @PostMapping("/admin/tornei/crea")
+    public String makeNewTorneo(@ModelAttribute("torneo") Torneo torneo, Model model){
+        this.torneoService.save(torneo);
+        return "redirect:/tornei/"+torneo.getId();
+    }
+
+    @GetMapping("/admin/tornei/{id}/modifica")
+    public String getFormModificaTorneo(@PathVariable("id") Long id, Model model){
+        Torneo torneo = this.torneoService.getTorneoById(id);
+        model.addAttribute("torneo", torneo);
+        model.addAttribute("squadreIscritte", torneo.getIscrizioni());
+        model.addAttribute("squadreNonIscritte", this.squadraService.getSquadreNonIscritteAlTorneo(id));
+        model.addAttribute("squadraId");
+        return "admin/tornei/modifica_torneo.html";
+    }
+
+    @PostMapping("/admin/tornei/{id}/modifica")
+    public String modificaTorneo(@PathVariable("id") Long torneoId, @ModelAttribute("torneo") Torneo torneo, Model model){
+        this.torneoService.modify(torneo, torneoId);
+        return "redirect:/tornei/"+torneo.getId();
+    }
+
+    @PostMapping("/admin/tornei/{id}/iscrivi")
+    public String aggiungiIscrizioneAlTorneo(@PathVariable("id") Long torneoId, @RequestParam("nuovaSquadraId") Long squadraId, Model model){
+        this.squadraIscrittaService.addIscrizioneAlTorneo(torneoId, squadraId);
+        return "redirect:/tornei/"+torneoId;
+    }
+
+    @PostMapping("/admin/tornei/{id}/disiscrivi")
+    public String rimuoviIscrizioneDalTorneo(@PathVariable("id") Long torneoId, @ModelAttribute("squadraId") Long squadraId, Model model){
+        this.squadraIscrittaService.removeIscrizioneAlTorneo(torneoId, squadraId);
+        return "redirect:/tornei/"+torneoId;
     }
 
 }

@@ -26,6 +26,12 @@ public class SquadraIscritta {
         this.vittorie = 0;
     }
 
+    public SquadraIscritta(Torneo torneo, Squadra squadra){
+        this.vittorie = 0;
+        this.torneo = torneo;
+        this.squadra = squadra;
+    }
+
     public Long getId() {
         return id;
     }

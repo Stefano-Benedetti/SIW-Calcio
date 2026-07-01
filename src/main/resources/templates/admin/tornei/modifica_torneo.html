@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+    <h1>Modifica il torneo</h1>
+    <form th:action="@{/admin/tornei/{id}/modifica(id=${id})}" method="POST" th:object="${torneo}">
+        <p>
+            <label>Nome:</label> <span><input type="text" th:field="${torneo.nome}"/></span>
+        </p>
+        <p>
+            <label>Anno:</label> <span><input type="number" th:field="${torneo.anno}"/></span>
+        </p>
+        <p>
+            <label>Data di nascita:</label> <span><input type="text" th:field="${torneo.descrizione}"/></span>
+        </p>
+        <p>
+            <span><button type="submit">Conferma</button></span>
+        </p>
+    </form>
+    <h1>Aggiungi un'iscrizione</h1>
+    <form th:action="@{/admin/tornei/{id}/iscrivi(id=${id})}" method="POST">
+        <p>
+            <label>Squadre:</label>
+            <select name="nuovaSquadraId" size="1">
+                <option value="">Seleziona una squadra</option>
+                <option th:each="squadra : ${squadreNonIscritte}" th:value="${squadra.id}" th:text="${squadra.nome}"></option>
+            </select>
+        </p>
+        <p>
+            <span><button type="submit">Iscrivi</button></span>
+        </p>
+    </form>
+    <h1>Rimuovi un'iscrizione</h1>
+    <form th:action="@{/admin/tornei/{id}/disiscrivi(id=${id})}" method="POST">
+        <p>
+            <label>Iscrizioni:</label>
+            <select name="squadraId" size="1">
+                <option value="">Seleziona una squadra</option>
+                <option th:each="squadraIscritta : ${squadreIscritte}" th:value="${squadraIscritta.squadra.id}" th:text="${squadraIscritta.squadra.nome}"></option>
+            </select>
+        </p>
+        ATTENZIONE: se disiscrivi una squadra da un torneo, tutte le partite e i punteggi di quella squadra saranno eliminati.
+        <p>
+            <span><button type="submit">Disiscrivi</button></span>
+        </p>
+    </form>
+</body>
+</html>

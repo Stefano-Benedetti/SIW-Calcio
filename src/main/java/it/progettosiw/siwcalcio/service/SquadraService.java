@@ -4,6 +4,7 @@ import it.progettosiw.siwcalcio.model.Giocatore;
 import it.progettosiw.siwcalcio.model.Squadra;
 import it.progettosiw.siwcalcio.repository.SquadraRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,19 +35,19 @@ public class SquadraService {
     }
 
     public void modify(Squadra temp, Long id){
-        Optional<Squadra> optSquadra = this.squadraRepository.findById(id);
-        if(!optSquadra.isPresent()){
-            throw new RuntimeException("squadra non trovata");
-        }
-        Squadra squadra = optSquadra.get();
-
+        Squadra squadra = getSquadraById(id);
         squadra.setNome(temp.getNome());
         squadra.setFondazione(temp.getFondazione());
         squadra.setCitta(temp.getCitta());
         this.squadraRepository.save(squadra);
     }
 
+    @Transactional
     public void delete(Long id){
         this.squadraRepository.deleteById(id);
+    }
+
+    public List<Squadra> getSquadreNonIscritteAlTorneo(Long torneoId){
+        return this.squadraRepository.findSquadreNonIscritteAlTorneo(torneoId);
     }
 }

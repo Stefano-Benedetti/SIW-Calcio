@@ -1,5 +1,6 @@
 package it.progettosiw.siwcalcio.service;
 
+import it.progettosiw.siwcalcio.model.SquadraIscritta;
 import it.progettosiw.siwcalcio.model.Torneo;
 import it.progettosiw.siwcalcio.repository.TorneoRepository;
 import org.slf4j.Logger;
@@ -28,5 +29,21 @@ public class TorneoService {
             throw new RuntimeException("torneo non trovato");
         }
         return torneoOpt.get();
+    }
+
+    public void save(Torneo torneo){
+        if(this.torneoRepository.existsByNomeAndAnno(torneo.getNome(), torneo.getAnno()))
+            throw new RuntimeException("questo torneo già esiste");
+        this.torneoRepository.save(torneo);
+    }
+
+    public void modify(Torneo temp, Long torneoId){
+        Torneo torneo = getTorneoById(torneoId);
+
+        torneo.setNome(temp.getNome());
+        torneo.setAnno(temp.getAnno());
+        torneo.setDescrizione(temp.getDescrizione());
+
+        this.torneoRepository.save(torneo);
     }
 }
