@@ -3,6 +3,8 @@ package it.progettosiw.siwcalcio.service;
 import it.progettosiw.siwcalcio.dto.PartitaForm;
 import it.progettosiw.siwcalcio.model.*;
 import it.progettosiw.siwcalcio.repository.PartitaRepository;
+import it.progettosiw.siwcalcio.repository.SquadraIscrittaRepository;
+import it.progettosiw.siwcalcio.repository.SquadraRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,21 +19,21 @@ public class PartitaService {
 
     private PartitaRepository partitaRepository;
 
-    private SquadraService squadraService;
+    private SquadraRepository squadraRepository;
 
     private TorneoService torneoService;
 
     private ArbitroService arbitroService;
 
-    private SquadraIscrittaService squadraIscrittaService;
+    private SquadraIscrittaRepository squadraIscrittaRepository;
 
-    public PartitaService(PartitaRepository partitaRepository, SquadraService squadraService,
-                          TorneoService torneoService, ArbitroService arbitroService, SquadraIscrittaService squadraIscrittaService){
+    public PartitaService(PartitaRepository partitaRepository, SquadraRepository squadraRepository,
+                          TorneoService torneoService, ArbitroService arbitroService, SquadraIscrittaRepository squadraIscrittaRepository){
         this.partitaRepository = partitaRepository;
-        this.squadraService = squadraService;
+        this.squadraRepository = squadraRepository;
         this.torneoService = torneoService;
         this.arbitroService = arbitroService;
-        this.squadraIscrittaService = squadraIscrittaService;
+        this.squadraIscrittaRepository = squadraIscrittaRepository;
     }
 
     public List<Partita> getPartiteDiOggiPerTorneo(Long torneoId){
@@ -65,13 +67,21 @@ public class PartitaService {
             throw new RuntimeException("questa partita con queste squadre e in questa data già esiste");
 
         Arbitro arbitro = this.arbitroService.getArbitroById(pf.getArbitroId());
-        Squadra squadraHome = this.squadraService.getSquadraById(pf.getSquadraHomeId());
-        Squadra squadraAway = this.squadraService.getSquadraById(pf.getSquadraAwayId());
+        Squadra squadraHome = this.getSquadraById(pf.getSquadraHomeId());
+        Squadra squadraAway = this.getSquadraById(pf.getSquadraAwayId());
         Torneo torneo = this.torneoService.getTorneoById(torneoId);
 
         Partita partita = new Partita(pf, arbitro, squadraHome, squadraAway, torneo);
 
         this.partitaRepository.save(partita);
+    }
+
+    private Squadra getSquadraById(Long id){
+        Optional<Squadra> squadraOpt = this.squadraRepository.findById(id);
+        if(squadraOpt.isEmpty()){
+            throw new RuntimeException("squadra non trovata");
+        }
+        return squadraOpt.get();
     }
 
     public void inserisciRisultato(int goalsHome, int goalsAway, Long partitaId){
@@ -87,7 +97,7 @@ public class PartitaService {
         else
             squadraId = partita.getSquadraAway().getId();
 
-        this.squadraIscrittaService.addVittoriaAllaSquadraIscrittaAlTorneo(squadraId, torneoId);
+        this.addVittoriaAllaSquadraIscrittaAlTorneo(squadraId, torneoId);
 
         this.partitaRepository.save(partita);
     }
@@ -104,10 +114,41 @@ public class PartitaService {
             else
                 squadraId = partita.getSquadraAway().getId();
 
-            this.squadraIscrittaService.removeVittoriaDallaSquadraIscrittaAlTorneo(squadraId, torneoId);
+            this.removeVittoriaDallaSquadraIscrittaAlTorneo(squadraId, torneoId);
         }
 
         this.partitaRepository.deleteById(partitaId);
+    }
+
+    public void rimuoviPartiteDiUnaSquadraETogliPunteggi(Long torneoId, Long squadraId){
+        List<Partita> partiteDaEliminare =
+                this.partitaRepository.findPartitasByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(torneoId, squadraId, torneoId, squadraId);
+
+        for(Partita p : partiteDaEliminare){
+            if(p.getStato().equals(StatoPartita.PLAYED)) {
+                Long squadraVincitriceId;
+                if (p.getGoalsHome() > p.getGoalsAway())
+                    squadraVincitriceId = p.getSquadraHome().getId();
+                else
+                    squadraVincitriceId = p.getSquadraAway().getId();
+                this.removeVittoriaDallaSquadraIscrittaAlTorneo(squadraVincitriceId, torneoId);
+            }
+            this.partitaRepository.delete(p);
+        }
+    }
+
+    public void addVittoriaAllaSquadraIscrittaAlTorneo(Long squadraId, Long torneoId){
+        SquadraIscritta si;
+        si = this.squadraIscrittaRepository.findSquadraIscrittaBySquadraIdAndTorneoId(squadraId, torneoId);
+        si.addVittoria();
+        this.squadraIscrittaRepository.save(si);
+    }
+
+    public void removeVittoriaDallaSquadraIscrittaAlTorneo(Long squadraId, Long torneoId){
+        SquadraIscritta si;
+        si = this.squadraIscrittaRepository.findSquadraIscrittaBySquadraIdAndTorneoId(squadraId, torneoId);
+        si.removeVittoria();
+        this.squadraIscrittaRepository.save(si);
     }
 
 }

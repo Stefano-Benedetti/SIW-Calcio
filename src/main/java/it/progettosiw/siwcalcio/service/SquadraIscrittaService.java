@@ -3,12 +3,14 @@ package it.progettosiw.siwcalcio.service;
 import it.progettosiw.siwcalcio.model.*;
 import it.progettosiw.siwcalcio.repository.PartitaRepository;
 import it.progettosiw.siwcalcio.repository.SquadraIscrittaRepository;
+import it.progettosiw.siwcalcio.repository.SquadraRepository;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SquadraIscrittaService {
@@ -17,16 +19,16 @@ public class SquadraIscrittaService {
 
     private TorneoService torneoService;
 
-    private SquadraService squadraService;
+    private SquadraRepository squadraRepository;
 
-    private PartitaRepository partitaRepository;
+    private PartitaService partitaService;
 
     public SquadraIscrittaService(SquadraIscrittaRepository squadraIscrittaRepository, TorneoService torneoService,
-                                  SquadraService squadraService, PartitaRepository partitaRepository) {
+                                  SquadraRepository squadraRepository, PartitaService partitaService) {
         this.squadraIscrittaRepository = squadraIscrittaRepository;
         this.torneoService = torneoService;
-        this.squadraService = squadraService;
-        this.partitaRepository = partitaRepository;
+        this.squadraRepository = squadraRepository;
+        this.partitaService = partitaService;
     }
 
     public List<SquadraIscritta> getClassificaPerTorneo(Long id){
@@ -59,46 +61,22 @@ public class SquadraIscrittaService {
 
     public void addIscrizioneAlTorneo(Long torneoId, Long squadraId){
         Torneo torneo = this.torneoService.getTorneoById(torneoId);
-        Squadra squadra = this.squadraService.getSquadraById(squadraId);
+        Squadra squadra = this.getSquadraById(squadraId);
         SquadraIscritta squadraIscritta = new SquadraIscritta(torneo, squadra);
         this.squadraIscrittaRepository.save(squadraIscritta);
     }
 
+    private Squadra getSquadraById(Long id){
+        Optional<Squadra> squadraOpt = this.squadraRepository.findById(id);
+        if(squadraOpt.isEmpty()){
+            throw new RuntimeException("squadra non trovata");
+        }
+        return squadraOpt.get();
+    }
+
     @Transactional
     public void removeIscrizioneAlTorneo(Long torneoId, Long squadraId){
-        this.rimuoviPartiteDiUnaSquadraETogliPunteggi(torneoId,squadraId);
+        this.partitaService.rimuoviPartiteDiUnaSquadraETogliPunteggi(torneoId,squadraId);
         this.squadraIscrittaRepository.deleteByTorneoIdAndSquadraId(torneoId,squadraId);
-    }
-
-    private void rimuoviPartiteDiUnaSquadraETogliPunteggi(Long torneoId, Long squadraId){
-        List<Partita> partiteDaEliminare =
-                this.partitaRepository.findPartitasByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(torneoId, squadraId, torneoId, squadraId);
-
-        for(Partita p : partiteDaEliminare){
-            if(p.getStato().equals(StatoPartita.PLAYED)) {
-                Long squadraVincitriceId;
-                if (p.getGoalsHome() > p.getGoalsAway())
-                    squadraVincitriceId = p.getSquadraHome().getId();
-                else
-                    squadraVincitriceId = p.getSquadraAway().getId();
-                if(squadraVincitriceId.equals(squadraId))
-                    this.removeVittoriaDallaSquadraIscrittaAlTorneo(squadraId, torneoId);
-            }
-        }
-        this.partitaRepository.deleteAllByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(torneoId, squadraId, torneoId, squadraId);
-    }
-
-    public void addVittoriaAllaSquadraIscrittaAlTorneo(Long squadraId, Long torneoId){
-        SquadraIscritta si;
-        si = this.squadraIscrittaRepository.findSquadraIscrittaBySquadraIdAndTorneoId(squadraId, torneoId);
-        si.addVittoria();
-        this.squadraIscrittaRepository.save(si);
-    }
-
-    public void removeVittoriaDallaSquadraIscrittaAlTorneo(Long squadraId, Long torneoId){
-        SquadraIscritta si;
-        si = this.squadraIscrittaRepository.findSquadraIscrittaBySquadraIdAndTorneoId(squadraId, torneoId);
-        si.removeVittoria();
-        this.squadraIscrittaRepository.save(si);
     }
 }
