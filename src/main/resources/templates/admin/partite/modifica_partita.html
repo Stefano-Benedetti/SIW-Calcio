@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+    <h1>Inserisci il risultato della partita</h1>
+    <h2>
+        <span th:href="|/squadre/${partita.squadraHome.id}|"
+           th:text="${partita.squadraHome.nome}">SquadraHome</span>
+        -
+        <span th:href="|/squadre/${partita.squadraAway.id}|"
+           th:text="${partita.squadraAway.nome}">SquadraAway</span>
+    </h2>
+    <form th:action="@{/admin/partite/{id}/inserisci-risultato(id=${id})}" method="POST">
+        <p>
+            <label>Goals prima squadra:</label> <span><input type="number" min="0" th:field="${partita.goalsHome}"/></span>
+        </p>
+        <p>
+            <label>Goals seconda squadra:</label> <span><input type="number" min="0" th:field="${partita.goalsAway}"/></span>
+        </p>
+        <p>
+            <span><button type="submit">Conferma</button></span>
+        </p>
+    </form>
+    <p>ATTENZIONE: se elimini una partita già giocata, verranno eliminati anche i punteggi associati.
+        <form th:action="@{/admin/partita/{id}/elimina(id=${id})}" method="POST">
+            <button type="submit">Elimina</button>
+        </form>
+    </p>
+</body>
+</html>

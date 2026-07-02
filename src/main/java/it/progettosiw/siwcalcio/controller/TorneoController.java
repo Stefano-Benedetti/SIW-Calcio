@@ -84,7 +84,6 @@ public class TorneoController {
         model.addAttribute("torneo", torneo);
         model.addAttribute("squadreIscritte", torneo.getIscrizioni());
         model.addAttribute("squadreNonIscritte", this.squadraService.getSquadreNonIscritteAlTorneo(id));
-        model.addAttribute("squadraId");
         return "admin/tornei/modifica_torneo.html";
     }
 
@@ -101,7 +100,7 @@ public class TorneoController {
     }
 
     @PostMapping("/admin/tornei/{id}/disiscrivi")
-    public String rimuoviIscrizioneDalTorneo(@PathVariable("id") Long torneoId, @ModelAttribute("squadraId") Long squadraId, Model model){
+    public String rimuoviIscrizioneDalTorneo(@PathVariable("id") Long torneoId, @RequestParam("squadraId") Long squadraId, Model model){
         this.squadraIscrittaService.removeIscrizioneAlTorneo(torneoId, squadraId);
         return "redirect:/tornei/"+torneoId;
     }

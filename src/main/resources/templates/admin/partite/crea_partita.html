@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+    <h1>Crea una partita</h1>
+    <form th:action="@{/admin/tornei/{id}/crea-partita(id=${id})}" method="POST">
+        <p>
+            <label>Squadra in casa:</label>
+            <select th:field="${form.squadraHomeId}" size="1">
+                <option value="">Seleziona la squadra in casa</option>
+                <option th:each="squadraIscritta : ${squadreIscritte}" th:value="${squadraIscritta.squadra.id}" th:text="${squadraIscritta.squadra.nome}"></option>
+            </select>
+        </p>
+        <p>
+            <label>Squadra ospite:</label>
+            <select th:field="${form.squadraAwayId}" size="1">
+                <option value="">Seleziona la squadra ospite</option>
+                <option th:each="squadraIscritta : ${squadreIscritte}" th:value="${squadraIscritta.squadra.id}" th:text="${squadraIscritta.squadra.nome}"></option>
+            </select>
+        </p>
+        <p>
+            <label>Data e ora:</label> <span><input type="datetime-local" th:field="${form.data}"/></span>
+        </p>
+        <p>
+            <label>Luogo:</label> <span><input type="text" th:field="${form.luogo}"/></span>
+        </p>
+        <p>
+            <label>Arbitro</label>
+            <select th:field="${form.arbitroId}" size="1">
+                <option value="">Selezionare un arbitro</option>
+                <option th:each="arbitro : ${arbitri}" th:value="${arbitro.id}" th:text="|${arbitro.nome} ${arbitro.cognome}|"></option>
+            </select>
+        </p>
+        <p>
+            <span><button type="submit">Conferma</button></span>
+        </p>
+    </form>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package it.progettosiw.siwcalcio.model;
 
+import it.progettosiw.siwcalcio.dto.PartitaForm;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -44,6 +45,18 @@ public class Partita {
     private Torneo torneo;
 
     public Partita(){}
+
+    public Partita(PartitaForm pf, Arbitro arbitro, Squadra squadraHome, Squadra squadraAway, Torneo torneo){
+        this.stato = StatoPartita.SCHEDULED;
+        this.goalsAway = 0;
+        this.goalsHome = 0;
+        this.data = pf.getData();
+        this.luogo = pf.getLuogo();
+        this.arbitro = arbitro;
+        this.squadraHome = squadraHome;
+        this.squadraAway = squadraAway;
+        this.torneo = torneo;
+    }
 
     public Long getId() {
         return id;

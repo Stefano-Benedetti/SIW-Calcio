@@ -26,7 +26,7 @@ public class GiocatoreService {
 
     public Giocatore getGiocatoreById(Long id) {
         Optional<Giocatore> giocatoreOpt = this.giocatoreRepository.findById(id);
-        if (!giocatoreOpt.isPresent()) {
+        if (giocatoreOpt.isEmpty()) {
             throw new RuntimeException("giocatore non trovato");
         }
         return giocatoreOpt.get();

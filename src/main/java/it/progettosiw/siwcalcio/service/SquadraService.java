@@ -20,7 +20,7 @@ public class SquadraService {
 
     public Squadra getSquadraById(Long id){
         Optional<Squadra> squadraOpt = this.squadraRepository.findById(id);
-        if(!squadraOpt.isPresent()){
+        if(squadraOpt.isEmpty()){
             throw new RuntimeException("squadra non trovata");
         }
         return squadraOpt.get();

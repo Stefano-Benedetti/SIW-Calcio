@@ -75,4 +75,12 @@ public class SquadraIscritta {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+    public void addVittoria(){
+        this.vittorie += 1;
+    }
+
+    public void removeVittoria() {
+        this.vittorie -= 1;
+    }
 }

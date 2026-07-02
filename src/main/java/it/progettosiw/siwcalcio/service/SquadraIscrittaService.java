@@ -1,8 +1,7 @@
 package it.progettosiw.siwcalcio.service;
 
-import it.progettosiw.siwcalcio.model.Squadra;
-import it.progettosiw.siwcalcio.model.SquadraIscritta;
-import it.progettosiw.siwcalcio.model.Torneo;
+import it.progettosiw.siwcalcio.model.*;
+import it.progettosiw.siwcalcio.repository.PartitaRepository;
 import it.progettosiw.siwcalcio.repository.SquadraIscrittaRepository;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
@@ -20,13 +19,14 @@ public class SquadraIscrittaService {
 
     private SquadraService squadraService;
 
-    private PartitaService partitaService;
+    private PartitaRepository partitaRepository;
 
-    public SquadraIscrittaService(SquadraIscrittaRepository squadraIscrittaRepository, TorneoService torneoService, SquadraService squadraService, PartitaService partitaService) {
+    public SquadraIscrittaService(SquadraIscrittaRepository squadraIscrittaRepository, TorneoService torneoService,
+                                  SquadraService squadraService, PartitaRepository partitaRepository) {
         this.squadraIscrittaRepository = squadraIscrittaRepository;
         this.torneoService = torneoService;
         this.squadraService = squadraService;
-        this.partitaService = partitaService;
+        this.partitaRepository = partitaRepository;
     }
 
     public List<SquadraIscritta> getClassificaPerTorneo(Long id){
@@ -66,7 +66,39 @@ public class SquadraIscrittaService {
 
     @Transactional
     public void removeIscrizioneAlTorneo(Long torneoId, Long squadraId){
-        this.partitaService.removePartitaDiTorneoConSquadra(torneoId,squadraId);
+        this.rimuoviPartiteDiUnaSquadraETogliPunteggi(torneoId,squadraId);
         this.squadraIscrittaRepository.deleteByTorneoIdAndSquadraId(torneoId,squadraId);
+    }
+
+    private void rimuoviPartiteDiUnaSquadraETogliPunteggi(Long torneoId, Long squadraId){
+        List<Partita> partiteDaEliminare =
+                this.partitaRepository.findPartitasByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(torneoId, squadraId, torneoId, squadraId);
+
+        for(Partita p : partiteDaEliminare){
+            if(p.getStato().equals(StatoPartita.PLAYED)) {
+                Long squadraVincitriceId;
+                if (p.getGoalsHome() > p.getGoalsAway())
+                    squadraVincitriceId = p.getSquadraHome().getId();
+                else
+                    squadraVincitriceId = p.getSquadraAway().getId();
+                if(squadraVincitriceId.equals(squadraId))
+                    this.removeVittoriaDallaSquadraIscrittaAlTorneo(squadraId, torneoId);
+            }
+        }
+        this.partitaRepository.deleteAllByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(torneoId, squadraId, torneoId, squadraId);
+    }
+
+    public void addVittoriaAllaSquadraIscrittaAlTorneo(Long squadraId, Long torneoId){
+        SquadraIscritta si;
+        si = this.squadraIscrittaRepository.findSquadraIscrittaBySquadraIdAndTorneoId(squadraId, torneoId);
+        si.addVittoria();
+        this.squadraIscrittaRepository.save(si);
+    }
+
+    public void removeVittoriaDallaSquadraIscrittaAlTorneo(Long squadraId, Long torneoId){
+        SquadraIscritta si;
+        si = this.squadraIscrittaRepository.findSquadraIscrittaBySquadraIdAndTorneoId(squadraId, torneoId);
+        si.removeVittoria();
+        this.squadraIscrittaRepository.save(si);
     }
 }

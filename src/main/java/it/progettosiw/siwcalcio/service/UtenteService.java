@@ -47,7 +47,7 @@ public class UtenteService {
         UserDetails userDetails = getCurrentUserDetails();
 
         Optional<Utente> optUser = utenteRepository.findByUsername(userDetails.getUsername());
-        if(!optUser.isPresent()){
+        if(optUser.isEmpty()){
             throw new RuntimeException("utente corrente non trovato");
         }
         return optUser.get();

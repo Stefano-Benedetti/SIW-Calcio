@@ -11,4 +11,6 @@ public interface SquadraIscrittaRepository extends CrudRepository<SquadraIscritt
     List<SquadraIscritta> findSquadraIscrittasByTorneoIdOrderByVittorieDesc(Long torneoId);
 
     void deleteByTorneoIdAndSquadraId(Long torneoId, Long squadraId);
+
+    SquadraIscritta findSquadraIscrittaBySquadraIdAndTorneoId(Long squadraId, Long torneoId);
 }

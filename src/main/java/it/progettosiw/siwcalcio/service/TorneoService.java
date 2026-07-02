@@ -25,7 +25,7 @@ public class TorneoService {
 
     public Torneo getTorneoById(Long id){
         Optional<Torneo> torneoOpt = this.torneoRepository.findById(id);
-        if(!torneoOpt.isPresent()){
+        if(torneoOpt.isEmpty()){
             throw new RuntimeException("torneo non trovato");
         }
         return torneoOpt.get();
