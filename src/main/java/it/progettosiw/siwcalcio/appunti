@@ -1,3 +1,4 @@
+testare se quando elimino una partita ne elimina anche i punteggi
 aggiungere possibilità di postare e modificare commenti (aggiungere ai permessi di POST)
 vedere come fare per gli EntityGraph nei repository
 aggiungere i link accessibili e visibili solo all'admin nelle pagine
