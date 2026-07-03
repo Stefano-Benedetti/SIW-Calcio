@@ -33,6 +33,6 @@ public interface PartitaRepository extends CrudRepository<Partita,Long> {
 
     boolean existsBySquadraAwayIdAndSquadraHomeIdAndData(Long squadraAwayId, Long squadraHomeId, LocalDateTime data);
 
-    @Query("SELECT p FROM Partita p JOIN FETCH p.commenti WHERE p.id = :id")
-    Optional<Partita> findByIdWithCommenti(Long id);
+    @EntityGraph(attributePaths = "commenti")
+    Optional<Partita> findWithCommentiById(Long id);
 }

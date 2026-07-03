@@ -33,7 +33,7 @@ public class PartitaController {
 
     @GetMapping("/partite/{id}")
     public String show(@PathVariable("id") Long id, Model model){
-        model.addAttribute("partita", this.partitaService.getPartitaByIdWithCommenti(id));
+        model.addAttribute("partita", this.partitaService.getPartitaById(id));
         UserDetails userDetails = utenteService.getCurrentUserDetails();
         if (userDetails!=null)
             model.addAttribute("username", userDetails.getUsername());

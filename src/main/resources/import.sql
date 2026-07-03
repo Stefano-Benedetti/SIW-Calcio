@@ -97,4 +97,4 @@ INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id,
 INSERT INTO commento (id, testo, utente_id, partita_id) VALUES (nextval('commento_seq'), 'Partita bellissima, ritmo altissimo!', 1, 1);
 INSERT INTO commento (id, testo, utente_id, partita_id) VALUES (nextval('commento_seq'), 'Arbitraggio molto preciso.', 51, 1);
 INSERT INTO commento (id, testo, utente_id, partita_id) VALUES (nextval('commento_seq'), 'Ci aspettiamo tanti gol stasera.', 101, 51);
-INSERT INTO commento (id, testo, utente_id, partita_id) VALUES (nextval('commento_seq'), 'ahahah che polli', 101, 351);
+INSERT INTO commento (id, testo, utente_id, partita_id) VALUES (nextval('commento_seq'), 'ahahah che polli', 101, 51);

@@ -50,7 +50,7 @@ public class PartitaService {
     }
 
     public Partita getPartitaByIdWithCommenti(Long id){
-        Optional<Partita> partitaOpt = this.partitaRepository.findByIdWithCommenti(id);
+        Optional<Partita> partitaOpt = this.partitaRepository.findWithCommentiById(id);
         if(partitaOpt.isEmpty()){
             throw new RuntimeException("partita non trovata");
         }
