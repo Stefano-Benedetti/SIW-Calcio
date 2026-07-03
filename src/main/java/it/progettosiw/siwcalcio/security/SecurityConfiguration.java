@@ -47,6 +47,9 @@ public class SecurityConfiguration {
             authorize.requestMatchers(HttpMethod.POST, "/register", "/login").permitAll();
             authorize.requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(RuoloAutorizzazione.ADMIN.name());
             authorize.requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(RuoloAutorizzazione.ADMIN.name());
+            authorize.requestMatchers(HttpMethod.POST, "/partite/*/commenti/nuovo",
+                    "/partite/*/commenti/*/modifica")
+                    .hasAnyAuthority(RuoloAutorizzazione.USER.name(), RuoloAutorizzazione.ADMIN.name());
             authorize.anyRequest().authenticated();
         });
 

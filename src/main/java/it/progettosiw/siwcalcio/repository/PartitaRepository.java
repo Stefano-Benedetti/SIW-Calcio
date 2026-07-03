@@ -2,8 +2,7 @@ package it.progettosiw.siwcalcio.repository;
 
 import it.progettosiw.siwcalcio.model.Partita;
 import it.progettosiw.siwcalcio.model.StatoPartita;
-import it.progettosiw.siwcalcio.model.Torneo;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -33,4 +32,7 @@ public interface PartitaRepository extends CrudRepository<Partita,Long> {
     void deleteAllByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(Long torneoId, Long squadraId, Long torneoId2, Long squadraId2);
 
     boolean existsBySquadraAwayIdAndSquadraHomeIdAndData(Long squadraAwayId, Long squadraHomeId, LocalDateTime data);
+
+    @Query("SELECT p FROM Partita p JOIN FETCH p.commenti WHERE p.id = :id")
+    Optional<Partita> findByIdWithCommenti(Long id);
 }

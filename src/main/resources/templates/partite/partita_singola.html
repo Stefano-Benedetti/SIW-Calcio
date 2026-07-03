@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>SIW Calcio</title>
+    <style>
+        html, body {
+            height: auto;
+            min-height: 100%;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body>
     <p>
@@ -48,18 +55,52 @@
             </p>
         </div>
     </div>
-    <h2>Commenti</h2>
-    <div th:if="${partita.commenti.isEmpty()}">Ancora nessun commento.</div>
-    <ul>
-        <li th:each="commento : ${partita.commenti}">
-            <p>
-                <span th:text="|${commento.utente.username}|">utente</span>
-            </p>
-            <p>
-                <span th:text="|${commento.testo}|">commento</span>
-            </p>
-        </li>
-    </ul>
 
+    <h2>Commenti</h2>
+
+    <div th:if="${partita.commenti.isEmpty()}">
+        Ancora nessun commento.
+    </div>
+
+    <div th:if="${!partita.commenti.isEmpty()}">
+
+        <!-- commenti utente (solo se è loggato) -->
+        <div th:if="${username != null}">
+            <ul>
+                <li th:each="commento : ${partita.commenti}"
+                    th:if="${commento.utente.username == username}">
+                    <p><span th:text="${commento.utente.username}">utente</span></p>
+                    <p><span th:text="${commento.testo}">commento</span></p>
+
+                    <!-- modifica commento -->
+                    <form th:action="@{/partite/{partitaId}/commenti/{commentoId}/modifica(partitaId=${partita.id}, commentoId=${commento.id})}"
+                          method="post">
+                        <textarea name="testo" rows="3" cols="50" th:text="${commento.testo}" required></textarea>
+                        <br/>
+                        <button type="submit">Modifica</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+
+        <!-- altri commenti -->
+        <ul>
+            <li th:each="commento : ${partita.commenti}"
+                th:if="${username == null or commento.utente.username != username}">
+                <p><span th:text="${commento.utente.username}">utente</span></p>
+                <p><span th:text="${commento.testo}">commento</span></p>
+            </li>
+        </ul>
+    </div>
+
+    <!-- nuovo commento -->
+    <div th:if="${username != null}">
+        <h3>Lascia un commento</h3>
+        <form th:action="@{/partite/{partitaId}/commenti/nuovo(partitaId=${partita.id})}" method="post">
+            <textarea name="testo" rows="4" cols="60" placeholder="Scrivi qui..." required></textarea>
+            <br/>
+            <button type="submit">Pubblica</button>
+        </form>
+    </div>
 </body>
 </html>

@@ -3,9 +3,8 @@ package it.progettosiw.siwcalcio.controller;
 import it.progettosiw.siwcalcio.dto.PartitaForm;
 import it.progettosiw.siwcalcio.model.Partita;
 import it.progettosiw.siwcalcio.model.Torneo;
-import it.progettosiw.siwcalcio.service.ArbitroService;
-import it.progettosiw.siwcalcio.service.PartitaService;
-import it.progettosiw.siwcalcio.service.TorneoService;
+import it.progettosiw.siwcalcio.service.*;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,15 +21,22 @@ public class PartitaController {
 
     private ArbitroService arbitroService;
 
-    public PartitaController(PartitaService partitaService, TorneoService torneoService, ArbitroService arbitroService) {
+    private UtenteService utenteService;
+
+    public PartitaController(PartitaService partitaService, TorneoService torneoService,
+                             ArbitroService arbitroService, UtenteService utenteService) {
         this.partitaService = partitaService;
         this.torneoService = torneoService;
         this.arbitroService = arbitroService;
+        this.utenteService = utenteService;
     }
 
     @GetMapping("/partite/{id}")
     public String show(@PathVariable("id") Long id, Model model){
-        model.addAttribute("partita", this.partitaService.getPartitaById(id));
+        model.addAttribute("partita", this.partitaService.getPartitaByIdWithCommenti(id));
+        UserDetails userDetails = utenteService.getCurrentUserDetails();
+        if (userDetails!=null)
+            model.addAttribute("username", userDetails.getUsername());
         return "partite/partita_singola.html";
     }
 
@@ -64,7 +70,7 @@ public class PartitaController {
     @PostMapping("/admin/partite/{id}/elimina")
     public String deletePartita(@ModelAttribute Partita partita, @PathVariable("id") Long partitaId, Model model){
         this.partitaService.delete(partitaId);
-        return "redirect:/tornei/"+partita.getTorneo().getId();
+        return "redirect:/";
     }
 
 }

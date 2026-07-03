@@ -1,7 +1,6 @@
 package it.progettosiw.siwcalcio.service;
 
 import it.progettosiw.siwcalcio.model.Arbitro;
-import it.progettosiw.siwcalcio.model.Giocatore;
 import it.progettosiw.siwcalcio.repository.ArbitroRepository;
 import org.springframework.stereotype.Service;
 

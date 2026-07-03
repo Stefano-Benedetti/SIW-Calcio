@@ -25,7 +25,7 @@
         </p>
     </form>
     <p>ATTENZIONE: se elimini una partita già giocata, verranno eliminati anche i punteggi associati.
-        <form th:action="@{/admin/partita/{id}/elimina(id=${id})}" method="POST">
+        <form th:action="@{/admin/partite/{id}/elimina(id=${id})}" method="POST">
             <button type="submit">Elimina</button>
         </form>
     </p>

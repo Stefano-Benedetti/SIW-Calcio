@@ -49,6 +49,14 @@ public class PartitaService {
         return partitaOpt.get();
     }
 
+    public Partita getPartitaByIdWithCommenti(Long id){
+        Optional<Partita> partitaOpt = this.partitaRepository.findByIdWithCommenti(id);
+        if(partitaOpt.isEmpty()){
+            throw new RuntimeException("partita non trovata");
+        }
+        return partitaOpt.get();
+    }
+
     public List<Partita> getCalendarioPerTorneo(Long torneoId){
         return this.partitaRepository.findPartitasByTorneoIdAndStatoOrderByDataAsc(torneoId, StatoPartita.SCHEDULED);
     }
