@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -84,22 +85,37 @@ public class PartitaService {
         return squadraOpt.get();
     }
 
-    public void inserisciRisultato(int goalsHome, int goalsAway, Long partitaId){
+    public void inserisciRisultato(int goalsHome, int goalsAway, Long partitaId) {
         Partita partita = this.getPartitaById(partitaId);
+        Long torneoId = partita.getTorneo().getId();
+
+        Long oldWinnerId = null;
+        if (StatoPartita.PLAYED.equals(partita.getStato())) {
+            oldWinnerId = getWinnerId(partita.getGoalsHome(), partita.getGoalsAway(), partita);
+        }
+
+        Long newWinnerId = getWinnerId(goalsHome, goalsAway, partita);
+
+        if (!Objects.equals(oldWinnerId, newWinnerId)) {
+            if (oldWinnerId != null) {
+                this.removeVittoriaDallaSquadraIscrittaAlTorneo(oldWinnerId, torneoId);
+            }
+            if (newWinnerId != null) {
+                this.addVittoriaAllaSquadraIscrittaAlTorneo(newWinnerId, torneoId);
+            }
+        }
+
         partita.setGoalsHome(goalsHome);
         partita.setGoalsAway(goalsAway);
         partita.setStato(StatoPartita.PLAYED);
 
-        Long squadraId;
-        Long torneoId = partita.getTorneo().getId();
-        if(goalsHome > goalsAway)
-            squadraId = partita.getSquadraHome().getId();
-        else
-            squadraId = partita.getSquadraAway().getId();
-
-        this.addVittoriaAllaSquadraIscrittaAlTorneo(squadraId, torneoId);
-
         this.partitaRepository.save(partita);
+    }
+
+    private Long getWinnerId(int goalsHome, int goalsAway, Partita partita) {
+        if (goalsHome > goalsAway) return partita.getSquadraHome().getId();
+        if (goalsAway > goalsHome) return partita.getSquadraAway().getId();
+        return null;
     }
 
     @Transactional
