@@ -37,10 +37,12 @@ public class PartitaService {
         this.squadraIscrittaRepository = squadraIscrittaRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<Partita> getPartiteDiOggiPerTorneo(Long torneoId){
         return this.partitaRepository.findPartiteByGiornoAndByTorneo(torneoId, LocalDateTime.now().toLocalDate().atStartOfDay(), LocalDate.now().plusDays(1).atStartOfDay());
     }
 
+    @Transactional(readOnly = true)
     public Partita getPartitaById(Long id){
         Optional<Partita> partitaOpt = this.partitaRepository.findById(id);
         if(partitaOpt.isEmpty()){
@@ -49,6 +51,7 @@ public class PartitaService {
         return partitaOpt.get();
     }
 
+    @Transactional(readOnly = true)
     public Partita getPartitaByIdWithCommenti(Long id){
         Optional<Partita> partitaOpt = this.partitaRepository.findWithCommentiById(id);
         if(partitaOpt.isEmpty()){
@@ -57,19 +60,17 @@ public class PartitaService {
         return partitaOpt.get();
     }
 
+    @Transactional(readOnly = true)
     public List<Partita> getCalendarioPerTorneo(Long torneoId){
         return this.partitaRepository.findPartitasByTorneoIdAndStatoOrderByDataAsc(torneoId, StatoPartita.SCHEDULED);
     }
 
+    @Transactional(readOnly = true)
     public List<Partita> getPartiteTerminatePerTorneo(Long torneoId){
         return this.partitaRepository.findPartitasByTorneoIdAndStatoOrderByDataDesc(torneoId, StatoPartita.PLAYED);
     }
 
     @Transactional
-    public void removePartitaDiTorneoConSquadra(Long torneoId, Long squadraId){
-        this.partitaRepository.deleteAllByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(torneoId, squadraId, torneoId, squadraId);
-    }
-
     public void creaPartita(PartitaForm pf, Long torneoId){
         if(this.partitaRepository.existsBySquadraAwayIdAndSquadraHomeIdAndData(pf.getSquadraHomeId(), pf.getSquadraAwayId(), pf.getData())
                 || this.partitaRepository.existsBySquadraAwayIdAndSquadraHomeIdAndData(pf.getSquadraAwayId(), pf.getSquadraHomeId(), pf.getData()))
@@ -93,6 +94,7 @@ public class PartitaService {
         return squadraOpt.get();
     }
 
+    @Transactional
     public void inserisciRisultato(int goalsHome, int goalsAway, Long partitaId) {
         Partita partita = this.getPartitaById(partitaId);
         Long torneoId = partita.getTorneo().getId();
@@ -144,6 +146,7 @@ public class PartitaService {
         this.partitaRepository.deleteById(partitaId);
     }
 
+    @Transactional
     public void rimuoviPartiteDiUnaSquadraETogliPunteggi(Long torneoId, Long squadraId){
         List<Partita> partiteDaEliminare =
                 this.partitaRepository.findPartitasByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(torneoId, squadraId, torneoId, squadraId);
@@ -161,6 +164,7 @@ public class PartitaService {
         }
     }
 
+    @Transactional
     public void addVittoriaAllaSquadraIscrittaAlTorneo(Long squadraId, Long torneoId){
         SquadraIscritta si;
         si = this.squadraIscrittaRepository.findSquadraIscrittaBySquadraIdAndTorneoId(squadraId, torneoId);
@@ -168,6 +172,7 @@ public class PartitaService {
         this.squadraIscrittaRepository.save(si);
     }
 
+    @Transactional
     public void removeVittoriaDallaSquadraIscrittaAlTorneo(Long squadraId, Long torneoId){
         SquadraIscritta si;
         si = this.squadraIscrittaRepository.findSquadraIscrittaBySquadraIdAndTorneoId(squadraId, torneoId);

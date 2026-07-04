@@ -31,6 +31,7 @@ public class SquadraIscrittaService {
         this.partitaService = partitaService;
     }
 
+    @Transactional(readOnly = true)
     public List<SquadraIscritta> getClassificaPerTorneo(Long id){
         return this.squadraIscrittaRepository.findSquadraIscrittasByTorneoIdOrderByVittorieDesc(id);
     }
@@ -59,6 +60,7 @@ public class SquadraIscrittaService {
         return posizioni;
     }
 
+    @Transactional
     public void addIscrizioneAlTorneo(Long torneoId, Long squadraId){
         Torneo torneo = this.torneoService.getTorneoById(torneoId);
         Squadra squadra = this.getSquadraById(squadraId);

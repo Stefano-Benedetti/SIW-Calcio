@@ -7,6 +7,7 @@ import it.progettosiw.siwcalcio.model.Utente;
 import it.progettosiw.siwcalcio.repository.CommentoRepository;
 import it.progettosiw.siwcalcio.repository.PartitaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ public class CommentoService {
         this.utenteService = utenteService;
     }
 
+    @Transactional
     public void aggiungiCommentoAPartita(String testo, Long partitaId){
         Partita p = this.partitaService.getPartitaById(partitaId);
         Utente u = this.utenteService.getCurrentUser();
@@ -35,6 +37,7 @@ public class CommentoService {
         this.commentoRepository.save(c);
     }
 
+    @Transactional
     public void modificaCommento(String testo, Long commentoId){
         Commento c = this.getCommentoById(commentoId);
         String username = this.utenteService.getCurrentUserDetails().getUsername();

@@ -3,6 +3,7 @@ package it.progettosiw.siwcalcio.service;
 import it.progettosiw.siwcalcio.model.Arbitro;
 import it.progettosiw.siwcalcio.repository.ArbitroRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ public class ArbitroService {
         this.arbitroRepository = arbitroRepository;
     }
 
+    @Transactional(readOnly = true)
     public Arbitro getArbitroById(Long id){
         Optional<Arbitro> arbitroOpt = this.arbitroRepository.findById(id);
         if (arbitroOpt.isEmpty()) {
@@ -24,6 +26,7 @@ public class ArbitroService {
         return arbitroOpt.get();
     }
 
+    @Transactional(readOnly = true)
     public List<Arbitro> getAllArbitri(){
         return (List<Arbitro>) this.arbitroRepository.findAll();
     }

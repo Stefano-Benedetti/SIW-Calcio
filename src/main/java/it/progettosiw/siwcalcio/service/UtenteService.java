@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ public class UtenteService {
     }
 
 
+    @Transactional
     public void register(RegistrationForm form){
         if (utenteRepository.existsByUsername(form.getUsername()))
             throw new RuntimeException("questo nome utente è già in uso");
@@ -42,6 +44,7 @@ public class UtenteService {
         credenzialiRepository.save(credenziali);
     }
 
+    @Transactional(readOnly = true)
     public Utente getCurrentUser(){
         UserDetails userDetails = getCurrentUserDetails();
 

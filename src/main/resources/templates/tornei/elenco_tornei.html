@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>SIW Calcio</title>
@@ -16,5 +16,6 @@
            th:text="|${torneo.nome} ${torneo.anno}|">nome</a>
     </li>
 </ul>
+<p sec:authorize="hasAuthority('ADMIN')"><a href="/admin/tornei/crea">Crea torneo</a></p>
 </body>
 </html>

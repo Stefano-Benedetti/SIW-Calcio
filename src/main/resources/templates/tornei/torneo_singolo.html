@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>SIW Calcio</title>
 </head>
 <body>
     <a href="/tornei">Torna all'elenco dei tornei</a>
+    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/tornei/${torneo.id}/modifica|">Modifica</a></p>
+    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/tornei/${torneo.id}/crea-partita|">Aggiungi partita</a></p>
+
     <h1 th:text="|${torneo.nome} ${torneo.anno}|">Torneo 0000</h1>
     <h2 th:text="${torneo.descrizione}">Descrizione</h2>
     <p>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>SIW Calcio</title>
@@ -15,6 +15,7 @@
     <p>
         <a th:href="|/tornei/${partita.torneo.id}|">Vai al torneo</a>
     </p>
+    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/partite/${partita.id}/modifica|">Modifica</a></p>
     <h1>
         <a th:href="|/squadre/${partita.squadraHome.id}|"
            th:text="${partita.squadraHome.nome}">SquadraHome</a>

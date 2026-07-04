@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>SIW Calcio</title>
@@ -7,7 +7,7 @@
 <body>
     <h1>Tornei di Calcio di Sistemi Informativi su Web</h1>
     <h2 th:if="${username}" th:text="|Ciao, ${username}|">nome utente</h2>
-    <div th:unless="${username}">
+    <div sec:authorize="isAnonymous()">
         <p><a href="/register">Registrazione</a></p>
         <p><a href="/login">Login</a></p>
     </div>
@@ -15,9 +15,14 @@
         <a href="/tornei">Elenco tornei</a>
     </p>
     <p>
-        <form th:if="${username}" th:action="@{/logout}" method="post">
+        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
             <button type="submit">Logout</button>
         </form>
     </p>
+    <div sec:authorize="hasAuthority('ADMIN')">
+        <p><a href="/admin/tornei/crea">Crea torneo</a></p>
+        <p><a href="/admin/squadre/crea">Crea squadra</a></p>
+        <p><a href="/admin/giocatori/crea">Crea giocatore</a></p>
+    </div>
 </body>
 </html>

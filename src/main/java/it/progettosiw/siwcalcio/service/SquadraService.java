@@ -17,16 +17,14 @@ import java.util.Optional;
 public class SquadraService {
 
     private SquadraRepository squadraRepository;
-    private TorneoRepository torneoRepository;
     private SquadraIscrittaService squadraIscrittaService;
 
-    public SquadraService(SquadraRepository squadraRepository, SquadraIscrittaService squadraIscrittaService,
-                          TorneoRepository torneoRepository) {
+    public SquadraService(SquadraRepository squadraRepository, SquadraIscrittaService squadraIscrittaService) {
         this.squadraRepository = squadraRepository;
         this.squadraIscrittaService = squadraIscrittaService;
-        this.torneoRepository = torneoRepository;
     }
 
+    @Transactional(readOnly = true)
     public Squadra getSquadraById(Long id){
         Optional<Squadra> squadraOpt = this.squadraRepository.findById(id);
         if(squadraOpt.isEmpty()){
@@ -35,14 +33,22 @@ public class SquadraService {
         return squadraOpt.get();
     }
 
+    @Transactional(readOnly = true)
     public List<Squadra> getAllSquadre(){
         return (List<Squadra>)this.squadraRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
+    public List<Squadra> getSquadreNonIscritteAlTorneo(Long torneoId){
+        return this.squadraRepository.findSquadreNonIscritteAlTorneo(torneoId);
+    }
+
+    @Transactional
     public void save(Squadra s){
         this.squadraRepository.save(s);
     }
 
+    @Transactional
     public void modify(Squadra temp, Long id){
         Squadra squadra = getSquadraById(id);
         squadra.setNome(temp.getNome());
@@ -58,9 +64,5 @@ public class SquadraService {
             this.squadraIscrittaService.removeIscrizioneAlTorneo(si.getTorneo().getId(), si.getSquadra().getId());
         }
         this.squadraRepository.deleteById(id);
-    }
-
-    public List<Squadra> getSquadreNonIscritteAlTorneo(Long torneoId){
-        return this.squadraRepository.findSquadreNonIscritteAlTorneo(torneoId);
     }
 }

@@ -1,7 +1,6 @@
-vedere come fare per gli EntityGraph nei repository
-aggiungere i link accessibili e visibili solo all'admin nelle pagine
-transazioni
+controllare tutti i metodi che hanno solo @Transactional e scegliere il livello di protezione (read com., rep. read, serial.)
 validazione
 eccezioni
-pagine 403, 500, 404, forse altre
-front end fatto BENE con una parte in REACT
+front end fatto BENE
+pagine errori 403, 500, 404, forse altri
+parte in REACT del frontend

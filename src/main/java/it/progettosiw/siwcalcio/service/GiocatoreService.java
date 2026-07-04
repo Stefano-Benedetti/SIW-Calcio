@@ -6,6 +6,7 @@ import it.progettosiw.siwcalcio.model.Squadra;
 import it.progettosiw.siwcalcio.repository.GiocatoreRepository;
 import it.progettosiw.siwcalcio.repository.SquadraRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -24,6 +25,7 @@ public class GiocatoreService {
         this.squadraService = squadraService;
     }
 
+    @Transactional(readOnly = true)
     public Giocatore getGiocatoreById(Long id) {
         Optional<Giocatore> giocatoreOpt = this.giocatoreRepository.findById(id);
         if (giocatoreOpt.isEmpty()) {
@@ -32,10 +34,12 @@ public class GiocatoreService {
         return giocatoreOpt.get();
     }
 
+    @Transactional
     public void save(Giocatore g){
         this.giocatoreRepository.save(g);
     }
 
+    @Transactional
     public void modify(GiocatoreForm gf, Long giocatoreId){
 
         Giocatore g = getGiocatoreById(giocatoreId);
