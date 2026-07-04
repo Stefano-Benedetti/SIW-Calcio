@@ -29,10 +29,6 @@ public interface PartitaRepository extends CrudRepository<Partita,Long> {
 
     List<Partita> findPartitasByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(Long torneoId, Long squadraId, Long torneoId2, Long squadraId2);
 
-    void deleteAllByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(Long torneoId, Long squadraId, Long torneoId2, Long squadraId2);
-
-    boolean existsBySquadraAwayIdAndSquadraHomeIdAndData(Long squadraAwayId, Long squadraHomeId, LocalDateTime data);
-
     @EntityGraph(attributePaths = "commenti")
     Optional<Partita> findWithCommentiById(Long id);
 }

@@ -72,9 +72,8 @@ public class PartitaService {
 
     @Transactional
     public void creaPartita(PartitaForm pf, Long torneoId){
-        if(this.partitaRepository.existsBySquadraAwayIdAndSquadraHomeIdAndData(pf.getSquadraHomeId(), pf.getSquadraAwayId(), pf.getData())
-                || this.partitaRepository.existsBySquadraAwayIdAndSquadraHomeIdAndData(pf.getSquadraAwayId(), pf.getSquadraHomeId(), pf.getData()))
-            throw new RuntimeException("questa partita con queste squadre e in questa data già esiste");
+        if(pf.getSquadraHomeId().equals(pf.getSquadraAwayId()))
+            throw new RuntimeException("una squadra non può giocare contro se stessa");
 
         Arbitro arbitro = this.arbitroService.getArbitroById(pf.getArbitroId());
         Squadra squadraHome = this.getSquadraById(pf.getSquadraHomeId());
@@ -104,7 +103,7 @@ public class PartitaService {
             oldWinnerId = getWinnerId(partita.getGoalsHome(), partita.getGoalsAway(), partita);
         }
 
-        Long newWinnerId = getWinnerId(goalsHome, goalsAway, partita);
+        Long newWinnerId = this.getWinnerId(goalsHome, goalsAway, partita);
 
         if (!Objects.equals(oldWinnerId, newWinnerId)) {
             if (oldWinnerId != null) {

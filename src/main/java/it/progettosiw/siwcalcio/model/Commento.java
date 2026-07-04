@@ -14,7 +14,8 @@ public class Commento {
     @Column(nullable = false)
     private String testo;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     private Utente utente;
 
     public Commento(){}

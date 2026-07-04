@@ -16,10 +16,12 @@ public class SquadraIscritta {
     @Column(nullable = false)
     private int vittorie;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     private Torneo torneo;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     private Squadra squadra;
 
     public SquadraIscritta(){

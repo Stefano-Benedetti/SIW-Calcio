@@ -22,10 +22,10 @@ public class Squadra {
     @Column(nullable = false)
     private String citta;
 
-    @OneToMany(mappedBy = "squadra", cascade = CascadeType.REMOVE)    //probabilmente da lasciare LAZY
+    @OneToMany(mappedBy = "squadra", cascade = CascadeType.REMOVE)
     private List<Giocatore> giocatori;
 
-    @OneToMany(mappedBy = "squadra", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "squadra")    //la rimozione delle iscrizioni è gestita separatamente
     private List<SquadraIscritta> iscrizioni;
 
     public Squadra(){}

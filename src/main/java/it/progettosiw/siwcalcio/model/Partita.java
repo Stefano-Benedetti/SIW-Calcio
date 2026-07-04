@@ -20,28 +20,34 @@ public class Partita {
     @Column(nullable = false)
     private String luogo;
 
+    @Column(nullable = false)
     private int goalsHome;
 
+    @Column(nullable = false)
     private int goalsAway;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatoPartita stato;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     private Arbitro arbitro;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name="partita_id")
     private List<Commento> commenti;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     private Squadra squadraHome;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     private Squadra squadraAway;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     private Torneo torneo;
 
     public Partita(){}

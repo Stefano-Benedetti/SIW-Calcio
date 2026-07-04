@@ -42,7 +42,7 @@ public class GiocatoreService {
     @Transactional
     public void modify(GiocatoreForm gf, Long giocatoreId){
 
-        Giocatore g = getGiocatoreById(giocatoreId);
+        Giocatore g = this.getGiocatoreById(giocatoreId);
 
         Squadra s = this.squadraService.getSquadraById((gf.getSquadraId()));
 
