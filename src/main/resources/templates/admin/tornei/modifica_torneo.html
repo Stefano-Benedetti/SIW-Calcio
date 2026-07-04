@@ -5,6 +5,10 @@
     <title>SIW Calcio</title>
 </head>
 <body>
+    <p>
+        <a th:href="@{/tornei/{id}(id=${id})}">Vai al torneo</a>
+    </p>
+
     <h1>Modifica il torneo</h1>
     <form th:action="@{/admin/tornei/{id}/modifica(id=${id})}" method="POST" th:object="${torneo}">
         <p>

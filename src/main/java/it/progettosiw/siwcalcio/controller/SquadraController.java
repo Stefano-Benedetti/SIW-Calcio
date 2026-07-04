@@ -24,6 +24,12 @@ public class SquadraController {
         return "squadre/squadra_singola.html";
     }
 
+    @GetMapping("/squadre")
+    public String getSquadre(Model model){
+        model.addAttribute("squadre", this.squadraService.getAllSquadre());
+        return "squadre/elenco_squadre.html";
+    }
+
     @GetMapping("/admin/squadre/crea")
     public String getFormCreazioneSquadra(Model model){
         model.addAttribute("squadra", new Squadra());

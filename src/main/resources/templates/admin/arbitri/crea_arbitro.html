@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+<p>
+    <a href="/">Vai alla home</a>
+</p>
+<h1>Aggiungi un arbitro</h1>
+<form th:action="@{/admin/arbitri/crea}" method="POST" th:object="${arbitro}">
+    <p>
+        <label>Nome:</label> <span><input type="text" th:field="${arbitro.nome}"/></span>
+    </p>
+    <p>
+        <label>Cognome:</label> <span><input type="text" th:field="${arbitro.cognome}"/></span>
+    </p>
+    <p>
+        <label>Codice arbitrale:</label> <span><input type="number" th:field="${arbitro.codiceArbitrale}"/></span>
+    </p>
+    <p>
+        <span><button type="submit">Conferma</button></span>
+    </p>
+</form>
+</body>
+</html>

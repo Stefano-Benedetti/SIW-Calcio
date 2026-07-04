@@ -5,6 +5,9 @@
     <title>SIW Calcio</title>
 </head>
 <body>
+    <p>
+        <a th:href="|/tornei/${torneo.id}|">Vai al torneo</a>
+    </p>
     <h1 th:text="|Classifica ${torneo.nome} ${torneo.anno}|">titolo</h1>
     <div th:if="${classifica.isEmpty()}">Questo torneo non ha squadre iscritte.</div>
     <table th:unless="${classifica.isEmpty()}"><!--tr = table row, td = table data, th = table header-->

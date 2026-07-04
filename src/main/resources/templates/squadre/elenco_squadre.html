@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Calcio</title>
+</head>
+<body>
+<p>
+    <a href="/">Vai alla home</a>
+</p>
+<h1>Elenco squadre</h1>
+<div th:if="${squadre.isEmpty()}">Non è stata registrata alcuna squadra nel sistema.</div>
+<ul>
+    <li th:each="squadra : ${squadre}">
+        <a th:href="|/squadre/${squadra.id}|"
+           th:text="${squadra.nome}">nome</a>
+    </li>
+</ul>
+<p sec:authorize="hasAuthority('ADMIN')"><a href="/admin/squadre/crea">Crea squadra</a></p>
+</body>
+</html>

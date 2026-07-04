@@ -5,6 +5,9 @@
     <title>SIW Calcio</title>
 </head>
 <body>
+<p>
+    <a th:href="|/tornei/${torneo.id}|">Vai al torneo</a>
+</p>
 <h1 th:text="|Risultati Partite ${torneo.nome} ${torneo.anno}|">titolo</h1>
 <div th:if="${partitePlayed.isEmpty()}">In questo torneo non sono state ancora svolte partite.</div>
 <ul>

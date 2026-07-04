@@ -5,7 +5,7 @@
     <title>SIW Calcio</title>
 </head>
 <body>
-    <a href="/tornei">Torna all'elenco dei tornei</a>
+    <a href="/tornei">Vai all'elenco dei tornei</a>
     <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/tornei/${torneo.id}/modifica|">Modifica</a></p>
     <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/tornei/${torneo.id}/crea-partita|">Aggiungi partita</a></p>
 

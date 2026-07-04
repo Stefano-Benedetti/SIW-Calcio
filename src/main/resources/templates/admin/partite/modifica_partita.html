@@ -5,6 +5,9 @@
     <title>SIW Calcio</title>
 </head>
 <body>
+    <p>
+        <a th:href="@{/partite/{id}(id=${id})}">Vai alla partita</a>
+    </p>
     <h1>Inserisci il risultato della partita</h1>
     <h2>
         <span th:href="|/squadre/${partita.squadraHome.id}|"

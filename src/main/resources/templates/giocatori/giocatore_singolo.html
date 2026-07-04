@@ -5,6 +5,9 @@
     <title>SIW Calcio</title>
 </head>
 <body>
+    <p>
+        <a href="/">Vai alla home</a>
+    </p>
     <h1 th:text="|${giocatore.nome} ${giocatore.cognome}|">nome cognome</h1>
     <p> <span th:text="|Nato il: ${#temporals.format(giocatore.nascita, 'dd/MM/yyyy')}|">nascita</span> </p>
     <p> Ruolo: <span th:text="${#strings.toLowerCase(giocatore.ruolo.name())}">ruolo</span> </p>

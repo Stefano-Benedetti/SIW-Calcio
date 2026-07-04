@@ -28,12 +28,6 @@ public class Squadra {
     @OneToMany(mappedBy = "squadra", cascade = CascadeType.REMOVE)
     private List<SquadraIscritta> iscrizioni;
 
-    @OneToMany(mappedBy = "squadraHome", cascade = CascadeType.REMOVE)
-    private List<Partita> partiteInCasa;
-
-    @OneToMany(mappedBy = "squadraAway", cascade = CascadeType.REMOVE)
-    private List<Partita> partiteFuori;
-
     public Squadra(){}
 
     public long getId() {
@@ -84,27 +78,11 @@ public class Squadra {
         this.iscrizioni = iscrizioni;
     }
 
-    public List<Partita> getPartiteInCasa() {
-        return partiteInCasa;
-    }
-
-    public void setPartiteInCasa(List<Partita> partiteInCasa) {
-        this.partiteInCasa = partiteInCasa;
-    }
-
-    public List<Partita> getPartiteFuori() {
-        return partiteFuori;
-    }
-
-    public void setPartiteFuori(List<Partita> partiteFuori) {
-        this.partiteFuori = partiteFuori;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Squadra squadra = (Squadra) o;
-        return id == squadra.id;
+        return Objects.equals(id, squadra.id);
     }
 
     @Override

@@ -24,8 +24,7 @@ public class Torneo {
     private String descrizione;
 
     //non ha senso tenere le partite senza un torneo, ma i tornei non possono essere eliminati
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "torneo_id")
+    @OneToMany(mappedBy="torneo", orphanRemoval = true)
     private List<Partita> partite;
 
     // non ha senso tenere le iscrizioni senza un torneo, ma i tornei non possono essere eliminati
