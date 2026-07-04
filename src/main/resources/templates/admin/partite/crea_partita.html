@@ -9,13 +9,17 @@
         <a th:href="@{/tornei/{id}(id=${id})}">Vai al torneo</a>
     </p>
     <h1>Crea una partita</h1>
-    <form th:action="@{/admin/tornei/{id}/crea-partita(id=${id})}" method="POST">
+    <form th:action="@{/admin/tornei/{id}/crea-partita(id=${id})}" method="POST" th:object="${form}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+        </div>
         <p>
             <label>Squadra in casa:</label>
             <select th:field="${form.squadraHomeId}" size="1">
                 <option value="">Seleziona la squadra in casa</option>
                 <option th:each="squadraIscritta : ${squadreIscritte}" th:value="${squadraIscritta.squadra.id}" th:text="${squadraIscritta.squadra.nome}"></option>
             </select>
+            <span th:if="${#fields.hasErrors('squadraHomeId')}" th:errors="${form.squadraHomeId}"></span>
         </p>
         <p>
             <label>Squadra ospite:</label>
@@ -23,12 +27,15 @@
                 <option value="">Seleziona la squadra ospite</option>
                 <option th:each="squadraIscritta : ${squadreIscritte}" th:value="${squadraIscritta.squadra.id}" th:text="${squadraIscritta.squadra.nome}"></option>
             </select>
+            <span th:if="${#fields.hasErrors('squadraAwayId')}" th:errors="${form.squadraAwayId}"></span>
         </p>
         <p>
             <label>Data e ora:</label> <span><input type="datetime-local" th:field="${form.data}"/></span>
+            <span th:if="${#fields.hasErrors('data')}" th:errors="${form.data}"></span>
         </p>
         <p>
             <label>Luogo:</label> <span><input type="text" th:field="${form.luogo}"/></span>
+            <span th:if="${#fields.hasErrors('luogo')}" th:errors="${form.luogo}"></span>
         </p>
         <p>
             <label>Arbitro</label>
@@ -36,6 +43,7 @@
                 <option value="">Selezionare un arbitro</option>
                 <option th:each="arbitro : ${arbitri}" th:value="${arbitro.id}" th:text="|${arbitro.nome} ${arbitro.cognome}|"></option>
             </select>
+            <span th:if="${#fields.hasErrors('arbitroId')}" th:errors="${form.arbitroId}"></span>
         </p>
         <p>
             <span><button type="submit">Conferma</button></span>

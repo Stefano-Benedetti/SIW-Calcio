@@ -2,7 +2,6 @@ package it.progettosiw.siwcalcio.service;
 
 import it.progettosiw.siwcalcio.dto.RegistrationForm;
 import it.progettosiw.siwcalcio.model.Credenziali;
-import it.progettosiw.siwcalcio.model.Squadra;
 import it.progettosiw.siwcalcio.model.Utente;
 import it.progettosiw.siwcalcio.repository.CredenzialiRepository;
 import it.progettosiw.siwcalcio.repository.UtenteRepository;

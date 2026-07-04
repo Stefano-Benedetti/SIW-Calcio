@@ -1,6 +1,4 @@
-controllare tutti i metodi che hanno solo @Transactional e scegliere il livello di protezione (read com., rep. read, serial.)
-validazione
-eccezioni
+eccezioni (per validazione e per pagine errore)
 front end fatto BENE
 pagine errori 403, 500, 404, forse altri
 parte in REACT del frontend

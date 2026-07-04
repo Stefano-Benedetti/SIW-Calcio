@@ -2,10 +2,8 @@ package it.progettosiw.siwcalcio.service;
 
 import it.progettosiw.siwcalcio.model.Commento;
 import it.progettosiw.siwcalcio.model.Partita;
-import it.progettosiw.siwcalcio.model.Squadra;
 import it.progettosiw.siwcalcio.model.Utente;
 import it.progettosiw.siwcalcio.repository.CommentoRepository;
-import it.progettosiw.siwcalcio.repository.PartitaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

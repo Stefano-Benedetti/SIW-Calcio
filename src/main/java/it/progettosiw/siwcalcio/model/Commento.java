@@ -1,6 +1,8 @@
 package it.progettosiw.siwcalcio.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
@@ -11,6 +13,8 @@ public class Commento {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
+    @Size(max=500, message = "Massimo 500 caratteri ammessi")
     @Column(nullable = false)
     private String testo;
 

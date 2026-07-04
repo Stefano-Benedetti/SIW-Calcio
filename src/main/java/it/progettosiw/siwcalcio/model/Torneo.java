@@ -1,6 +1,9 @@
 package it.progettosiw.siwcalcio.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.Year;
 import java.util.List;
@@ -14,12 +17,16 @@ public class Torneo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
+    @Size(min=2, max=50, message = "Deve essere tra i 2 e i 50 caratteri")
     @Column(nullable = false)
     private String nome;
 
+    @NotNull
     @Column(nullable = false)
     private Year anno;
 
+    @Size(max=200, message = "Deve essere massimo 200 caratteri")
     @Column(nullable = false)
     private String descrizione;
 

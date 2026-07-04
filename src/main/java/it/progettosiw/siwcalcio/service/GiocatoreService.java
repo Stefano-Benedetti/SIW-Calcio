@@ -4,7 +4,6 @@ import it.progettosiw.siwcalcio.dto.GiocatoreForm;
 import it.progettosiw.siwcalcio.model.Giocatore;
 import it.progettosiw.siwcalcio.model.Squadra;
 import it.progettosiw.siwcalcio.repository.GiocatoreRepository;
-import it.progettosiw.siwcalcio.repository.SquadraRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +14,10 @@ public class GiocatoreService {
 
     private GiocatoreRepository giocatoreRepository;
 
-    private SquadraRepository squadraRepository;
-
     private SquadraService squadraService;
 
-    public GiocatoreService(GiocatoreRepository giocatoreRepository, SquadraRepository squadraRepository, SquadraService squadraService) {
+    public GiocatoreService(GiocatoreRepository giocatoreRepository, SquadraService squadraService) {
         this.giocatoreRepository = giocatoreRepository;
-        this.squadraRepository = squadraRepository;
         this.squadraService = squadraService;
     }
 

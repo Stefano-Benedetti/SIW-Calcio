@@ -1,6 +1,10 @@
 package it.progettosiw.siwcalcio.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.time.Year;
 import java.util.List;
@@ -13,12 +17,18 @@ public class Squadra {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
+    @Size(min=2, max=50, message = "Deve essere tra i 2 e i 50 caratteri")
     @Column(nullable = false, unique = true)
     private String nome;
 
+    @NotNull
     @Column(nullable = false)
     private Year fondazione;
 
+    @NotBlank
+    @Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ'’ -]+$", message = "Sono ammesse solo lettere, trattini, spazi e apostrofi")
+    @Size(min=1, max=50, message = "Deve essere massimo 50 caratteri")
     @Column(nullable = false)
     private String citta;
 

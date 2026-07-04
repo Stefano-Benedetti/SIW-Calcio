@@ -2,26 +2,39 @@ package it.progettosiw.siwcalcio.dto;
 
 import it.progettosiw.siwcalcio.model.Giocatore;
 import it.progettosiw.siwcalcio.model.RuoloGiocatore;
+import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
 public class GiocatoreForm {
 
+    @Pattern(regexp = "^[\\p{L}' ]+$", message = "Sono ammesse solo lettere, spazi e apostrofi")
+    @NotBlank
+    @Size(min=1, max=50, message = "Deve essere massimo 50 caratteri")
     private String nome;
 
+    @Pattern(regexp = "^[\\p{L}' ]+$", message = "Sono ammesse solo lettere, spazi e apostrofi")
+    @NotBlank
+    @Size(min=1, max=50, message = "Deve essere massimo 50 caratteri")
     private String cognome;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate nascita;
 
+    @NotNull
     private RuoloGiocatore ruolo;
 
+    @Max(value = 250 , message = "Altezza non valida")
+    @Min(value = 60, message = "Altezza non valida")
     private int altezza;    //centimetri
 
+    @NotNull
     private Long squadraId;
 
-    public GiocatoreForm(){}
+    public GiocatoreForm(){
+        this.altezza = 0;
+    }
 
     public GiocatoreForm(Giocatore g){
         this.nome = g.getNome();

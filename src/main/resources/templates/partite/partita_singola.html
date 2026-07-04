@@ -68,15 +68,19 @@
         <!-- commenti utente (solo se è loggato) -->
         <div th:if="${username != null}">
             <ul>
-                <li th:each="commento : ${partita.commenti}"
-                    th:if="${commento.utente.username == username}">
-                    <p><span th:text="${commento.utente.username}">utente</span></p>
-                    <p><span th:text="${commento.testo}">commento</span></p>
+                <li th:each="c : ${partita.commenti}"
+                    th:if="${c.utente.username == username}">
+                    <p><span th:text="${c.utente.username}">utente</span></p>
+                    <p><span th:text="${c.testo}">commento</span></p>
 
                     <!-- modifica commento -->
-                    <form th:action="@{/partite/{partitaId}/commenti/{commentoId}/modifica(partitaId=${partita.id}, commentoId=${commento.id})}"
-                          method="post">
-                        <textarea name="testo" rows="3" cols="50" th:text="${commento.testo}" required></textarea>
+                    <form th:action="@{/partite/{partitaId}/commenti/{commentoId}/modifica(partitaId=${partita.id}, commentoId=${c.id})}"
+                          method="post" th:object="${commento}">
+                        <div th:if="${#fields.hasGlobalErrors()}">
+                            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+                        </div>
+                        <textarea th:field="${commento.testo}" rows="3" cols="50" th:text="${commento.testo}"></textarea>
+                        <span th:if="${#fields.hasErrors('testo')}" th:errors="${commento.testo}"></span>
                         <br/>
                         <button type="submit">Modifica</button>
                     </form>
@@ -86,10 +90,10 @@
 
         <!-- altri commenti -->
         <ul>
-            <li th:each="commento : ${partita.commenti}"
-                th:if="${username == null or commento.utente.username != username}">
-                <p><span th:text="${commento.utente.username}">utente</span></p>
-                <p><span th:text="${commento.testo}">commento</span></p>
+            <li th:each="c : ${partita.commenti}"
+                th:if="${username == null or c.utente.username != username}">
+                <p><span th:text="${c.utente.username}">utente</span></p>
+                <p><span th:text="${c.testo}">commento</span></p>
             </li>
         </ul>
     </div>
@@ -97,8 +101,12 @@
     <!-- nuovo commento -->
     <div th:if="${username != null}">
         <h3>Lascia un commento</h3>
-        <form th:action="@{/partite/{partitaId}/commenti/nuovo(partitaId=${partita.id})}" method="post">
-            <textarea name="testo" rows="4" cols="60" placeholder="Scrivi qui..." required></textarea>
+        <form th:action="@{/partite/{partitaId}/commenti/nuovo(partitaId=${partita.id})}" method="post" th:object="${commentoNuovo}">
+            <div th:if="${#fields.hasGlobalErrors()}">
+                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+            </div>
+            <textarea th:field="${commentoNuovo.testo}" rows="4" cols="60" placeholder="Scrivi qui..."d></textarea>
+            <span th:if="${#fields.hasErrors('testo')}" th:errors="${commentoNuovo.testo}"></span>
             <br/>
             <button type="submit">Pubblica</button>
         </form>

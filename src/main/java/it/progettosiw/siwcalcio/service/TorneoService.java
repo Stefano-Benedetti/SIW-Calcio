@@ -1,10 +1,7 @@
 package it.progettosiw.siwcalcio.service;
 
-import it.progettosiw.siwcalcio.model.SquadraIscritta;
 import it.progettosiw.siwcalcio.model.Torneo;
 import it.progettosiw.siwcalcio.repository.TorneoRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

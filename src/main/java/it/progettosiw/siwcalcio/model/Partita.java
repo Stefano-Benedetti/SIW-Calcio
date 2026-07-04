@@ -2,6 +2,9 @@ package it.progettosiw.siwcalcio.model;
 
 import it.progettosiw.siwcalcio.dto.PartitaForm;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,9 +23,15 @@ public class Partita {
     @Column(nullable = false)
     private String luogo;
 
+    @Min(value = 0, message = "I goals non posso essere negativi")
+    // la partita con più goals della storia è finita 149 - 0
+    @Max(value = 150, message = "I goals non possono essere così tanti (spero...)")
     @Column(nullable = false)
     private int goalsHome;
 
+    @Min(value = 0, message = "I goals non posso essere negativi")
+    // la partita con più goals della storia è finita 149 - 0
+    @Max(value = 150, message = "I goals non possono essere così tanti (spero...)")
     @Column(nullable = false)
     private int goalsAway;
 

@@ -16,12 +16,17 @@
         <span th:href="|/squadre/${partita.squadraAway.id}|"
            th:text="${partita.squadraAway.nome}">SquadraAway</span>
     </h2>
-    <form th:action="@{/admin/partite/{id}/inserisci-risultato(id=${id})}" method="POST">
+    <form th:action="@{/admin/partite/{id}/inserisci-risultato(id=${id})}" method="POST" th:object="${partita}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+        </div>
         <p>
             <label>Goals prima squadra:</label> <span><input type="number" min="0" th:field="${partita.goalsHome}"/></span>
+            <span th:if="${#fields.hasErrors('goalsHome')}" th:errors="${partita.goalsHome}"></span>
         </p>
         <p>
             <label>Goals seconda squadra:</label> <span><input type="number" min="0" th:field="${partita.goalsAway}"/></span>
+            <span th:if="${#fields.hasErrors('goalsAway')}" th:errors="${partita.goalsAway}"></span>
         </p>
         <p>
             <span><button type="submit">Conferma</button></span>

@@ -2,8 +2,11 @@ package it.progettosiw.siwcalcio.controller;
 
 import it.progettosiw.siwcalcio.model.Squadra;
 import it.progettosiw.siwcalcio.service.SquadraService;
+import it.progettosiw.siwcalcio.validation.AnnoFondazioneValidator;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,50 +17,64 @@ public class SquadraController {
 
     private SquadraService squadraService;
 
-    public SquadraController(SquadraService squadraService) {
+    private AnnoFondazioneValidator annoFondazioneValidator;
+
+    public SquadraController(SquadraService squadraService, AnnoFondazioneValidator annoFondazioneValidator) {
         this.squadraService = squadraService;
+        this.annoFondazioneValidator = annoFondazioneValidator;
     }
 
     @GetMapping("/squadre/{id}")
     public String show(@PathVariable("id") Long id, Model model){
+        //squadra non esiste -> 404
         model.addAttribute("squadra", this.squadraService.getSquadraById(id));
-        return "squadre/squadra_singola.html";
+        return "squadre/squadra_singola";
     }
 
     @GetMapping("/squadre")
     public String getSquadre(Model model){
         model.addAttribute("squadre", this.squadraService.getAllSquadre());
-        return "squadre/elenco_squadre.html";
+        return "squadre/elenco_squadre";
     }
 
     @GetMapping("/admin/squadre/crea")
     public String getFormCreazioneSquadra(Model model){
         model.addAttribute("squadra", new Squadra());
-        return "admin/squadre/crea_squadra.html";
+        return "admin/squadre/crea_squadra";
     }
 
     @PostMapping("/admin/squadre/crea")
-    public String makeNewSquadra(@ModelAttribute("squadra") Squadra squadra, Model model){
+    public String makeNewSquadra(@Valid @ModelAttribute("squadra") Squadra squadra, BindingResult b, Model model){
+        this.annoFondazioneValidator.validate(squadra,b);
+        if (b.hasErrors()) {
+            return "admin/squadre/crea_squadra";
+        }
         this.squadraService.save(squadra);
         return "redirect:/squadre/"+squadra.getId();
     }
 
     @GetMapping("/admin/squadre/{id}/modifica")
     public String getFormModificaSquadra(@PathVariable("id") Long id, Model model){
+        //squadra non esiste -> 404
         Squadra s = this.squadraService.getSquadraById(id);
         model.addAttribute("squadra", s);
-        model.addAttribute(id);
-        return "admin/squadre/modifica_squadra.html";
+        return "admin/squadre/modifica_squadra";
     }
 
     @PostMapping("/admin/squadre/{id}/modifica")
-    public String modifySquadra(@PathVariable("id") Long id, @ModelAttribute("squadra") Squadra squadra, Model model){
+    public String modifySquadra(@PathVariable("id") Long id, @Valid @ModelAttribute("squadra") Squadra squadra, BindingResult b, Model model){
+        //squadra non esiste -> 404
+        this.annoFondazioneValidator.validate(squadra,b);
+        if (b.hasErrors()) {
+            return "admin/squadre/modifica_squadra";
+        }
         this.squadraService.modify(squadra,id);
-        return "redirect:/squadre/"+id.toString();
+        return "redirect:/squadre/"+id;
     }
 
     @PostMapping("/admin/squadre/{id}/elimina")
     public String deleteSquadra(@PathVariable("id") Long id, Model model){
+        //squadra non esiste -> 404
         this.squadraService.delete(id);
         return "redirect:/";
     }

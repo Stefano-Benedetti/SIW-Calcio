@@ -1,17 +1,27 @@
 package it.progettosiw.siwcalcio.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 
 public class PartitaForm {
 
+    @NotNull
     private LocalDateTime data;
 
+    @Size(min=1, max=50, message = "Deve essere massimo 50 caratteri")
+    @NotBlank
     private String luogo;
 
+    @NotNull
     private Long arbitroId;
 
+    @NotNull
     private Long squadraHomeId;
 
+    @NotNull
     private Long squadraAwayId;
 
     public PartitaForm(){

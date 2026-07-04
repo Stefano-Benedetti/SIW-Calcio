@@ -1,15 +1,10 @@
 package it.progettosiw.siwcalcio.service;
 
-import it.progettosiw.siwcalcio.model.Giocatore;
 import it.progettosiw.siwcalcio.model.Squadra;
 import it.progettosiw.siwcalcio.model.SquadraIscritta;
-import it.progettosiw.siwcalcio.model.Torneo;
-import it.progettosiw.siwcalcio.repository.SquadraIscrittaRepository;
 import it.progettosiw.siwcalcio.repository.SquadraRepository;
-import it.progettosiw.siwcalcio.repository.TorneoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 

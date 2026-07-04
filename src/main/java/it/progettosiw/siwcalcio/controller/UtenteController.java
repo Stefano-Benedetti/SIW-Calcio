@@ -21,18 +21,21 @@ public class UtenteController {
 
     @GetMapping("/login")
     public String getLogin(Model model){
-        return "login.html";
+        return "login";
     }
 
     @GetMapping("/register")
     public String getRegister(Model model){
         model.addAttribute("form", new RegistrationForm());
-        return "register.html";
+        return "register";
     }
 
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute("form") RegistrationForm form, BindingResult b, Model model){
+        if (b.hasErrors()) {
+            return "register";
+        }
         utenteService.register(form);
-        return "/login.html";
+        return "redirect:/login";
     }
 }

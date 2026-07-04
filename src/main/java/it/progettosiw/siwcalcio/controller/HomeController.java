@@ -20,7 +20,7 @@ public class HomeController {
         UserDetails userDetails = utenteService.getCurrentUserDetails();
         if (userDetails!=null)
             model.addAttribute("username", userDetails.getUsername());
-        return "index.html";
+        return "index";
     }
 
 }

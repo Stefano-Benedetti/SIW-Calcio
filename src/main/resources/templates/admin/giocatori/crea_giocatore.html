@@ -10,14 +10,20 @@
     </p>
     <h1>Aggiungi un giocatore</h1>
     <form th:action="@{/admin/giocatori/crea}" method="POST" th:object="${form}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+        </div>
         <p>
             <label>Nome:</label> <span><input type="text" th:field="${form.nome}"/></span>
+            <span th:if="${#fields.hasErrors('nome')}" th:errors="${form.nome}"></span>
         </p>
         <p>
             <label>Cognome:</label> <span><input type="text" th:field="${form.cognome}"/></span>
+            <span th:if="${#fields.hasErrors('cognome')}" th:errors="${form.cognome}"></span>
         </p>
         <p>
             <label>Data di nascita:</label> <span><input type="date" th:field="${form.nascita}"/></span>
+            <span th:if="${#fields.hasErrors('nascita')}" th:errors="${form.nascita}"></span>
         </p>
         <p>
             <label>Ruolo:</label>
@@ -28,9 +34,11 @@
                 <option value="CENTROCAMPISTA">centrocampista</option>
                 <option value="ATTACCANTE">attaccante</option>
             </select></span>
+            <span th:if="${#fields.hasErrors('ruolo')}" th:errors="${form.ruolo}"></span>
         </p>
         <p>
-            <label>Altezza (centimetri):</label> <span><input type="text" th:field="${form.altezza}"/></span>
+            <label>Altezza (centimetri):</label> <span><input type="number" th:field="${form.altezza}"/></span>
+            <span th:if="${#fields.hasErrors('altezza')}" th:errors="${form.altezza}"></span>
         </p>
         <p>
             <label>Squadra:</label>
@@ -38,6 +46,7 @@
                 <option value="">Seleziona una squadra</option>
                 <option th:each="squadra : ${squadre}" th:value="${squadra.id}" th:text="${squadra.nome}"></option>
             </select>
+            <span th:if="${#fields.hasErrors('squadraId')}" th:errors="${form.squadraId}"></span>
         </p>
         <p>
             <span><button type="submit">Conferma</button></span>

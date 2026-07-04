@@ -10,14 +10,20 @@
     </p>
     <h1>Modifica una squadra</h1>
     <form th:action="@{/admin/squadre/{id}/modifica(id=${id})}" method="POST" th:object="${squadra}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+        </div>
         <p>
             <label>Nome:</label> <span><input type="text" th:field="${squadra.nome}"/></span>
+            <span th:if="${#fields.hasErrors('nome')}" th:errors="${squadra.nome}"></span>
         </p>
         <p>
-            <label>Anno di fondazione:</label> <span><input type="number" min="1900" max="2100" step="1" th:field="${squadra.fondazione}"/></span>
+            <label>Anno di fondazione:</label> <span><input type="number" min="1857" step="1" th:field="${squadra.fondazione}"/></span>
+            <span th:if="${#fields.hasErrors('fondazione')}" th:errors="${squadra.fondazione}"></span>
         </p>
         <p>
             <label>Città di appartenenza:</label> <span><input type="text" th:field="${squadra.citta}"/></span>
+            <span th:if="${#fields.hasErrors('citta')}" th:errors="${squadra.citta}"></span>
         </p>
         <p>
             <span><button type="submit">Conferma</button></span>

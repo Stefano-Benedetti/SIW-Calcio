@@ -1,6 +1,7 @@
 package it.progettosiw.siwcalcio.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.Objects;
 
@@ -11,12 +12,19 @@ public class Arbitro {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Pattern(regexp = "^[\\p{L}' ]+$", message = "Sono ammesse solo lettere, spazi e apostrofi")
+    @NotBlank
+    @Size(min=2, max=50, message = "Deve essere tra i 2 e i 50 caratteri")
     @Column(nullable = false)
     private String nome;
 
+    @Pattern(regexp = "^[\\p{L}' ]+$", message = "Sono ammesse solo lettere, spazi e apostrofi")
+    @NotBlank
+    @Size(min=2, max=50, message = "Deve essere tra i 2 e i 50 caratteri")
     @Column(nullable = false)
     private String cognome;
 
+    @NotNull
     @Column(nullable = false, unique = true)
     private Long codiceArbitrale;
 

@@ -10,14 +10,20 @@
     </p>
     <h1>Aggiungi un torneo</h1>
     <form th:action="@{/admin/tornei/crea}" method="POST" th:object="${torneo}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+        </div>
         <p>
             <label>Nome:</label> <span><input type="text" th:field="${torneo.nome}"/></span>
+            <span th:if="${#fields.hasErrors('nome')}" th:errors="${torneo.nome}"></span>
         </p>
         <p>
-            <label>Anno:</label> <span><input type="number" min="2000" step="1" th:field="${torneo.anno}"/></span>
+            <label>Anno:</label> <span><input type="number" min="2025" step="1" th:field="${torneo.anno}"/></span>
+            <span th:if="${#fields.hasErrors('anno')}" th:errors="${torneo.anno}"></span>
         </p>
         <p>
             <label>Descrizione:</label> <span><input type="text" th:field="${torneo.descrizione}"/></span>
+            <span th:if="${#fields.hasErrors('descrizione')}" th:errors="${torneo.descrizione}"></span>
         </p>
         <p>
             <span><button type="submit">Conferma</button></span>

@@ -5,7 +5,6 @@ import it.progettosiw.siwcalcio.model.*;
 import it.progettosiw.siwcalcio.repository.PartitaRepository;
 import it.progettosiw.siwcalcio.repository.SquadraIscrittaRepository;
 import it.progettosiw.siwcalcio.repository.SquadraRepository;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,9 +74,16 @@ public class PartitaService {
         if(pf.getSquadraHomeId().equals(pf.getSquadraAwayId()))
             throw new RuntimeException("una squadra non può giocare contro se stessa");
 
+        Long squadraHomeId = pf.getSquadraHomeId();
+        Long squadraAwayId = pf.getSquadraAwayId();
+
+        if(!this.squadraIscrittaRepository.existsSquadraIscrittaBySquadraIdAndTorneoId(squadraHomeId,torneoId)
+            || !this.squadraIscrittaRepository.existsSquadraIscrittaBySquadraIdAndTorneoId(squadraAwayId,torneoId))
+            throw new RuntimeException("una delle due squadre non fa parte del torneo");
+
         Arbitro arbitro = this.arbitroService.getArbitroById(pf.getArbitroId());
-        Squadra squadraHome = this.getSquadraById(pf.getSquadraHomeId());
-        Squadra squadraAway = this.getSquadraById(pf.getSquadraAwayId());
+        Squadra squadraHome = this.getSquadraById(squadraHomeId);
+        Squadra squadraAway = this.getSquadraById(squadraAwayId);
         Torneo torneo = this.torneoService.getTorneoById(torneoId);
 
         Partita partita = new Partita(pf, arbitro, squadraHome, squadraAway, torneo);

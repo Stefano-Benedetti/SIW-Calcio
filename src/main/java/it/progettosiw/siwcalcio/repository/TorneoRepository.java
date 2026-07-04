@@ -1,8 +1,6 @@
 package it.progettosiw.siwcalcio.repository;
 
-import it.progettosiw.siwcalcio.model.Partita;
 import it.progettosiw.siwcalcio.model.Torneo;
-import jakarta.persistence.Entity;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.CrudRepository;
 
