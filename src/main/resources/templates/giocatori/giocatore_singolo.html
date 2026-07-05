@@ -1,18 +1,121 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <p>-->
+<!--        <a href="/">Vai alla home</a>-->
+<!--    </p>-->
+<!--    <h1 th:text="|${giocatore.nome} ${giocatore.cognome}|">nome cognome</h1>-->
+<!--    <p> <span th:text="|Nato il: ${#temporals.format(giocatore.nascita, 'dd/MM/yyyy')}|">nascita</span> </p>-->
+<!--    <p> Ruolo: <span th:text="${#strings.toLowerCase(giocatore.ruolo.name())}">ruolo</span> </p>-->
+<!--    <p> Altezza: <span th:text="|${giocatore.altezza} centimetri|">altezza</span> </p>-->
+<!--    <p> Squadra: <a th:href="|/squadre/${giocatore.squadra.id}|" th:text="${giocatore.squadra.nome}">squadra</a> </p>-->
+<!--    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/giocatori/${giocatore.id}/modifica|">Modifica</a></p>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
-<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Calcio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giocatore - SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/detail.css}">
 </head>
+
 <body>
-    <p>
-        <a href="/">Vai alla home</a>
-    </p>
-    <h1 th:text="|${giocatore.nome} ${giocatore.cognome}|">nome cognome</h1>
-    <p> <span th:text="|Nato il: ${#temporals.format(giocatore.nascita, 'dd/MM/yyyy')}|">nascita</span> </p>
-    <p> Ruolo: <span th:text="${#strings.toLowerCase(giocatore.ruolo.name())}">ruolo</span> </p>
-    <p> Altezza: <span th:text="|${giocatore.altezza} centimetri|">altezza</span> </p>
-    <p> Squadra: <a th:href="|/squadre/${giocatore.squadra.id}|" th:text="${giocatore.squadra.nome}">squadra</a> </p>
-    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/giocatori/${giocatore.id}/modifica|">Modifica</a></p>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
+
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+
+            <div sec:authorize="isAnonymous()" class="nav-auth">
+                <a href="/login">Login</a>
+                <a href="/register" class="btn btn-small">Registrazione</a>
+            </div>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline btn-small">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="detail-main">
+    <section class="detail-section">
+        <div class="container">
+            <div class="page-actions">
+                <a href="/" class="back-link">← Vai alla home</a>
+            </div>
+
+            <article class="detail-card">
+                <div class="detail-header">
+                    <div>
+                        <span class="eyebrow">Scheda giocatore</span>
+
+                        <h1 th:text="|${giocatore.nome} ${giocatore.cognome}|">
+                            nome cognome
+                        </h1>
+                    </div>
+
+                    <a sec:authorize="hasAuthority('ADMIN')"
+                       th:href="|/admin/giocatori/${giocatore.id}/modifica|"
+                       class="btn btn-small">
+                        Modifica
+                    </a>
+                </div>
+
+                <div class="detail-body">
+                    <dl class="info-list">
+                        <div class="info-row">
+                            <dt>Data di nascita</dt>
+                            <dd th:text="${#temporals.format(giocatore.nascita, 'dd/MM/yyyy')}">
+                                nascita
+                            </dd>
+                        </div>
+
+                        <div class="info-row">
+                            <dt>Ruolo</dt>
+                            <dd th:text="${#strings.toLowerCase(giocatore.ruolo.name())}">
+                                ruolo
+                            </dd>
+                        </div>
+
+                        <div class="info-row">
+                            <dt>Altezza</dt>
+                            <dd th:text="|${giocatore.altezza} centimetri|">
+                                altezza
+                            </dd>
+                        </div>
+
+                        <div class="info-row">
+                            <dt>Squadra</dt>
+                            <dd>
+                                <a th:href="|/squadre/${giocatore.squadra.id}|"
+                                   th:text="${giocatore.squadra.nome}"
+                                   class="text-link">
+                                    squadra
+                                </a>
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
+    </div>
+</footer>
 </body>
 </html>

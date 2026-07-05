@@ -1,31 +1,147 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Tornei di Calcio di Sistemi Informativi su Web</h1>-->
+<!--    <h2 th:if="${username}" th:text="|Ciao, ${username}|">nome utente</h2>-->
+<!--    <p>-->
+<!--        <a href="/tornei">Tutti i tornei</a>-->
+<!--    </p>-->
+<!--    <p>-->
+<!--        <a href="/squadre">Tutte le squadre</a>-->
+<!--    </p>-->
+<!--    <div sec:authorize="isAnonymous()">-->
+<!--        <a href="/register">Registrazione</a> <a href="/login">Login</a>-->
+<!--    </div>-->
+<!--    <p>-->
+<!--        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">-->
+<!--            <button type="submit">Logout</button>-->
+<!--        </form>-->
+<!--    </p>-->
+<!--    <div sec:authorize="hasAuthority('ADMIN')">-->
+<!--        <p><a href="/admin/tornei/crea">Crea torneo</a></p>-->
+<!--        <p><a href="/admin/squadre/crea">Crea squadra</a></p>-->
+<!--        <p><a href="/admin/giocatori/crea">Crea giocatore</a></p>-->
+<!--        <p><a href="/admin/arbitri/crea">Crea arbitro</a></p>-->
+<!--    </div>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
 </head>
+
 <body>
-    <h1>Tornei di Calcio di Sistemi Informativi su Web</h1>
-    <h2 th:if="${username}" th:text="|Ciao, ${username}|">nome utente</h2>
-    <p>
-        <a href="/tornei">Tutti i tornei</a>
-    </p>
-    <p>
-        <a href="/squadre">Tutte le squadre</a>
-    </p>
-    <div sec:authorize="isAnonymous()">
-        <a href="/register">Registrazione</a> <a href="/login">Login</a>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
+
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+
+            <div sec:authorize="isAnonymous()" class="nav-auth">
+                <a href="/login">Login</a>
+                <a href="/register" class="btn btn-small">Registrazione</a>
+            </div>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline btn-small">Logout</button>
+            </form>
+        </nav>
     </div>
-    <p>
-        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
-            <button type="submit">Logout</button>
-        </form>
-    </p>
-    <div sec:authorize="hasAuthority('ADMIN')">
-        <p><a href="/admin/tornei/crea">Crea torneo</a></p>
-        <p><a href="/admin/squadre/crea">Crea squadra</a></p>
-        <p><a href="/admin/giocatori/crea">Crea giocatore</a></p>
-        <p><a href="/admin/arbitri/crea">Crea arbitro</a></p>
+</header>
+
+<main class="home-main">
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <span class="eyebrow">Tornei di calcio</span>
+
+                <h1>Segui i tornei organizzati da SIW Calcio</h1>
+
+                <h2 th:if="${username}" th:text="|Ciao, ${username}|" class="welcome-message">
+                    nome utente
+                </h2>
+
+                <p>
+                    Consulta le partite, scopri le squadre partecipanti e segui i tornei
+                    pubblicate da SIW Calcio.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="/tornei" class="btn">Vai ai tornei</a>
+                    <a href="/squadre" class="btn btn-secondary">Vedi le squadre</a>
+                </div>
+            </div>
+
+            <div class="hero-card">
+                <div class="ball-icon">⚽</div>
+                <h3>Tutto sui tornei</h3>
+                <p>
+                    Un punto di riferimento semplice per consultare partite, squadre,
+                    giocatori e informazioni sui tornei.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="quick-links">
+        <div class="container">
+            <h2>Esplora SIW Calcio</h2>
+
+            <div class="cards-grid">
+                <a href="/tornei" class="info-card">
+                    <span class="card-icon">🏆</span>
+                    <h3>Tornei</h3>
+                    <p>Visualizza l’elenco dei tornei pubblicati e consulta i dettagli.</p>
+                </a>
+
+                <a href="/squadre" class="info-card">
+                    <span class="card-icon">👥</span>
+                    <h3>Squadre</h3>
+                    <p>Scopri le squadre presenti e le informazioni principali.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section sec:authorize="hasAuthority('ADMIN')" class="admin-section">
+        <div class="container">
+            <div class="admin-panel">
+                <div class="section-title">
+                    <span class="eyebrow">Azioni rapide</span>
+                    <h2>Nuovi contenuti</h2>
+                    <p>
+                        Aggiungi rapidamente nuovi elementi al sito.
+                    </p>
+                </div>
+
+                <div class="admin-actions">
+                    <a href="/admin/tornei/crea" class="admin-link">Nuovo torneo</a>
+                    <a href="/admin/squadre/crea" class="admin-link">Nuova squadra</a>
+                    <a href="/admin/giocatori/crea" class="admin-link">Nuovo giocatore</a>
+                    <a href="/admin/arbitri/crea" class="admin-link">Nuovo arbitro</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
     </div>
+</footer>
 </body>
 </html>

@@ -1,6 +1,9 @@
 package it.progettosiw.siwcalcio.controller;
 
 import it.progettosiw.siwcalcio.dto.IscrizioneForm;
+import it.progettosiw.siwcalcio.exceptions.SquadraDaDisiscrivereNonIscrittaException;
+import it.progettosiw.siwcalcio.exceptions.SquadraNonEsisteException;
+import it.progettosiw.siwcalcio.exceptions.TorneoGiaEsisteException;
 import it.progettosiw.siwcalcio.model.SquadraIscritta;
 import it.progettosiw.siwcalcio.model.Torneo;
 import it.progettosiw.siwcalcio.service.PartitaService;
@@ -42,7 +45,6 @@ public class TorneoController {
 
     @GetMapping("/tornei/{id}")
     public String show(@PathVariable("id") Long id, Model model){
-        //torneo con quell'id non trovato -> 404
         model.addAttribute("torneo", this.torneoService.getTorneoById(id));
         model.addAttribute("partiteOggi", this.partitaService.getPartiteDiOggiPerTorneo(id));
         return "/tornei/torneo_singolo";
@@ -50,7 +52,6 @@ public class TorneoController {
 
     @GetMapping("/tornei/{id}/calendario")
     public String getCalendarioTorneo(@PathVariable("id") Long id, Model model){
-        //torneo con quell'id non trovato -> 404
         model.addAttribute("torneo", this.torneoService.getTorneoById(id));
         model.addAttribute("partiteScheduled", this.partitaService.getCalendarioPerTorneo(id));
         return "/tornei/calendario_torneo";
@@ -58,7 +59,6 @@ public class TorneoController {
 
     @GetMapping("/tornei/{id}/partite-terminate")
     public String getPartiteTerminate(@PathVariable("id") Long id, Model model){
-        //torneo con quell'id non trovato -> 404
         model.addAttribute("torneo", this.torneoService.getTorneoById(id));
         model.addAttribute("partitePlayed", this.partitaService.getPartiteTerminatePerTorneo(id));
         return "/tornei/partite_terminate";
@@ -66,7 +66,6 @@ public class TorneoController {
 
     @GetMapping("/tornei/{id}/classifica")
     public String getClassifica(@PathVariable("id") Long id, Model model){
-        //torneo con quell'id non trovato -> 404
 
         model.addAttribute("torneo", this.torneoService.getTorneoById(id));
 
@@ -90,13 +89,17 @@ public class TorneoController {
         if (b.hasErrors()) {
             return "/admin/tornei/crea_torneo";
         }
-        this.torneoService.save(torneo);
-        return "redirect:/tornei/"+torneo.getId();
+        try {
+            this.torneoService.save(torneo);
+            return "redirect:/tornei/" + torneo.getId();
+        } catch(TorneoGiaEsisteException e){
+            b.reject("torneo.GiaEsiste");
+            return "/admin/tornei/crea_torneo";
+        }
     }
 
     @GetMapping("/admin/tornei/{id}/modifica")
     public String getFormModificaTorneo(@PathVariable("id") Long id, Model model){
-        //torneo con quell'id non trovato -> 404
         Torneo torneo = this.torneoService.getTorneoById(id);
         model.addAttribute("torneo", torneo);
         model.addAttribute("squadreIscritte", torneo.getIscrizioni());
@@ -108,7 +111,6 @@ public class TorneoController {
 
     @PostMapping("/admin/tornei/{id}/modifica")
     public String modificaTorneo(@PathVariable("id") Long torneoId, @Valid @ModelAttribute("torneo") Torneo torneo, BindingResult b, Model model){
-        //torneo con quell'id non esiste per modifica -> 404
         this.annoTorneoValidator.validate(torneo,b);
         if (b.hasErrors()) {
             model.addAttribute("squadreIscritte", torneo.getIscrizioni());
@@ -124,7 +126,7 @@ public class TorneoController {
     @PostMapping("/admin/tornei/{id}/iscrivi")
     public String aggiungiIscrizioneAlTorneo(@PathVariable("id") Long torneoId, @Valid @ModelAttribute("nuovaSquadra") IscrizioneForm iscForm,
                                              BindingResult b, Model model){
-        //torneo o try catch squadra con quell'id non esistono, torneo->404, squadra->reject inserire squadra valida
+        //try catch squadra con quell'id non esiste, reject
         if (b.hasErrors()) {
             Torneo torneo = this.torneoService.getTorneoById(torneoId);
             model.addAttribute("torneo", torneo);
@@ -134,14 +136,23 @@ public class TorneoController {
             model.addAttribute("nuovaSquadra", new IscrizioneForm());
             return "/admin/tornei/modifica_torneo";
         }
-        this.squadraIscrittaService.addIscrizioneAlTorneo(torneoId, iscForm.getSquadraId());
-        return "redirect:/tornei/"+torneoId;
+        try {
+            this.squadraIscrittaService.addIscrizioneAlTorneo(torneoId, iscForm.getSquadraId());
+            return "redirect:/tornei/" + torneoId;
+        } catch (SquadraNonEsisteException e){
+            Torneo torneo = this.torneoService.getTorneoById(torneoId);
+            model.addAttribute("torneo", torneo);
+            model.addAttribute("squadreIscritte", torneo.getIscrizioni());
+            model.addAttribute("squadreNonIscritte", this.squadraService.getSquadreNonIscritteAlTorneo(torneoId));
+            model.addAttribute("squadra", new IscrizioneForm());
+            model.addAttribute("nuovaSquadra", new IscrizioneForm());
+            return "/admin/tornei/modifica_torneo";
+        }
     }
 
     @PostMapping("/admin/tornei/{id}/disiscrivi")
     public String rimuoviIscrizioneDalTorneo(@PathVariable("id") Long torneoId, @Valid @ModelAttribute("squadra") IscrizioneForm iscForm,
                                              BindingResult b, Model model){
-        //torneo o try catch squadra con quell'id non esistono, torneo->404, squadra->reject inserire squadra valida
         if (b.hasErrors()) {
             Torneo torneo = this.torneoService.getTorneoById(torneoId);
             model.addAttribute("torneo", torneo);
@@ -151,8 +162,18 @@ public class TorneoController {
             model.addAttribute("nuovaSquadra", new IscrizioneForm());
             return "/admin/tornei/modifica_torneo";
         }
-        this.squadraIscrittaService.removeIscrizioneAlTorneo(torneoId, iscForm.getSquadraId());
-        return "redirect:/tornei/"+torneoId;
+        try {
+            this.squadraIscrittaService.removeIscrizioneAlTorneo(torneoId, iscForm.getSquadraId());
+            return "redirect:/tornei/" + torneoId;
+        } catch(SquadraDaDisiscrivereNonIscrittaException e){
+            Torneo torneo = this.torneoService.getTorneoById(torneoId);
+            model.addAttribute("torneo", torneo);
+            model.addAttribute("squadreIscritte", torneo.getIscrizioni());
+            model.addAttribute("squadreNonIscritte", this.squadraService.getSquadreNonIscritteAlTorneo(torneoId));
+            model.addAttribute("squadra", new IscrizioneForm());
+            model.addAttribute("nuovaSquadra", new IscrizioneForm());
+            return "/admin/tornei/modifica_torneo";
+        }
     }
 
 }

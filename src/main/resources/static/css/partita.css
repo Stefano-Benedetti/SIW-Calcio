@@ -1,0 +1,285 @@
+.match-title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.match-title a {
+    color: var(--color-secondary);
+    transition: color 0.2s ease;
+}
+
+.match-title a:hover {
+    color: var(--color-primary);
+}
+
+.match-title span {
+    color: var(--color-muted);
+}
+
+.match-summary {
+    padding: 28px;
+    margin-bottom: 30px;
+    border-radius: var(--radius-lg);
+    background:
+            linear-gradient(135deg, rgba(31, 122, 58, 0.10), rgba(15, 23, 42, 0.04)),
+            #f8faf9;
+    border: 1px solid var(--color-border);
+    text-align: center;
+}
+
+.match-teams {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 22px;
+}
+
+.team-name {
+    color: var(--color-secondary);
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.team-name:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
+.match-score {
+    min-width: 120px;
+    padding: 14px 20px;
+    border-radius: var(--radius-md);
+    background: var(--color-secondary);
+    color: #ffffff;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 800;
+    line-height: 1;
+    box-shadow: var(--shadow-sm);
+}
+
+.match-score span {
+    display: inline-block;
+}
+
+.match-score-scheduled {
+    background: var(--color-primary);
+    font-size: 1.6rem;
+    text-transform: uppercase;
+}
+
+.match-status {
+    display: inline-flex;
+    margin-top: 22px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    color: var(--color-primary-dark);
+    font-weight: 800;
+}
+
+.match-status-played {
+    color: var(--color-secondary);
+}
+
+.match-info {
+    margin-top: 4px;
+}
+
+.result-section {
+    margin-top: 34px;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-border);
+}
+
+.result-section h2 {
+    margin: 0 0 18px;
+    color: var(--color-secondary);
+    font-size: 1.6rem;
+}
+
+.result-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 20px 22px;
+    border-radius: var(--radius-md);
+    background: #f8faf9;
+    border: 1px solid var(--color-border);
+}
+
+.result-box span {
+    color: var(--color-muted);
+    font-weight: 700;
+}
+
+.result-box strong {
+    color: var(--color-primary-dark);
+    font-size: 1.25rem;
+}
+
+.comments-section {
+    margin-top: 34px;
+    padding: 34px;
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.comments-header {
+    margin-bottom: 22px;
+}
+
+.comments-header h2 {
+    margin: 0;
+    color: var(--color-secondary);
+    font-size: 1.8rem;
+}
+
+.comments-wrapper {
+    display: grid;
+    gap: 30px;
+}
+
+.user-comments-block,
+.other-comments-block,
+.new-comment-block {
+    display: grid;
+    gap: 16px;
+}
+
+.user-comments-block h3,
+.other-comments-block h3,
+.new-comment-block h3 {
+    margin: 0;
+    color: var(--color-secondary);
+    font-size: 1.25rem;
+}
+
+.comments-list {
+    display: grid;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.comment-card {
+    padding: 20px;
+    border-radius: var(--radius-md);
+    background: #f8faf9;
+    border: 1px solid var(--color-border);
+}
+
+.comment-card-own {
+    border-color: rgba(31, 122, 58, 0.35);
+    background: #f4fbf6;
+}
+
+.comment-author {
+    margin-bottom: 8px;
+    color: var(--color-primary-dark);
+    font-weight: 800;
+}
+
+.comment-text {
+    margin: 0;
+    color: var(--color-text);
+}
+
+.comment-form {
+    display: grid;
+    gap: 12px;
+}
+
+.edit-comment-form {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+}
+
+.comment-textarea {
+    width: 100%;
+    min-height: 110px;
+    padding: 14px;
+    resize: vertical;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: #ffffff;
+    color: var(--color-text);
+    font: inherit;
+    line-height: 1.5;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.edit-comment-form .comment-textarea {
+    min-height: 90px;
+}
+
+.comment-textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(31, 122, 58, 0.14);
+}
+
+.comment-textarea::placeholder {
+    color: #9ca3af;
+}
+
+.new-comment-block {
+    margin-top: 30px;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-border);
+}
+
+.form-errors {
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+    color: #be123c;
+    font-weight: 600;
+}
+
+.form-errors p {
+    margin: 0;
+}
+
+.field-error {
+    color: #be123c;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    clip: rect(0, 0, 0, 0);
+}
+
+@media (max-width: 760px) {
+    .match-teams {
+        grid-template-columns: 1fr;
+    }
+
+    .match-score {
+        justify-self: center;
+    }
+
+    .comments-section {
+        padding: 26px 22px;
+    }
+
+    .result-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

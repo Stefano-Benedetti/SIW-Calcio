@@ -1,5 +1,7 @@
 package it.progettosiw.siwcalcio.service;
 
+import it.progettosiw.siwcalcio.exceptions.TorneoGiaEsisteException;
+import it.progettosiw.siwcalcio.exceptions.TorneoNonTrovatoException;
 import it.progettosiw.siwcalcio.model.Torneo;
 import it.progettosiw.siwcalcio.repository.TorneoRepository;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ public class TorneoService {
     public Torneo getTorneoById(Long id){
         Optional<Torneo> torneoOpt = this.torneoRepository.findById(id);
         if(torneoOpt.isEmpty()){
-            throw new RuntimeException("torneo non trovato");
+            throw new TorneoNonTrovatoException("torneo non trovato");
         }
         return torneoOpt.get();
     }
@@ -35,7 +37,7 @@ public class TorneoService {
     public Torneo getTorneoByIdWithIscrizioni(Long id){
         Optional<Torneo> torneoOpt = this.torneoRepository.findWithIscrizioniById(id);
         if(torneoOpt.isEmpty()){
-            throw new RuntimeException("torneo non trovato");
+            throw new TorneoNonTrovatoException("torneo non trovato");
         }
         return torneoOpt.get();
     }
@@ -43,13 +45,13 @@ public class TorneoService {
     @Transactional
     public void save(Torneo torneo){
         if(this.torneoRepository.existsByNomeAndAnno(torneo.getNome(), torneo.getAnno()))
-            throw new RuntimeException("questo torneo già esiste");
+            throw new TorneoGiaEsisteException("esiste già un torneo con questo nome in questo anno");
         this.torneoRepository.save(torneo);
     }
 
     @Transactional
     public void modify(Torneo temp, Long torneoId){
-        Torneo torneo = getTorneoById(torneoId);
+        Torneo torneo = this.getTorneoById(torneoId);
 
         torneo.setNome(temp.getNome());
         torneo.setAnno(temp.getAnno());

@@ -1,7 +1,9 @@
 package it.progettosiw.siwcalcio.service;
 
 import it.progettosiw.siwcalcio.dto.PartitaForm;
+import it.progettosiw.siwcalcio.exceptions.*;
 import it.progettosiw.siwcalcio.model.*;
+import it.progettosiw.siwcalcio.repository.ArbitroRepository;
 import it.progettosiw.siwcalcio.repository.PartitaRepository;
 import it.progettosiw.siwcalcio.repository.SquadraIscrittaRepository;
 import it.progettosiw.siwcalcio.repository.SquadraRepository;
@@ -23,16 +25,16 @@ public class PartitaService {
 
     private TorneoService torneoService;
 
-    private ArbitroService arbitroService;
+    private ArbitroRepository arbitroRepository;
 
     private SquadraIscrittaRepository squadraIscrittaRepository;
 
     public PartitaService(PartitaRepository partitaRepository, SquadraRepository squadraRepository,
-                          TorneoService torneoService, ArbitroService arbitroService, SquadraIscrittaRepository squadraIscrittaRepository){
+                          TorneoService torneoService, ArbitroRepository arbitroRepository, SquadraIscrittaRepository squadraIscrittaRepository){
         this.partitaRepository = partitaRepository;
         this.squadraRepository = squadraRepository;
         this.torneoService = torneoService;
-        this.arbitroService = arbitroService;
+        this.arbitroRepository = arbitroRepository;
         this.squadraIscrittaRepository = squadraIscrittaRepository;
     }
 
@@ -44,18 +46,14 @@ public class PartitaService {
     @Transactional(readOnly = true)
     public Partita getPartitaById(Long id){
         Optional<Partita> partitaOpt = this.partitaRepository.findById(id);
-        if(partitaOpt.isEmpty()){
-            throw new RuntimeException("partita non trovata");
-        }
+        if(partitaOpt.isEmpty()) throw new PartitaNonTrovataException("partita non trovata");
         return partitaOpt.get();
     }
 
     @Transactional(readOnly = true)
     public Partita getPartitaByIdWithCommenti(Long id){
         Optional<Partita> partitaOpt = this.partitaRepository.findWithCommentiById(id);
-        if(partitaOpt.isEmpty()){
-            throw new RuntimeException("partita non trovata");
-        }
+        if(partitaOpt.isEmpty()) throw new PartitaNonTrovataException("partita non trovata");
         return partitaOpt.get();
     }
 
@@ -72,16 +70,16 @@ public class PartitaService {
     @Transactional
     public void creaPartita(PartitaForm pf, Long torneoId){
         if(pf.getSquadraHomeId().equals(pf.getSquadraAwayId()))
-            throw new RuntimeException("una squadra non può giocare contro se stessa");
+            throw new SquadraControSeStessaException("una squadra non può giocare contro se stessa");
 
         Long squadraHomeId = pf.getSquadraHomeId();
         Long squadraAwayId = pf.getSquadraAwayId();
 
         if(!this.squadraIscrittaRepository.existsSquadraIscrittaBySquadraIdAndTorneoId(squadraHomeId,torneoId)
             || !this.squadraIscrittaRepository.existsSquadraIscrittaBySquadraIdAndTorneoId(squadraAwayId,torneoId))
-            throw new RuntimeException("una delle due squadre non fa parte del torneo");
+            throw new PartitaConSquadraNonIscrittaException("una delle due squadre non fa parte del torneo");
 
-        Arbitro arbitro = this.arbitroService.getArbitroById(pf.getArbitroId());
+        Arbitro arbitro = this.getArbitroById(pf.getArbitroId());
         Squadra squadraHome = this.getSquadraById(squadraHomeId);
         Squadra squadraAway = this.getSquadraById(squadraAwayId);
         Torneo torneo = this.torneoService.getTorneoById(torneoId);
@@ -91,11 +89,15 @@ public class PartitaService {
         this.partitaRepository.save(partita);
     }
 
+    private Arbitro getArbitroById(Long id){
+        Optional<Arbitro> arbitroOpt = this.arbitroRepository.findById(id);
+        if(arbitroOpt.isEmpty()) throw new ArbitroNonEsisteException("l'arbitro selezionato non esiste");
+        return arbitroOpt.get();
+    }
+
     private Squadra getSquadraById(Long id){
         Optional<Squadra> squadraOpt = this.squadraRepository.findById(id);
-        if(squadraOpt.isEmpty()){
-            throw new RuntimeException("squadra non trovata");
-        }
+        if(squadraOpt.isEmpty()) throw new SquadraNonEsisteException("una delle due squadre selezionate non esiste");
         return squadraOpt.get();
     }
 
@@ -134,21 +136,24 @@ public class PartitaService {
     }
 
     @Transactional
-    public void delete(Long partitaId){
-        Partita partita = this.getPartitaById(partitaId);
+    public void deletePartita(Long partitaId){
+        Partita p = this.getPartitaById(partitaId);
+        Long torneoId = p.getTorneo().getId();
+        togliPunteggioDiPartitaDalTorneo(p,torneoId);
 
-        if(partita.getStato().equals(StatoPartita.PLAYED)) {
-            Long squadraId;
-            Long torneoId = partita.getTorneo().getId();
-            if (partita.getGoalsHome() > partita.getGoalsAway())
-                squadraId = partita.getSquadraHome().getId();
+        this.partitaRepository.delete(p);
+    }
+
+    private void togliPunteggioDiPartitaDalTorneo(Partita p, Long torneoId){
+        if(p.getStato().equals(StatoPartita.PLAYED) && p.getGoalsHome() != p.getGoalsAway()) {
+            Long squadraVincitriceId;
+            if (p.getGoalsHome() > p.getGoalsAway())
+                squadraVincitriceId = p.getSquadraHome().getId();
             else
-                squadraId = partita.getSquadraAway().getId();
+                squadraVincitriceId = p.getSquadraAway().getId();
 
-            this.removeVittoriaDallaSquadraIscrittaAlTorneo(squadraId, torneoId);
+            this.removeVittoriaDallaSquadraIscrittaAlTorneo(squadraVincitriceId, torneoId);
         }
-
-        this.partitaRepository.deleteById(partitaId);
     }
 
     @Transactional
@@ -157,28 +162,19 @@ public class PartitaService {
                 this.partitaRepository.findPartitasByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(torneoId, squadraId, torneoId, squadraId);
 
         for(Partita p : partiteDaEliminare){
-            if(p.getStato().equals(StatoPartita.PLAYED)) {
-                Long squadraVincitriceId;
-                if (p.getGoalsHome() > p.getGoalsAway())
-                    squadraVincitriceId = p.getSquadraHome().getId();
-                else
-                    squadraVincitriceId = p.getSquadraAway().getId();
-                this.removeVittoriaDallaSquadraIscrittaAlTorneo(squadraVincitriceId, torneoId);
-            }
+            togliPunteggioDiPartitaDalTorneo(p,torneoId);
             this.partitaRepository.delete(p);
         }
     }
 
-    @Transactional
-    public void addVittoriaAllaSquadraIscrittaAlTorneo(Long squadraId, Long torneoId){
+    private void addVittoriaAllaSquadraIscrittaAlTorneo(Long squadraId, Long torneoId){
         SquadraIscritta si;
         si = this.squadraIscrittaRepository.findSquadraIscrittaBySquadraIdAndTorneoId(squadraId, torneoId);
         si.addVittoria();
         this.squadraIscrittaRepository.save(si);
     }
 
-    @Transactional
-    public void removeVittoriaDallaSquadraIscrittaAlTorneo(Long squadraId, Long torneoId){
+    private void removeVittoriaDallaSquadraIscrittaAlTorneo(Long squadraId, Long torneoId){
         SquadraIscritta si;
         si = this.squadraIscrittaRepository.findSquadraIscrittaBySquadraIdAndTorneoId(squadraId, torneoId);
         si.removeVittoria();

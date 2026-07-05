@@ -1,5 +1,7 @@
 package it.progettosiw.siwcalcio.service;
 
+import it.progettosiw.siwcalcio.exceptions.SquadraDaDisiscrivereNonIscrittaException;
+import it.progettosiw.siwcalcio.exceptions.SquadraNonEsisteException;
 import it.progettosiw.siwcalcio.model.*;
 import it.progettosiw.siwcalcio.repository.SquadraIscrittaRepository;
 import it.progettosiw.siwcalcio.repository.SquadraRepository;
@@ -69,13 +71,15 @@ public class SquadraIscrittaService {
     private Squadra getSquadraById(Long id){
         Optional<Squadra> squadraOpt = this.squadraRepository.findById(id);
         if(squadraOpt.isEmpty()){
-            throw new RuntimeException("squadra non trovata");
+            throw new SquadraNonEsisteException("la squadra selezionata non esiste");
         }
         return squadraOpt.get();
     }
 
     @Transactional
     public void removeIscrizioneAlTorneo(Long torneoId, Long squadraId){
+        if (!this.squadraIscrittaRepository.existsSquadraIscrittaBySquadraIdAndTorneoId(squadraId,torneoId))
+            throw new SquadraDaDisiscrivereNonIscrittaException("la squadra selezionata non è iscritta al torneo");
         this.partitaService.rimuoviPartiteDiUnaSquadraETogliPunteggi(torneoId,squadraId);
         this.squadraIscrittaRepository.deleteByTorneoIdAndSquadraId(torneoId,squadraId);
     }

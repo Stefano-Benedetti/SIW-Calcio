@@ -1,26 +1,133 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <p>-->
+<!--        <a href="/">Vai alla home</a>-->
+<!--    </p>-->
+<!--    <h1 th:text="${squadra.nome}">nome</h1>-->
+<!--    <p> <span th:text="|Anno fondazione: ${squadra.fondazione}|">fondazione</span>  </p>-->
+<!--    <p> <span th:text="|Città di appartenenza: ${squadra.citta}|">città</span>  </p>-->
+<!--    <p>-->
+<!--        <h2>Giocatori:</h2>-->
+<!--        <div th:if="${squadra.giocatori.isEmpty()}">Al momento questa squadra non ha giocatori registrati</divth:unless></div>-->
+<!--        <ul>-->
+<!--            <li th:each="giocatore : ${squadra.giocatori}">-->
+<!--                <a th:href="|/giocatori/${giocatore.id}|"-->
+<!--                   th:text="|${giocatore.nome} ${giocatore.cognome}|">nome</a>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </p>-->
+<!--    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/squadre/${squadra.id}/modifica|">Modifica</a></p>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Calcio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squadra - SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/detail.css}">
 </head>
+
 <body>
-    <p>
-        <a href="/">Vai alla home</a>
-    </p>
-    <h1 th:text="${squadra.nome}">nome</h1>
-    <p> <span th:text="|Anno fondazione: ${squadra.fondazione}|">fondazione</span>  </p>
-    <p> <span th:text="|Città di appartenenza: ${squadra.citta}|">città</span>  </p>
-    <p>
-        <h2>Giocatori:</h2>
-        <div th:if="${squadra.giocatori.isEmpty()}">Al momento questa squadra non ha giocatori registrati</divth:unless></div>
-        <ul>
-            <li th:each="giocatore : ${squadra.giocatori}">
-                <a th:href="|/giocatori/${giocatore.id}|"
-                   th:text="|${giocatore.nome} ${giocatore.cognome}|">nome</a>
-            </li>
-        </ul>
-    </p>
-    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/squadre/${squadra.id}/modifica|">Modifica</a></p>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
+
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+
+            <div sec:authorize="isAnonymous()" class="nav-auth">
+                <a href="/login">Login</a>
+                <a href="/register" class="btn btn-small">Registrazione</a>
+            </div>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline btn-small">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="detail-main">
+    <section class="detail-section">
+        <div class="container">
+            <div class="page-actions">
+                <a href="/" class="back-link">← Vai alla home</a>
+            </div>
+
+            <article class="detail-card">
+                <div class="detail-header">
+                    <div>
+                        <span class="eyebrow">Scheda squadra</span>
+
+                        <h1 th:text="${squadra.nome}">
+                            nome
+                        </h1>
+                    </div>
+
+                    <a sec:authorize="hasAuthority('ADMIN')"
+                       th:href="|/admin/squadre/${squadra.id}/modifica|"
+                       class="btn btn-small">
+                        Modifica
+                    </a>
+                </div>
+
+                <div class="detail-body">
+                    <dl class="info-list">
+                        <div class="info-row">
+                            <dt>Anno di fondazione</dt>
+                            <dd th:text="${squadra.fondazione}">
+                                fondazione
+                            </dd>
+                        </div>
+
+                        <div class="info-row">
+                            <dt>Città di appartenenza</dt>
+                            <dd th:text="${squadra.citta}">
+                                città
+                            </dd>
+                        </div>
+                    </dl>
+
+                    <section class="related-section">
+                        <div class="related-header">
+                            <h2>Giocatori</h2>
+                            <p>Elenco dei giocatori registrati per questa squadra.</p>
+                        </div>
+
+                        <div th:if="${squadra.giocatori.isEmpty()}" class="empty-state">
+                            Al momento questa squadra non ha giocatori registrati.
+                        </div>
+
+                        <ul th:unless="${squadra.giocatori.isEmpty()}" class="related-list">
+                            <li th:each="giocatore : ${squadra.giocatori}">
+                                <a th:href="|/giocatori/${giocatore.id}|"
+                                   th:text="|${giocatore.nome} ${giocatore.cognome}|"
+                                   class="related-link">
+                                    nome
+                                </a>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
+    </div>
+</footer>
 </body>
 </html>

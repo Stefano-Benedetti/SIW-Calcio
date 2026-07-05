@@ -1,115 +1,370 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--    <style>-->
+<!--        html, body {-->
+<!--            height: auto;-->
+<!--            min-height: 100%;-->
+<!--            overflow-y: auto;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <p>-->
+<!--        <a th:href="|/tornei/${partita.torneo.id}|">Vai al torneo</a>-->
+<!--    </p>-->
+<!--    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/partite/${partita.id}/modifica|">Modifica</a></p>-->
+<!--    <h1>-->
+<!--        <a th:href="|/squadre/${partita.squadraHome.id}|"-->
+<!--           th:text="${partita.squadraHome.nome}">SquadraHome</a>-->
+<!--        - -->
+<!--        <a th:href="|/squadre/${partita.squadraAway.id}|"-->
+<!--           th:text="${partita.squadraAway.nome}">SquadraAway</a>-->
+<!--    </h1>-->
+<!--    <p>-->
+<!--        Quando: <span th:text="|${#temporals.format(partita.data, 'dd/MM/yyyy')} alle ${#temporals.format(partita.data, 'HH:mm')}|">quando</span>-->
+<!--    </p>-->
+<!--    <p>-->
+<!--        Dove: <span th:text="${partita.luogo}">dove</span>-->
+<!--    </p>-->
+<!--    <p>-->
+<!--        Arbitro (codice arbitrale): <span th:text="|${partita.arbitro.nome} ${partita.arbitro.cognome} (${partita.arbitro.codiceArbitrale})|">Nome Cognome</span>-->
+<!--    </p>-->
+<!--    <div th:if="${partita.stato.name() == 'SCHEDULED'}">-->
+<!--        <p>Partita non ancora giocata</p>-->
+<!--    </div>-->
+
+<!--    <div th:if="${partita.stato.name() == 'PLAYED'}">-->
+<!--        <p>-->
+<!--            Risultato finale: <span th:text="|${partita.goalsHome} - ${partita.goalsAway}|"></span>-->
+<!--        </p>-->
+<!--        <div th:if="${partita.goalsHome > partita.goalsAway}">-->
+<!--            <p>-->
+<!--                Vincitori: <span th:text="|${partita.squadraHome.nome}|">squadraHome</span>-->
+<!--            </p>-->
+<!--        </div>-->
+<!--        <div th:if="${partita.goalsHome < partita.goalsAway}">-->
+<!--            <p>-->
+<!--                Vincitori: <span th:text="|${partita.squadraAway.nome}|">squadraHome</span>-->
+<!--            </p>-->
+<!--        </div>-->
+<!--        <div th:if="${partita.goalsHome == partita.goalsAway}">-->
+<!--            <p>-->
+<!--                PAREGGIO-->
+<!--            </p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <h2>Commenti</h2>-->
+
+<!--    <div th:if="${partita.commenti.isEmpty()}">-->
+<!--        Ancora nessun commento.-->
+<!--    </div>-->
+
+<!--    <div th:if="${!partita.commenti.isEmpty()}">-->
+
+<!--        &lt;!&ndash; commenti utente (solo se è loggato) &ndash;&gt;-->
+<!--        <div th:if="${username != null}">-->
+<!--            <ul>-->
+<!--                <li th:each="c : ${partita.commenti}"-->
+<!--                    th:if="${c.utente.username == username}">-->
+<!--                    <p><span th:text="${c.utente.username}">utente</span></p>-->
+<!--                    <p><span th:text="${c.testo}">commento</span></p>-->
+
+<!--                    &lt;!&ndash; modifica commento &ndash;&gt;-->
+<!--                    <form th:action="@{/partite/{partitaId}/commenti/{commentoId}/modifica(partitaId=${partita.id}, commentoId=${c.id})}"-->
+<!--                          method="post" th:object="${commento}">-->
+<!--                        <div th:if="${#fields.hasGlobalErrors()}">-->
+<!--                            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>-->
+<!--                        </div>-->
+<!--                        <textarea th:field="${commento.testo}" rows="3" cols="50" th:text="${commento.testo}"></textarea>-->
+<!--                        <span th:if="${#fields.hasErrors('testo')}" th:errors="${commento.testo}"></span>-->
+<!--                        <br/>-->
+<!--                        <button type="submit">Modifica</button>-->
+<!--                    </form>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; altri commenti &ndash;&gt;-->
+<!--        <ul>-->
+<!--            <li th:each="c : ${partita.commenti}"-->
+<!--                th:if="${username == null or c.utente.username != username}">-->
+<!--                <p><span th:text="${c.utente.username}">utente</span></p>-->
+<!--                <p><span th:text="${c.testo}">commento</span></p>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; nuovo commento &ndash;&gt;-->
+<!--    <div th:if="${username != null}">-->
+<!--        <h3>Lascia un commento</h3>-->
+<!--        <form th:action="@{/partite/{partitaId}/commenti/nuovo(partitaId=${partita.id})}" method="post" th:object="${commentoNuovo}">-->
+<!--            <div th:if="${#fields.hasGlobalErrors()}">-->
+<!--                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>-->
+<!--            </div>-->
+<!--            <textarea th:field="${commentoNuovo.testo}" rows="4" cols="60" placeholder="Scrivi qui..."d></textarea>-->
+<!--            <span th:if="${#fields.hasErrors('testo')}" th:errors="${commentoNuovo.testo}"></span>-->
+<!--            <br/>-->
+<!--            <button type="submit">Pubblica</button>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Calcio</title>
-    <style>
-        html, body {
-            height: auto;
-            min-height: 100%;
-            overflow-y: auto;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partita - SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/detail.css}">
+    <link rel="stylesheet" th:href="@{/css/partita.css}">
 </head>
+
 <body>
-    <p>
-        <a th:href="|/tornei/${partita.torneo.id}|">Vai al torneo</a>
-    </p>
-    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/partite/${partita.id}/modifica|">Modifica</a></p>
-    <h1>
-        <a th:href="|/squadre/${partita.squadraHome.id}|"
-           th:text="${partita.squadraHome.nome}">SquadraHome</a>
-        -
-        <a th:href="|/squadre/${partita.squadraAway.id}|"
-           th:text="${partita.squadraAway.nome}">SquadraAway</a>
-    </h1>
-    <p>
-        Quando: <span th:text="|${#temporals.format(partita.data, 'dd/MM/yyyy')} alle ${#temporals.format(partita.data, 'HH:mm')}|">quando</span>
-    </p>
-    <p>
-        Dove: <span th:text="${partita.luogo}">dove</span>
-    </p>
-    <p>
-        Arbitro (codice arbitrale): <span th:text="|${partita.arbitro.nome} ${partita.arbitro.cognome} (${partita.arbitro.codiceArbitrale})|">Nome Cognome</span>
-    </p>
-    <div th:if="${partita.stato.name() == 'SCHEDULED'}">
-        <p>Partita non ancora giocata</p>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
+
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+
+            <div sec:authorize="isAnonymous()" class="nav-auth">
+                <a href="/login">Login</a>
+                <a href="/register" class="btn btn-small">Registrazione</a>
+            </div>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline btn-small">Logout</button>
+            </form>
+        </nav>
     </div>
+</header>
 
-    <div th:if="${partita.stato.name() == 'PLAYED'}">
-        <p>
-            Risultato finale: <span th:text="|${partita.goalsHome} - ${partita.goalsAway}|"></span>
-        </p>
-        <div th:if="${partita.goalsHome > partita.goalsAway}">
-            <p>
-                Vincitori: <span th:text="|${partita.squadraHome.nome}|">squadraHome</span>
-            </p>
-        </div>
-        <div th:if="${partita.goalsHome < partita.goalsAway}">
-            <p>
-                Vincitori: <span th:text="|${partita.squadraAway.nome}|">squadraHome</span>
-            </p>
-        </div>
-        <div th:if="${partita.goalsHome == partita.goalsAway}">
-            <p>
-                PAREGGIO
-            </p>
-        </div>
-    </div>
+<main class="detail-main match-main">
+    <section class="detail-section">
+        <div class="container">
+            <div class="page-actions">
+                <a th:href="|/tornei/${partita.torneo.id}|" class="back-link">← Vai al torneo</a>
+            </div>
 
-    <h2>Commenti</h2>
+            <article class="detail-card match-card">
+                <div class="detail-header match-header">
+                    <div>
+                        <span class="eyebrow">Scheda partita</span>
 
-    <div th:if="${partita.commenti.isEmpty()}">
-        Ancora nessun commento.
-    </div>
+                        <h1 class="match-title">
+                            <a th:href="|/squadre/${partita.squadraHome.id}|"
+                               th:text="${partita.squadraHome.nome}">
+                                SquadraHome
+                            </a>
+                            <span>-</span>
+                            <a th:href="|/squadre/${partita.squadraAway.id}|"
+                               th:text="${partita.squadraAway.nome}">
+                                SquadraAway
+                            </a>
+                        </h1>
+                    </div>
 
-    <div th:if="${!partita.commenti.isEmpty()}">
+                    <a sec:authorize="hasAuthority('ADMIN')"
+                       th:href="|/admin/partite/${partita.id}/modifica|"
+                       class="btn btn-small">
+                        Modifica
+                    </a>
+                </div>
 
-        <!-- commenti utente (solo se è loggato) -->
-        <div th:if="${username != null}">
-            <ul>
-                <li th:each="c : ${partita.commenti}"
-                    th:if="${c.utente.username == username}">
-                    <p><span th:text="${c.utente.username}">utente</span></p>
-                    <p><span th:text="${c.testo}">commento</span></p>
+                <div class="detail-body">
+                    <section class="match-summary">
+                        <div class="match-teams">
+                            <a th:href="|/squadre/${partita.squadraHome.id}|"
+                               th:text="${partita.squadraHome.nome}"
+                               class="team-name">
+                                SquadraHome
+                            </a>
 
-                    <!-- modifica commento -->
-                    <form th:action="@{/partite/{partitaId}/commenti/{commentoId}/modifica(partitaId=${partita.id}, commentoId=${c.id})}"
-                          method="post" th:object="${commento}">
-                        <div th:if="${#fields.hasGlobalErrors()}">
+                            <div class="match-score" th:if="${partita.stato.name() == 'PLAYED'}">
+                                <span th:text="${partita.goalsHome}">0</span>
+                                <span>-</span>
+                                <span th:text="${partita.goalsAway}">0</span>
+                            </div>
+
+                            <div class="match-score match-score-scheduled" th:if="${partita.stato.name() == 'SCHEDULED'}">
+                                vs
+                            </div>
+
+                            <a th:href="|/squadre/${partita.squadraAway.id}|"
+                               th:text="${partita.squadraAway.nome}"
+                               class="team-name">
+                                SquadraAway
+                            </a>
+                        </div>
+
+                        <div class="match-status" th:if="${partita.stato.name() == 'SCHEDULED'}">
+                            Partita non ancora giocata
+                        </div>
+
+                        <div class="match-status match-status-played" th:if="${partita.stato.name() == 'PLAYED'}">
+                            Risultato finale
+                        </div>
+                    </section>
+
+                    <dl class="info-list match-info">
+                        <div class="info-row">
+                            <dt>Quando</dt>
+                            <dd th:text="|${#temporals.format(partita.data, 'dd/MM/yyyy')} alle ${#temporals.format(partita.data, 'HH:mm')}|">
+                                quando
+                            </dd>
+                        </div>
+
+                        <div class="info-row">
+                            <dt>Dove</dt>
+                            <dd th:text="${partita.luogo}">
+                                dove
+                            </dd>
+                        </div>
+
+                        <div class="info-row">
+                            <dt>Arbitro</dt>
+                            <dd th:text="|${partita.arbitro.nome} ${partita.arbitro.cognome} (${partita.arbitro.codiceArbitrale})|">
+                                Nome Cognome
+                            </dd>
+                        </div>
+                    </dl>
+
+                    <section th:if="${partita.stato.name() == 'PLAYED'}" class="result-section">
+                        <h2>Esito della partita</h2>
+
+                        <div th:if="${partita.goalsHome > partita.goalsAway}" class="result-box">
+                            <span>Vincitori</span>
+                            <strong th:text="${partita.squadraHome.nome}">squadraHome</strong>
+                        </div>
+
+                        <div th:if="${partita.goalsHome < partita.goalsAway}" class="result-box">
+                            <span>Vincitori</span>
+                            <strong th:text="${partita.squadraAway.nome}">squadraAway</strong>
+                        </div>
+
+                        <div th:if="${partita.goalsHome == partita.goalsAway}" class="result-box">
+                            <span>Esito</span>
+                            <strong>Pareggio</strong>
+                        </div>
+                    </section>
+                </div>
+            </article>
+
+            <section class="comments-section">
+                <div class="comments-header">
+                    <span class="eyebrow">Discussione</span>
+                    <h2>Commenti</h2>
+                </div>
+
+                <div th:if="${partita.commenti.isEmpty()}" class="empty-state">
+                    Ancora nessun commento.
+                </div>
+
+                <div th:if="${!partita.commenti.isEmpty()}" class="comments-wrapper">
+
+                    <div th:if="${username != null}" class="user-comments-block">
+                        <h3>I tuoi commenti</h3>
+
+                        <ul class="comments-list">
+                            <li th:each="c : ${partita.commenti}"
+                                th:if="${c.utente.username == username}"
+                                class="comment-card comment-card-own">
+
+                                <div class="comment-author">
+                                    <span th:text="${c.utente.username}">utente</span>
+                                </div>
+
+                                <p th:text="${c.testo}" class="comment-text">
+                                    commento
+                                </p>
+
+                                <form th:action="@{/partite/{partitaId}/commenti/{commentoId}/modifica(partitaId=${partita.id}, commentoId=${c.id})}"
+                                      method="post"
+                                      th:object="${commento}"
+                                      class="comment-form edit-comment-form">
+
+                                    <div th:if="${#fields.hasGlobalErrors()}" class="form-errors">
+                                        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+                                    </div>
+
+                                    <label class="sr-only">Modifica commento</label>
+
+                                    <textarea th:field="${commento.testo}"
+                                              rows="3"
+                                              th:text="${commento.testo}"
+                                              class="comment-textarea"></textarea>
+
+                                    <span th:if="${#fields.hasErrors('testo')}"
+                                          th:errors="${commento.testo}"
+                                          class="field-error"></span>
+
+                                    <button type="submit" class="btn btn-small">Modifica</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="other-comments-block">
+                        <h3>Altri commenti</h3>
+
+                        <ul class="comments-list">
+                            <li th:each="c : ${partita.commenti}"
+                                th:if="${username == null or c.utente.username != username}"
+                                class="comment-card">
+
+                                <div class="comment-author">
+                                    <span th:text="${c.utente.username}">utente</span>
+                                </div>
+
+                                <p th:text="${c.testo}" class="comment-text">
+                                    commento
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div th:if="${username != null}" class="new-comment-block">
+                    <h3>Lascia un commento</h3>
+
+                    <form th:action="@{/partite/{partitaId}/commenti/nuovo(partitaId=${partita.id})}"
+                          method="post"
+                          th:object="${commentoNuovo}"
+                          class="comment-form">
+
+                        <div th:if="${#fields.hasGlobalErrors()}" class="form-errors">
                             <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
                         </div>
-                        <textarea th:field="${commento.testo}" rows="3" cols="50" th:text="${commento.testo}"></textarea>
-                        <span th:if="${#fields.hasErrors('testo')}" th:errors="${commento.testo}"></span>
-                        <br/>
-                        <button type="submit">Modifica</button>
+
+                        <textarea th:field="${commentoNuovo.testo}"
+                                  rows="4"
+                                  placeholder="Scrivi qui..."
+                                  class="comment-textarea"></textarea>
+
+                        <span th:if="${#fields.hasErrors('testo')}"
+                              th:errors="${commentoNuovo.testo}"
+                              class="field-error"></span>
+
+                        <button type="submit" class="btn">Pubblica</button>
                     </form>
-                </li>
-            </ul>
+                </div>
+            </section>
         </div>
+    </section>
+</main>
 
-        <!-- altri commenti -->
-        <ul>
-            <li th:each="c : ${partita.commenti}"
-                th:if="${username == null or c.utente.username != username}">
-                <p><span th:text="${c.utente.username}">utente</span></p>
-                <p><span th:text="${c.testo}">commento</span></p>
-            </li>
-        </ul>
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
     </div>
-
-    <!-- nuovo commento -->
-    <div th:if="${username != null}">
-        <h3>Lascia un commento</h3>
-        <form th:action="@{/partite/{partitaId}/commenti/nuovo(partitaId=${partita.id})}" method="post" th:object="${commentoNuovo}">
-            <div th:if="${#fields.hasGlobalErrors()}">
-                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
-            </div>
-            <textarea th:field="${commentoNuovo.testo}" rows="4" cols="60" placeholder="Scrivi qui..."d></textarea>
-            <span th:if="${#fields.hasErrors('testo')}" th:errors="${commentoNuovo.testo}"></span>
-            <br/>
-            <button type="submit">Pubblica</button>
-        </form>
-    </div>
+</footer>
 </body>
 </html>

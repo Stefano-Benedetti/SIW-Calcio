@@ -1,5 +1,7 @@
 package it.progettosiw.siwcalcio.service;
 
+import it.progettosiw.siwcalcio.exceptions.CommentoDiUnAltroException;
+import it.progettosiw.siwcalcio.exceptions.CommentoNonTrovatoException;
 import it.progettosiw.siwcalcio.model.Commento;
 import it.progettosiw.siwcalcio.model.Partita;
 import it.progettosiw.siwcalcio.model.Utente;
@@ -40,7 +42,7 @@ public class CommentoService {
         Commento c = this.getCommentoById(commentoId);
         String username = this.utenteService.getCurrentUserDetails().getUsername();
         if(!c.getUtente().getUsername().equals(username))
-            throw new RuntimeException("non puoi modificare i commenti di un altro");
+            throw new CommentoDiUnAltroException("non puoi modificare i commenti di un altro");
         c.setTesto(testo);
         this.commentoRepository.save(c);
     }
@@ -48,7 +50,7 @@ public class CommentoService {
     private Commento getCommentoById(Long id){
         Optional<Commento> commentoOpt = this.commentoRepository.findById(id);
         if(commentoOpt.isEmpty()){
-            throw new RuntimeException("commento non trovato");
+            throw new CommentoNonTrovatoException("commento non trovato");
         }
         return commentoOpt.get();
     }

@@ -26,7 +26,6 @@ public class SquadraController {
 
     @GetMapping("/squadre/{id}")
     public String show(@PathVariable("id") Long id, Model model){
-        //squadra non esiste -> 404
         model.addAttribute("squadra", this.squadraService.getSquadraById(id));
         return "squadre/squadra_singola";
     }
@@ -55,7 +54,6 @@ public class SquadraController {
 
     @GetMapping("/admin/squadre/{id}/modifica")
     public String getFormModificaSquadra(@PathVariable("id") Long id, Model model){
-        //squadra non esiste -> 404
         Squadra s = this.squadraService.getSquadraById(id);
         model.addAttribute("squadra", s);
         return "admin/squadre/modifica_squadra";
@@ -63,7 +61,6 @@ public class SquadraController {
 
     @PostMapping("/admin/squadre/{id}/modifica")
     public String modifySquadra(@PathVariable("id") Long id, @Valid @ModelAttribute("squadra") Squadra squadra, BindingResult b, Model model){
-        //squadra non esiste -> 404
         this.annoFondazioneValidator.validate(squadra,b);
         if (b.hasErrors()) {
             return "admin/squadre/modifica_squadra";
@@ -74,8 +71,7 @@ public class SquadraController {
 
     @PostMapping("/admin/squadre/{id}/elimina")
     public String deleteSquadra(@PathVariable("id") Long id, Model model){
-        //squadra non esiste -> 404
-        this.squadraService.delete(id);
+        this.squadraService.deleteSquadra(id);
         return "redirect:/";
     }
 }

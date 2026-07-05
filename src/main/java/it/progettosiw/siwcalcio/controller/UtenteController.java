@@ -1,6 +1,7 @@
 package it.progettosiw.siwcalcio.controller;
 
 import it.progettosiw.siwcalcio.dto.RegistrationForm;
+import it.progettosiw.siwcalcio.exceptions.NomeUtenteGiaInUsoException;
 import it.progettosiw.siwcalcio.service.UtenteService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -35,7 +36,12 @@ public class UtenteController {
         if (b.hasErrors()) {
             return "register";
         }
-        utenteService.register(form);
-        return "redirect:/login";
+        try {
+            utenteService.register(form);
+            return "redirect:/login";
+        } catch(NomeUtenteGiaInUsoException e){
+            b.reject("registrazione.NomeUtenteGiaInUso");
+            return "register";
+        }
     }
 }

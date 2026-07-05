@@ -1,37 +1,115 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div>-->
+<!--    <h2>Login</h2>-->
+
+<!--    <div th:if="${param.error}">Credenziali errate</div>-->
+
+<!--    <form th:action="@{/login}" method="post">-->
+<!--        <div>-->
+<!--            <label for="username">Nome Utente</label>-->
+<!--            <input-->
+<!--                    type="text"-->
+<!--                    id="username"-->
+<!--                    name="username"-->
+<!--            >-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <label for="password">Password</label>-->
+<!--            <input-->
+<!--                    type="password"-->
+<!--                    id="password"-->
+<!--                    name="password"-->
+<!--            >-->
+<!--        </div>-->
+
+<!--        <button type="submit">Conferma</button>-->
+
+<!--    </form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Calcio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
 </head>
+
 <body>
-<div>
-    <h2>Login</h2>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
 
-    <div th:if="${param.error}">Credenziali errate</div>
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+            <a href="/register">Registrazione</a>
+        </nav>
+    </div>
+</header>
 
-    <form th:action="@{/login}" method="post">
-        <div>
-            <label for="username">Nome Utente</label>
-            <input
-                    type="text"
-                    id="username"
-                    name="username"
-            >
+<main class="auth-main">
+    <section class="auth-section">
+        <div class="container auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <span class="eyebrow">Area utenti</span>
+                    <h1>Login</h1>
+                    <p>Accedi al tuo account SIW Calcio.</p>
+                </div>
+
+                <div th:if="${param.error}" class="form-errors">
+                    <p>Credenziali errate</p>
+                </div>
+
+                <form th:action="@{/login}" method="post" class="auth-form">
+                    <div class="form-group">
+                        <label for="username">Nome utente</label>
+                        <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Inserisci il nome utente"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Inserisci la password"
+                        >
+                    </div>
+
+                    <button type="submit" class="btn auth-submit">Accedi</button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Non hai un account? <a href="/register">Registrati</a></p>
+                </div>
+            </div>
         </div>
+    </section>
+</main>
 
-        <div>
-            <label for="password">Password</label>
-            <input
-                    type="password"
-                    id="password"
-                    name="password"
-            >
-        </div>
-
-        <button type="submit">Conferma</button>
-
-    </form>
-</div>
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
+    </div>
+</footer>
 </body>
 </html>

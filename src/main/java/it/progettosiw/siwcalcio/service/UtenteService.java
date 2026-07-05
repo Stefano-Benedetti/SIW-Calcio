@@ -1,6 +1,8 @@
 package it.progettosiw.siwcalcio.service;
 
 import it.progettosiw.siwcalcio.dto.RegistrationForm;
+import it.progettosiw.siwcalcio.exceptions.NomeUtenteGiaInUsoException;
+import it.progettosiw.siwcalcio.exceptions.UtenteNonTrovatoException;
 import it.progettosiw.siwcalcio.model.Credenziali;
 import it.progettosiw.siwcalcio.model.Utente;
 import it.progettosiw.siwcalcio.repository.CredenzialiRepository;
@@ -31,13 +33,11 @@ public class UtenteService {
     @Transactional
     public void register(RegistrationForm form){
         if (utenteRepository.existsByUsername(form.getUsername()))
-            throw new RuntimeException("questo nome utente è già in uso");
+            throw new NomeUtenteGiaInUsoException("questo nome utente è già in uso");
+
         Utente utente = new Utente(form.getUsername());
-
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
         String encrypted_ps = encoder.encode(form.getPassword());
-
         Credenziali credenziali = new Credenziali(form.getUsername(), encrypted_ps, utente);
 
         credenzialiRepository.save(credenziali);
@@ -46,10 +46,9 @@ public class UtenteService {
     @Transactional(readOnly = true)
     public Utente getCurrentUser(){
         UserDetails userDetails = getCurrentUserDetails();
-
         Optional<Utente> optUser = utenteRepository.findByUsername(userDetails.getUsername());
         if(optUser.isEmpty()){
-            throw new RuntimeException("utente corrente non trovato");
+            throw new UtenteNonTrovatoException("utente corrente non trovato");
         }
         return optUser.get();
     }

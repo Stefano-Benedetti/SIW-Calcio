@@ -1,31 +1,101 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div>-->
+<!--    <h2>Registrazione</h2>-->
+
+<!--    <form th:action="@{/register}" method="post" th:object="${form}">-->
+<!--        <div th:if="${#fields.hasGlobalErrors()}">-->
+<!--            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <label>Nome Utente:</label>-->
+<!--            <span><input type="text" th:field="${form.username}"></span>-->
+<!--            <span th:if="${#fields.hasErrors('username')}" th:errors="${form.username}"></span>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <label>Password:</label>-->
+<!--            <span><input type="text" th:field="${form.password}"></span>-->
+<!--            <span th:if="${#fields.hasErrors('password')}" th:errors="${form.password}"></span>-->
+<!--        </div>-->
+
+<!--        <button type="submit">Conferma</button>-->
+
+<!--    </form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Calcio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrazione - SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
 </head>
+
 <body>
-<div>
-    <h2>Registrazione</h2>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
 
-    <form th:action="@{/register}" method="post" th:object="${form}">
-        <div th:if="${#fields.hasGlobalErrors()}">
-            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
-        </div>
-        <div>
-            <label>Nome Utente:</label>
-            <span><input type="text" th:field="${form.username}"></span>
-            <span th:if="${#fields.hasErrors('username')}" th:errors="${form.username}"></span>
-        </div>
-        <div>
-            <label>Password:</label>
-            <span><input type="text" th:field="${form.password}"></span>
-            <span th:if="${#fields.hasErrors('password')}" th:errors="${form.password}"></span>
-        </div>
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+            <a href="/login">Login</a>
+        </nav>
+    </div>
+</header>
 
-        <button type="submit">Conferma</button>
+<main class="auth-main">
+    <section class="auth-section">
+        <div class="container auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <span class="eyebrow">Accesso utenti</span>
+                    <h1>Registrazione</h1>
+                    <p>Crea un account per accedere alle funzionalità riservate di SIW Calcio.</p>
+                </div>
 
-    </form>
-</div>
+                <form th:action="@{/register}" method="post" th:object="${form}" class="auth-form">
+                    <div th:if="${#fields.hasGlobalErrors()}" class="form-errors">
+                        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Nome utente</label>
+                        <input id="username" type="text" th:field="${form.username}" placeholder="Inserisci il nome utente">
+                        <span th:if="${#fields.hasErrors('username')}" th:errors="${form.username}" class="field-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input id="password" type="password" th:field="${form.password}" placeholder="Inserisci la password">
+                        <span th:if="${#fields.hasErrors('password')}" th:errors="${form.password}" class="field-error"></span>
+                    </div>
+
+                    <button type="submit" class="btn auth-submit">Conferma registrazione</button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Hai già un account? <a href="/login">Accedi</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
+    </div>
+</footer>
 </body>
 </html>

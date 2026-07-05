@@ -1,21 +1,101 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<p>-->
+<!--    <a href="/">Vai alla home</a>-->
+<!--</p>-->
+<!--<h1>Elenco tornei</h1>-->
+<!--<div th:if="${tornei.isEmpty()}">Non è stato registrato alcun torneo nel sistema.</div>-->
+<!--<ul>-->
+<!--    <li th:each="torneo : ${tornei}">-->
+<!--        <a th:href="|/tornei/${torneo.id}|"-->
+<!--           th:text="|${torneo.nome} ${torneo.anno}|">nome</a>-->
+<!--    </li>-->
+<!--</ul>-->
+<!--<p sec:authorize="hasAuthority('ADMIN')"><a href="/admin/tornei/crea">Crea torneo</a></p>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Calcio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tornei - SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/list.css}">
 </head>
+
 <body>
-<p>
-    <a href="/">Vai alla home</a>
-</p>
-<h1>Elenco tornei</h1>
-<div th:if="${tornei.isEmpty()}">Non è stato registrato alcun torneo nel sistema.</div>
-<ul>
-    <li th:each="torneo : ${tornei}">
-        <a th:href="|/tornei/${torneo.id}|"
-           th:text="|${torneo.nome} ${torneo.anno}|">nome</a>
-    </li>
-</ul>
-<p sec:authorize="hasAuthority('ADMIN')"><a href="/admin/tornei/crea">Crea torneo</a></p>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
+
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+
+            <div sec:authorize="isAnonymous()" class="nav-auth">
+                <a href="/login">Login</a>
+                <a href="/register" class="btn btn-small">Registrazione</a>
+            </div>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline btn-small">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="list-main">
+    <section class="list-section">
+        <div class="container">
+            <div class="page-actions">
+                <a href="/" class="back-link">← Vai alla home</a>
+            </div>
+
+            <div class="list-page-header">
+                <div>
+                    <span class="eyebrow">Tornei</span>
+                    <h1>Elenco tornei</h1>
+                    <p>Consulta i tornei pubblicati da SIW Calcio.</p>
+                </div>
+
+                <a sec:authorize="hasAuthority('ADMIN')"
+                   href="/admin/tornei/crea"
+                   class="btn">
+                    Crea torneo
+                </a>
+            </div>
+
+            <div th:if="${tornei.isEmpty()}" class="empty-state">
+                Non è stato registrato alcun torneo.
+            </div>
+
+            <div th:unless="${tornei.isEmpty()}" class="list-card">
+                <ul class="items-list">
+                    <li th:each="torneo : ${tornei}">
+                        <a th:href="|/tornei/${torneo.id}|"
+                           class="item-link">
+                            <span th:text="|${torneo.nome} ${torneo.anno}|">nome</span>
+                            <span class="item-arrow">→</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
+    </div>
+</footer>
 </body>
 </html>

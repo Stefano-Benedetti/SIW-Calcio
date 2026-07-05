@@ -1,42 +1,200 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <a href="/tornei">Vai all'elenco dei tornei</a>-->
+<!--    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/tornei/${torneo.id}/modifica|">Modifica</a></p>-->
+<!--    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/tornei/${torneo.id}/crea-partita|">Aggiungi partita</a></p>-->
+
+<!--    <h1 th:text="|${torneo.nome} ${torneo.anno}|">Torneo 0000</h1>-->
+<!--    <h2 th:text="${torneo.descrizione}">Descrizione</h2>-->
+<!--    <p>-->
+<!--        <a th:href="|/tornei/${torneo.id}/calendario|">Calendario delle partite</a>-->
+<!--    </p>-->
+<!--    <p>-->
+<!--        <a th:href="|/tornei/${torneo.id}/partite-terminate|">Risultati delle partite terminate</a>-->
+<!--    </p>-->
+<!--    <p>-->
+<!--        <a th:href="|/tornei/${torneo.id}/classifica|">Classifica</a>-->
+<!--    </p>-->
+
+<!--    <h2>Squadre partecipanti</h2>-->
+<!--    <div th:if="${torneo.iscrizioni.isEmpty()}">Non ci sono squadre iscritte a questo torneo.</div>-->
+<!--    <ul>-->
+<!--        <li th:each="squadraiscritta : ${torneo.iscrizioni}">-->
+<!--            <a th:href="|/squadre/${squadraiscritta.squadra.id}|" th:text="${squadraiscritta.squadra.nome}">squadra</a>-->
+<!--        </li>-->
+<!--    </ul>-->
+
+<!--    <h2>Partite di oggi</h2>-->
+<!--    <div th:if="${partiteOggi.isEmpty()}">Non ci sono partite programmate per oggi, consultare il calendario per ulteriori informazioni.</div>-->
+<!--    <ul>-->
+<!--        <li th:each="partita : ${partiteOggi}">-->
+<!--            <a th:href="|/partite/${partita.id}|"-->
+<!--               th:text="|${partita.squadraHome.nome} - ${partita.squadraAway.nome}|">sq1 CONTRO sq2</a>-->
+<!--            <div th:text="|alle ore ${#temporals.format(partita.data, 'HH:mm')}|">alle ore 00:00</div>-->
+<!--        </li>-->
+<!--    </ul>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Calcio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneo - SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/detail.css}">
+    <link rel="stylesheet" th:href="@{/css/torneo.css}">
 </head>
+
 <body>
-    <a href="/tornei">Vai all'elenco dei tornei</a>
-    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/tornei/${torneo.id}/modifica|">Modifica</a></p>
-    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/tornei/${torneo.id}/crea-partita|">Aggiungi partita</a></p>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
 
-    <h1 th:text="|${torneo.nome} ${torneo.anno}|">Torneo 0000</h1>
-    <h2 th:text="${torneo.descrizione}">Descrizione</h2>
-    <p>
-        <a th:href="|/tornei/${torneo.id}/calendario|">Calendario delle partite</a>
-    </p>
-    <p>
-        <a th:href="|/tornei/${torneo.id}/partite-terminate|">Risultati delle partite terminate</a>
-    </p>
-    <p>
-        <a th:href="|/tornei/${torneo.id}/classifica|">Classifica</a>
-    </p>
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
 
-    <h2>Squadre partecipanti</h2>
-    <div th:if="${torneo.iscrizioni.isEmpty()}">Non ci sono squadre iscritte a questo torneo.</div>
-    <ul>
-        <li th:each="squadraiscritta : ${torneo.iscrizioni}">
-            <a th:href="|/squadre/${squadraiscritta.squadra.id}|" th:text="${squadraiscritta.squadra.nome}">squadra</a>
-        </li>
-    </ul>
+            <div sec:authorize="isAnonymous()" class="nav-auth">
+                <a href="/login">Login</a>
+                <a href="/register" class="btn btn-small">Registrazione</a>
+            </div>
 
-    <h2>Partite di oggi</h2>
-    <div th:if="${partiteOggi.isEmpty()}">Non ci sono partite programmate per oggi, consultare il calendario per ulteriori informazioni.</div>
-    <ul>
-        <li th:each="partita : ${partiteOggi}">
-            <a th:href="|/partite/${partita.id}|"
-               th:text="|${partita.squadraHome.nome} - ${partita.squadraAway.nome}|">sq1 CONTRO sq2</a>
-            <div th:text="|alle ore ${#temporals.format(partita.data, 'HH:mm')}|">alle ore 00:00</div>
-        </li>
-    </ul>
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline btn-small">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="detail-main tournament-main">
+    <section class="detail-section">
+        <div class="container">
+            <div class="page-actions">
+                <a href="/tornei" class="back-link">← Vai all'elenco dei tornei</a>
+            </div>
+
+            <article class="detail-card tournament-card">
+                <div class="detail-header tournament-header">
+                    <div>
+                        <span class="eyebrow">Scheda torneo</span>
+
+                        <h1 th:text="|${torneo.nome} ${torneo.anno}|">
+                            Torneo 0000
+                        </h1>
+
+                        <p th:text="${torneo.descrizione}" class="tournament-description">
+                            Descrizione
+                        </p>
+                    </div>
+
+                    <div sec:authorize="hasAuthority('ADMIN')" class="admin-context-actions">
+                        <a th:href="|/admin/tornei/${torneo.id}/modifica|"
+                           class="btn btn-small">
+                            Modifica
+                        </a>
+
+                        <a th:href="|/admin/tornei/${torneo.id}/crea-partita|"
+                           class="btn btn-secondary btn-small">
+                            Aggiungi partita
+                        </a>
+                    </div>
+                </div>
+
+                <div class="detail-body">
+                    <section class="tournament-links-section">
+                        <h2>Informazioni sul torneo</h2>
+
+                        <div class="tournament-links-grid">
+                            <a th:href="|/tornei/${torneo.id}/calendario|" class="tournament-link-card">
+                                <span class="card-icon">📅</span>
+                                <div>
+                                    <h3>Calendario</h3>
+                                    <p>Consulta le partite programmate.</p>
+                                </div>
+                            </a>
+
+                            <a th:href="|/tornei/${torneo.id}/partite-terminate|" class="tournament-link-card">
+                                <span class="card-icon">⚽</span>
+                                <div>
+                                    <h3>Risultati</h3>
+                                    <p>Visualizza le partite già terminate.</p>
+                                </div>
+                            </a>
+
+                            <a th:href="|/tornei/${torneo.id}/classifica|" class="tournament-link-card">
+                                <span class="card-icon">🏆</span>
+                                <div>
+                                    <h3>Classifica</h3>
+                                    <p>Scopri la posizione delle squadre.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </section>
+
+                    <section class="related-section">
+                        <div class="related-header">
+                            <h2>Squadre partecipanti</h2>
+                            <p>Le squadre iscritte a questo torneo.</p>
+                        </div>
+
+                        <div th:if="${torneo.iscrizioni.isEmpty()}" class="empty-state">
+                            Non ci sono squadre iscritte a questo torneo.
+                        </div>
+
+                        <ul th:unless="${torneo.iscrizioni.isEmpty()}" class="related-list">
+                            <li th:each="squadraiscritta : ${torneo.iscrizioni}">
+                                <a th:href="|/squadre/${squadraiscritta.squadra.id}|"
+                                   th:text="${squadraiscritta.squadra.nome}"
+                                   class="related-link">
+                                    squadra
+                                </a>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section class="today-matches-section">
+                        <div class="related-header">
+                            <h2>Partite di oggi</h2>
+                            <p>Gli incontri previsti nella giornata odierna.</p>
+                        </div>
+
+                        <div th:if="${partiteOggi.isEmpty()}" class="empty-state">
+                            Non ci sono partite programmate per oggi. Consulta il calendario per ulteriori informazioni.
+                        </div>
+
+                        <ul th:unless="${partiteOggi.isEmpty()}" class="today-matches-list">
+                            <li th:each="partita : ${partiteOggi}" class="today-match-card">
+                                <a th:href="|/partite/${partita.id}|"
+                                   th:text="|${partita.squadraHome.nome} - ${partita.squadraAway.nome}|"
+                                   class="today-match-title">
+                                    sq1 CONTRO sq2
+                                </a>
+
+                                <div th:text="|alle ore ${#temporals.format(partita.data, 'HH:mm')}|"
+                                     class="today-match-time">
+                                    alle ore 00:00
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
+    </div>
+</footer>
 </body>
 </html>

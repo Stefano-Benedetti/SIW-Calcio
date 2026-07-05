@@ -1,5 +1,6 @@
 package it.progettosiw.siwcalcio.service;
 
+import it.progettosiw.siwcalcio.exceptions.SquadraNonTrovataException;
 import it.progettosiw.siwcalcio.model.Squadra;
 import it.progettosiw.siwcalcio.model.SquadraIscritta;
 import it.progettosiw.siwcalcio.repository.SquadraRepository;
@@ -23,7 +24,7 @@ public class SquadraService {
     public Squadra getSquadraById(Long id){
         Optional<Squadra> squadraOpt = this.squadraRepository.findById(id);
         if(squadraOpt.isEmpty()){
-            throw new RuntimeException("squadra non trovata");
+            throw new SquadraNonTrovataException("squadra non trovata");
         }
         return squadraOpt.get();
     }
@@ -45,7 +46,7 @@ public class SquadraService {
 
     @Transactional
     public void modify(Squadra temp, Long id){
-        Squadra squadra = getSquadraById(id);
+        Squadra squadra = this.getSquadraById(id);
         squadra.setNome(temp.getNome());
         squadra.setFondazione(temp.getFondazione());
         squadra.setCitta(temp.getCitta());
@@ -53,11 +54,11 @@ public class SquadraService {
     }
 
     @Transactional
-    public void delete(Long id){
+    public void deleteSquadra(Long id){
         Squadra s = this.getSquadraById(id);
         for(SquadraIscritta si : s.getIscrizioni()){
             this.squadraIscrittaService.removeIscrizioneAlTorneo(si.getTorneo().getId(), si.getSquadra().getId());
         }
-        this.squadraRepository.deleteById(id);
+        this.squadraRepository.delete(s);
     }
 }

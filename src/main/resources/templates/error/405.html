@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodo non consentito - SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/error.css}">
+</head>
+
+<body>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
+
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+
+            <div sec:authorize="isAnonymous()" class="nav-auth">
+                <a href="/login">Login</a>
+                <a href="/register" class="btn btn-small">Registrazione</a>
+            </div>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline btn-small">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="error-main">
+    <section class="error-section">
+        <div class="container error-container">
+            <div class="error-card">
+                <div class="error-code">405</div>
+
+                <span class="eyebrow">Metodo non consentito</span>
+
+                <h1>Questa azione non è disponibile</h1>
+
+                <p>
+                    La richiesta è stata ricevuta, ma il metodo utilizzato non è consentito
+                    per questa pagina. Torna indietro oppure continua la navigazione dai contenuti pubblici.
+                </p>
+
+                <div class="error-actions">
+                    <a href="/" class="btn">Torna alla home</a>
+                    <a href="/tornei" class="btn btn-secondary">Vai ai tornei</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
+    </div>
+</footer>
+</body>
+</html>

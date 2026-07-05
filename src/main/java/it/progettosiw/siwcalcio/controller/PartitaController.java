@@ -1,6 +1,9 @@
 package it.progettosiw.siwcalcio.controller;
 
 import it.progettosiw.siwcalcio.dto.PartitaForm;
+import it.progettosiw.siwcalcio.exceptions.ArbitroNonEsisteException;
+import it.progettosiw.siwcalcio.exceptions.SquadraControSeStessaException;
+import it.progettosiw.siwcalcio.exceptions.SquadraNonEsisteException;
 import it.progettosiw.siwcalcio.model.Commento;
 import it.progettosiw.siwcalcio.model.Partita;
 import it.progettosiw.siwcalcio.model.Torneo;
@@ -41,7 +44,6 @@ public class PartitaController {
 
     @GetMapping("/partite/{id}")
     public String show(@PathVariable("id") Long id, Model model){
-        //partita non trovata -> 404
         model.addAttribute("commento", new Commento());
         model.addAttribute("commentoNuovo", new Commento());
         model.addAttribute("partita", this.partitaService.getPartitaById(id));
@@ -65,8 +67,6 @@ public class PartitaController {
     public String makeNewPartita(@Valid @ModelAttribute("form") PartitaForm form, BindingResult b,
                                  @PathVariable("id") Long torneoId, Model model){
         //torneo non trovato -> 404
-        //squadra non fa parte del torneo della partita -> 400
-        //squadra gioca contro se stessa exception -> try catch b.reject
         this.dataPartitaValidator.validate(form,b);
         if (b.hasErrors()) {
             Torneo torneo = this.torneoService.getTorneoById(torneoId);
@@ -74,13 +74,22 @@ public class PartitaController {
             model.addAttribute("arbitri", this.arbitroService.getAllArbitri());
             return "admin/partite/crea_partita";
         }
-        this.partitaService.creaPartita(form, torneoId);
-        return "redirect:/tornei/"+torneoId+"/calendario";
+
+        try {
+            this.partitaService.creaPartita(form, torneoId);
+            return "redirect:/tornei/" + torneoId + "/calendario";
+        } catch(SquadraNonEsisteException | ArbitroNonEsisteException | SquadraControSeStessaException e){
+            if(e instanceof SquadraControSeStessaException)
+                b.reject("partita.SquadraControSeStessa");
+            Torneo torneo = this.torneoService.getTorneoById(torneoId);
+            model.addAttribute("squadreIscritte", torneo.getIscrizioni());
+            model.addAttribute("arbitri", this.arbitroService.getAllArbitri());
+            return "admin/partite/crea_partita";
+        }
     }
 
     @GetMapping("/admin/partite/{id}/modifica")
     public String getFormModificaPartita(@PathVariable("id") Long id, Model model){
-        //partita non trovata -> 404
         model.addAttribute("partita", this.partitaService.getPartitaById(id));
         return "admin/partite/modifica_partita";
     }
@@ -88,7 +97,6 @@ public class PartitaController {
     @PostMapping("/admin/partite/{id}/inserisci-risultato")
     public String inserisciRisultatoPartita(@Valid @ModelAttribute("partita") Partita partita, BindingResult b,
                                             @PathVariable("id") Long partitaId, Model model){
-        //partita non trovata -> 404
         if (b.hasErrors()) {
             model.addAttribute("partita", this.partitaService.getPartitaById(partitaId));
             return "admin/partite/modifica_partita";
@@ -99,8 +107,7 @@ public class PartitaController {
 
     @PostMapping("/admin/partite/{id}/elimina")
     public String deletePartita(@PathVariable("id") Long partitaId, Model model){
-        //partita non trovata -> 404
-        this.partitaService.delete(partitaId);
+        this.partitaService.deletePartita(partitaId);
         return "redirect:/";
     }
 

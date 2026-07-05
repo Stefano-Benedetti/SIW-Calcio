@@ -1,6 +1,7 @@
 package it.progettosiw.siwcalcio.controller;
 
 import it.progettosiw.siwcalcio.dto.GiocatoreForm;
+import it.progettosiw.siwcalcio.exceptions.SquadraNonEsisteException;
 import it.progettosiw.siwcalcio.model.Giocatore;
 import it.progettosiw.siwcalcio.model.Squadra;
 import it.progettosiw.siwcalcio.service.GiocatoreService;
@@ -50,10 +51,13 @@ public class GiocatoreController {
             model.addAttribute("squadre", this.squadraService.getAllSquadre());
             return "/admin/giocatori/crea_giocatore";
         }
-        Squadra s = this.squadraService.getSquadraById(gf.getSquadraId());
-        Giocatore g = new Giocatore(gf, s);
-        this.giocatoreService.save(g);
-        return "redirect:/giocatori/"+g.getId();
+        try {
+            Long giocatoreId = this.giocatoreService.creaESalva(gf);
+            return "redirect:/giocatori/" + giocatoreId;
+        } catch(SquadraNonEsisteException e){
+            model.addAttribute("squadre", this.squadraService.getAllSquadre());
+            return "/admin/giocatori/crea_giocatore";
+        }
     }
 
     @GetMapping("/admin/giocatori/{id}/modifica")
@@ -74,7 +78,12 @@ public class GiocatoreController {
             model.addAttribute("squadre", this.squadraService.getAllSquadre());
             return "/admin/giocatori/modifica_giocatore";
         }
-        this.giocatoreService.modify(gf,id);
-        return "redirect:/giocatori/"+id;
+        try {
+            this.giocatoreService.modify(gf, id);
+            return "redirect:/giocatori/" + id;
+        } catch(SquadraNonEsisteException e){
+            model.addAttribute("squadre", this.squadraService.getAllSquadre());
+            return "/admin/giocatori/modifica_giocatore";
+        }
     }
 }

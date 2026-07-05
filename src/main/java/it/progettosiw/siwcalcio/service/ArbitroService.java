@@ -1,5 +1,6 @@
 package it.progettosiw.siwcalcio.service;
 
+import it.progettosiw.siwcalcio.exceptions.ArbitroNonTrovatoException;
 import it.progettosiw.siwcalcio.model.Arbitro;
 import it.progettosiw.siwcalcio.repository.ArbitroRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class ArbitroService {
     public Arbitro getArbitroById(Long id){
         Optional<Arbitro> arbitroOpt = this.arbitroRepository.findById(id);
         if (arbitroOpt.isEmpty()) {
-            throw new RuntimeException("arbitro non trovato");
+            throw new ArbitroNonTrovatoException("arbitro non trovato");
         }
         return arbitroOpt.get();
     }
