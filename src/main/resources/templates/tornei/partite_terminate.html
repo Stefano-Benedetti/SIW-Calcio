@@ -1,43 +1,157 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<p>-->
+<!--    <a th:href="|/tornei/${torneo.id}|">Vai al torneo</a>-->
+<!--</p>-->
+<!--<h1 th:text="|Risultati Partite ${torneo.nome} ${torneo.anno}|">titolo</h1>-->
+<!--<div th:if="${partitePlayed.isEmpty()}">In questo torneo non sono state ancora svolte partite.</div>-->
+<!--<ul>-->
+<!--    <li th:each="partita : ${partitePlayed}">-->
+<!--        <h2>-->
+<!--            <a th:href="|/partite/${partita.id}|"-->
+<!--               th:text="|${partita.squadraHome.nome} - ${partita.squadraAway.nome}|">sq1 CONTRO sq2</a>-->
+<!--        </h2>-->
+<!--        <p>-->
+<!--            Quando: <span th:text="|${#temporals.format(partita.data, 'dd/MM/yyyy')} alle ${#temporals.format(partita.data, 'HH:mm')}|">quando</span>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            Risultato finale: <span th:text="|${partita.goalsHome} - ${partita.goalsAway}|"></span>-->
+<!--        </p>-->
+<!--        <div th:if="${partita.goalsHome > partita.goalsAway}">-->
+<!--            <p>-->
+<!--                Vincitori: <span th:text="|${partita.squadraHome.nome}|">squadraHome</span>-->
+<!--            </p>-->
+<!--        </div>-->
+<!--        <div th:if="${partita.goalsHome < partita.goalsAway}">-->
+<!--            <p>-->
+<!--                Vincitori: <span th:text="|${partita.squadraAway.nome}|">squadraHome</span>-->
+<!--            </p>-->
+<!--        </div>-->
+<!--        <div th:if="${partita.goalsHome == partita.goalsAway}">-->
+<!--            <p>-->
+<!--                PAREGGIO-->
+<!--            </p>-->
+<!--        </div>-->
+<!--    </li>-->
+<!--</ul>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Calcio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risultati partite - SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/list.css}">
+    <link rel="stylesheet" th:href="@{/css/list-partite.css}">
 </head>
+
 <body>
-<p>
-    <a th:href="|/tornei/${torneo.id}|">Vai al torneo</a>
-</p>
-<h1 th:text="|Risultati Partite ${torneo.nome} ${torneo.anno}|">titolo</h1>
-<div th:if="${partitePlayed.isEmpty()}">In questo torneo non sono state ancora svolte partite.</div>
-<ul>
-    <li th:each="partita : ${partitePlayed}">
-        <h2>
-            <a th:href="|/partite/${partita.id}|"
-               th:text="|${partita.squadraHome.nome} - ${partita.squadraAway.nome}|">sq1 CONTRO sq2</a>
-        </h2>
-        <p>
-            Quando: <span th:text="|${#temporals.format(partita.data, 'dd/MM/yyyy')} alle ${#temporals.format(partita.data, 'HH:mm')}|">quando</span>
-        </p>
-        <p>
-            Risultato finale: <span th:text="|${partita.goalsHome} - ${partita.goalsAway}|"></span>
-        </p>
-        <div th:if="${partita.goalsHome > partita.goalsAway}">
-            <p>
-                Vincitori: <span th:text="|${partita.squadraHome.nome}|">squadraHome</span>
-            </p>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
+
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+
+            <div sec:authorize="isAnonymous()" class="nav-auth">
+                <a href="/login">Login</a>
+                <a href="/register" class="btn btn-small">Registrazione</a>
+            </div>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline btn-small">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="list-main">
+    <section class="list-section">
+        <div class="container">
+            <div class="page-actions">
+                <a th:href="|/tornei/${torneo.id}|" class="back-link">← Vai al torneo</a>
+            </div>
+
+            <div class="list-page-header">
+                <div>
+                    <span class="eyebrow">Risultati</span>
+                    <h1 th:text="|Risultati partite ${torneo.nome} ${torneo.anno}|">
+                        Risultati partite
+                    </h1>
+                    <p>Consulta le partite già disputate e i relativi risultati.</p>
+                </div>
+            </div>
+
+            <div th:if="${partitePlayed.isEmpty()}" class="empty-state">
+                In questo torneo non sono state ancora svolte partite.
+            </div>
+
+            <div th:unless="${partitePlayed.isEmpty()}" class="matches-list-card">
+                <ul class="matches-list">
+                    <li th:each="partita : ${partitePlayed}" class="match-list-item">
+                        <div class="played-match-header">
+                            <a th:href="|/partite/${partita.id}|" class="match-list-title">
+                                    <span th:text="|${partita.squadraHome.nome} - ${partita.squadraAway.nome}|">
+                                        sq1 CONTRO sq2
+                                    </span>
+                                <span class="item-arrow">→</span>
+                            </a>
+
+                            <div class="result-badge">
+                                    <span th:text="|${partita.goalsHome} - ${partita.goalsAway}|">
+                                        0 - 0
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="match-list-details result-details">
+                            <div class="match-detail">
+                                <span class="match-detail-label">Quando</span>
+                                <span th:text="|${#temporals.format(partita.data, 'dd/MM/yyyy')} alle ${#temporals.format(partita.data, 'HH:mm')}|">
+                                    quando
+                                </span>
+                            </div>
+
+                            <div class="match-detail" th:if="${partita.goalsHome > partita.goalsAway}">
+                                <span class="match-detail-label">Squadra vincitrice</span>
+                                <span th:text="${partita.squadraHome.nome}">
+                                    squadraHome
+                                </span>
+                            </div>
+
+                            <div class="match-detail" th:if="${partita.goalsHome < partita.goalsAway}">
+                                <span class="match-detail-label">Squadra vincitrice</span>
+                                <span th:text="${partita.squadraAway.nome}">
+                                    squadraAway
+                                </span>
+                            </div>
+
+                            <div class="match-detail" th:if="${partita.goalsHome == partita.goalsAway}">
+                                <span class="match-detail-label">Esito</span>
+                                <span>Pareggio</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div th:if="${partita.goalsHome < partita.goalsAway}">
-            <p>
-                Vincitori: <span th:text="|${partita.squadraAway.nome}|">squadraHome</span>
-            </p>
-        </div>
-        <div th:if="${partita.goalsHome == partita.goalsAway}">
-            <p>
-                PAREGGIO
-            </p>
-        </div>
-    </li>
-</ul>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
+    </div>
+</footer>
 </body>
 </html>

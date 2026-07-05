@@ -1,29 +1,129 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <p>-->
+<!--        <a th:href="|/tornei/${torneo.id}|">Vai al torneo</a>-->
+<!--    </p>-->
+<!--    <h1 th:text="|Calendario Partite ${torneo.nome} ${torneo.anno}|">titolo</h1>-->
+<!--    <div th:if="${partiteScheduled.isEmpty()}">Questo torneo non ha partite programmate.</div>-->
+<!--    <ul>-->
+<!--        <li th:each="partita : ${partiteScheduled}">-->
+<!--            <h2>-->
+<!--                <a th:href="|/partite/${partita.id}|"-->
+<!--                   th:text="|${partita.squadraHome.nome} - ${partita.squadraAway.nome}|">sq1 CONTRO sq2</a>-->
+<!--            </h2>-->
+<!--            <p>-->
+<!--                Quando: <span th:text="|${#temporals.format(partita.data, 'dd/MM/yyyy')} alle ${#temporals.format(partita.data, 'HH:mm')}|">quando</span>-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                Dove: <span th:text="${partita.luogo}">dove</span>-->
+<!--            </p>-->
+<!--        </li>-->
+<!--    </ul>-->
+<!--    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/tornei/${torneo.id}/crea-partita|">Aggiungi partita</a></p>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Calcio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario partite - SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/list.css}">
+    <link rel="stylesheet" th:href="@{/css/list-partite.css}">
 </head>
+
 <body>
-    <p>
-        <a th:href="|/tornei/${torneo.id}|">Vai al torneo</a>
-    </p>
-    <h1 th:text="|Calendario Partite ${torneo.nome} ${torneo.anno}|">titolo</h1>
-    <div th:if="${partiteScheduled.isEmpty()}">Questo torneo non ha partite programmate.</div>
-    <ul>
-        <li th:each="partita : ${partiteScheduled}">
-            <h2>
-                <a th:href="|/partite/${partita.id}|"
-                   th:text="|${partita.squadraHome.nome} - ${partita.squadraAway.nome}|">sq1 CONTRO sq2</a>
-            </h2>
-            <p>
-                Quando: <span th:text="|${#temporals.format(partita.data, 'dd/MM/yyyy')} alle ${#temporals.format(partita.data, 'HH:mm')}|">quando</span>
-            </p>
-            <p>
-                Dove: <span th:text="${partita.luogo}">dove</span>
-            </p>
-        </li>
-    </ul>
-    <p sec:authorize="hasAuthority('ADMIN')"><a th:href="|/admin/tornei/${torneo.id}/crea-partita|">Aggiungi partita</a></p>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
+
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+
+            <div sec:authorize="isAnonymous()" class="nav-auth">
+                <a href="/login">Login</a>
+                <a href="/register" class="btn btn-small">Registrazione</a>
+            </div>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline btn-small">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="list-main">
+    <section class="list-section">
+        <div class="container">
+            <div class="page-actions">
+                <a th:href="|/tornei/${torneo.id}|" class="back-link">← Vai al torneo</a>
+            </div>
+
+            <div class="list-page-header">
+                <div>
+                    <span class="eyebrow">Calendario</span>
+                    <h1 th:text="|Calendario partite ${torneo.nome} ${torneo.anno}|">
+                        Calendario partite
+                    </h1>
+                    <p>Consulta le partite programmate per questo torneo.</p>
+                </div>
+
+                <a sec:authorize="hasAuthority('ADMIN')"
+                   th:href="|/admin/tornei/${torneo.id}/crea-partita|"
+                   class="btn">
+                    Aggiungi partita
+                </a>
+            </div>
+
+            <div th:if="${partiteScheduled.isEmpty()}" class="empty-state">
+                Questo torneo non ha partite programmate.
+            </div>
+
+            <div th:unless="${partiteScheduled.isEmpty()}" class="matches-list-card">
+                <ul class="matches-list">
+                    <li th:each="partita : ${partiteScheduled}" class="match-list-item">
+                        <a th:href="|/partite/${partita.id}|" class="match-list-title">
+                                <span th:text="|${partita.squadraHome.nome} - ${partita.squadraAway.nome}|">
+                                    sq1 CONTRO sq2
+                                </span>
+                            <span class="item-arrow">→</span>
+                        </a>
+
+                        <div class="match-list-details">
+                            <div class="match-detail">
+                                <span class="match-detail-label">Quando</span>
+                                <span th:text="|${#temporals.format(partita.data, 'dd/MM/yyyy')} alle ${#temporals.format(partita.data, 'HH:mm')}|">
+                                        quando
+                                    </span>
+                            </div>
+
+                            <div class="match-detail">
+                                <span class="match-detail-label">Dove</span>
+                                <span th:text="${partita.luogo}">
+                                        dove
+                                    </span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
+    </div>
+</footer>
 </body>
 </html>

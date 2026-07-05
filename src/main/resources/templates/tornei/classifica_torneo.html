@@ -1,26 +1,121 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <p>-->
+<!--        <a th:href="|/tornei/${torneo.id}|">Vai al torneo</a>-->
+<!--    </p>-->
+<!--    <h1 th:text="|Classifica ${torneo.nome} ${torneo.anno}|">titolo</h1>-->
+<!--    <div th:if="${classifica.isEmpty()}">Questo torneo non ha squadre iscritte.</div>-->
+<!--    <table th:unless="${classifica.isEmpty()}">&lt;!&ndash;tr = table row, td = table data, th = table header&ndash;&gt;-->
+<!--        <tr>-->
+<!--            <th>Posizione</th>-->
+<!--            <th>Squadra</th>-->
+<!--            <th>Vittorie</th>-->
+<!--        </tr>-->
+<!--        <tr th:each="s, stat : ${classifica}">-->
+<!--            <td style="text-align: center;" th:text="${posizioni[stat.index]}">1</td>-->
+<!--            <td style="text-align: center;" th:text="${s.squadra.nome}">Squadra</td>-->
+<!--            <td style="text-align: center;" th:text="${s.vittorie}">0</td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Calcio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classifica - SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/list.css}">
+    <link rel="stylesheet" th:href="@{/css/classifica.css}">
 </head>
+
 <body>
-    <p>
-        <a th:href="|/tornei/${torneo.id}|">Vai al torneo</a>
-    </p>
-    <h1 th:text="|Classifica ${torneo.nome} ${torneo.anno}|">titolo</h1>
-    <div th:if="${classifica.isEmpty()}">Questo torneo non ha squadre iscritte.</div>
-    <table th:unless="${classifica.isEmpty()}"><!--tr = table row, td = table data, th = table header-->
-        <tr>
-            <th>Posizione</th>
-            <th>Squadra</th>
-            <th>Vittorie</th>
-        </tr>
-        <tr th:each="s, stat : ${classifica}">
-            <td style="text-align: center;" th:text="${posizioni[stat.index]}">1</td>
-            <td style="text-align: center;" th:text="${s.squadra.nome}">Squadra</td>
-            <td style="text-align: center;" th:text="${s.vittorie}">0</td>
-        </tr>
-    </table>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
+
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+
+            <div sec:authorize="isAnonymous()" class="nav-auth">
+                <a href="/login">Login</a>
+                <a href="/register" class="btn btn-small">Registrazione</a>
+            </div>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline btn-small">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="list-main">
+    <section class="list-section">
+        <div class="container">
+            <div class="page-actions">
+                <a th:href="|/tornei/${torneo.id}|" class="back-link">← Vai al torneo</a>
+            </div>
+
+            <div class="list-page-header">
+                <div>
+                    <span class="eyebrow">Classifica</span>
+                    <h1 th:text="|Classifica ${torneo.nome} ${torneo.anno}|">
+                        Classifica torneo
+                    </h1>
+                    <p>Consulta la posizione delle squadre partecipanti in base alle vittorie ottenute.</p>
+                </div>
+            </div>
+
+            <div th:if="${classifica.isEmpty()}" class="empty-state">
+                Questo torneo non ha squadre iscritte.
+            </div>
+
+            <div th:unless="${classifica.isEmpty()}" class="standings-card">
+                <table class="standings-table">
+                    <thead>
+                    <tr>
+                        <th>Posizione</th>
+                        <th>Squadra</th>
+                        <th>Vittorie</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="s, stat : ${classifica}">
+                        <td class="standing-position" th:text="${posizioni[stat.index]}">
+                            1
+                        </td>
+
+                        <td>
+                                    <span th:text="${s.squadra.nome}" class="standing-team">
+                                        Squadra
+                                    </span>
+                        </td>
+
+                        <td class="standing-wins" th:text="${s.vittorie}">
+                            0
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
+    </div>
+</footer>
 </body>
 </html>

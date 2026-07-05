@@ -1,0 +1,72 @@
+.standings-card {
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.standings-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.standings-table thead {
+    background: var(--color-secondary);
+    color: #ffffff;
+}
+
+.standings-table th {
+    padding: 18px 20px;
+    text-align: center;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.standings-table td {
+    padding: 18px 20px;
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-secondary);
+    font-weight: 700;
+}
+
+.standings-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.standings-table tbody tr:hover {
+    background: #f8faf9;
+}
+
+.standing-position {
+    width: 120px;
+    color: var(--color-primary-dark);
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+.standing-team {
+    font-weight: 800;
+}
+
+.standing-wins {
+    width: 120px;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 650px) {
+    .standings-card {
+        overflow-x: auto;
+    }
+
+    .standings-table {
+        min-width: 520px;
+    }
+
+    .standings-table th,
+    .standings-table td {
+        padding: 16px 14px;
+    }
+}
