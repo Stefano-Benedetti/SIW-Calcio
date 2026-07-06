@@ -31,7 +31,7 @@ public class CommentoController {
     }
 
     @PostMapping("/partite/{partitaId}/commenti/nuovo")
-    public String postaCommento(@Valid @ModelAttribute("commentoNuovo") Commento c, BindingResult b,
+    public String postaCommento(@Valid @ModelAttribute("nuovoCommento") Commento c, BindingResult b,
                                 @PathVariable Long partitaId, Model model){
         if(b.hasErrors()){
             model.addAttribute("partita", this.partitaService.getPartitaById(partitaId));
@@ -49,7 +49,7 @@ public class CommentoController {
                                    @PathVariable Long commentoId, @PathVariable Long partitaId, Model model){
         if(b.hasErrors()){
             model.addAttribute("partita", this.partitaService.getPartitaById(partitaId));
-            if (!model.containsAttribute("commentoNuovo")) model.addAttribute("commentoNuovo", new Commento());
+            if (!model.containsAttribute("nuovoCommento")) model.addAttribute("nuovoCommento", new Commento());
             UserDetails userDetails = utenteService.getCurrentUserDetails();
             if (userDetails!=null) model.addAttribute("username", userDetails.getUsername());
             return "partite/partita_singola";

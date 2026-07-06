@@ -20,6 +20,7 @@ public class GiocatoreForm {
     private String cognome;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @NotNull
     private LocalDate nascita;
 
     @NotNull

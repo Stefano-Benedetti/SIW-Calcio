@@ -23,7 +23,7 @@ public class EtaGiocatoreValidator implements Validator {
             int age = Period.between(data, LocalDate.now()).getYears();
             if (age < 14)
                 errors.rejectValue("nascita", "giocatore.troppoGiovane");
-            if (age > 80)
+            if (age > 100)
                 errors.rejectValue("nascita", "giocatore.troppoAnziano");
         }
     }

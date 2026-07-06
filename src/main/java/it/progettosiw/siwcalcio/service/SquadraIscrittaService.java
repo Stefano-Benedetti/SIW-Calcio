@@ -38,25 +38,21 @@ public class SquadraIscrittaService {
 
     public List<Integer> getPosizioniClassifica(List<SquadraIscritta> classifica){
         List<Integer> posizioni = new ArrayList<>();
-        if (classifica == null || classifica.isEmpty()) {
-            return posizioni;
-        }
 
-        int vittoriePrecedenti = -1;
+        if (classifica == null || classifica.isEmpty())
+            return posizioni;
+
+        Integer vittoriePrecedenti = null;
         int posizioneCorrente = 0;
 
-        for (int i = 0; i < classifica.size(); i++) {
-            SquadraIscritta s = classifica.get(i);
+        for (SquadraIscritta s : classifica) {
             int vittorieCorrenti = s.getVittorie();
-
-            if (vittoriePrecedenti == -1 || vittorieCorrenti != vittoriePrecedenti) {
-                posizioneCorrente = i + 1;
-            }
-
+            if (vittoriePrecedenti == null || vittorieCorrenti != vittoriePrecedenti)
+                posizioneCorrente++;
             posizioni.add(posizioneCorrente);
             vittoriePrecedenti = vittorieCorrenti;
         }
-
+        
         return posizioni;
     }
 

@@ -1,53 +1,184 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <p>-->
+<!--        <a th:href="@{/tornei/{id}(id=${id})}">Vai al torneo</a>-->
+<!--    </p>-->
+<!--    <h1>Crea una partita</h1>-->
+<!--    <form th:action="@{/admin/tornei/{id}/crea-partita(id=${id})}" method="POST" th:object="${form}">-->
+<!--        <div th:if="${#fields.hasGlobalErrors()}">-->
+<!--            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>-->
+<!--        </div>-->
+<!--        <p>-->
+<!--            <label>Squadra in casa:</label>-->
+<!--            <select th:field="${form.squadraHomeId}" size="1">-->
+<!--                <option value="">Seleziona la squadra in casa</option>-->
+<!--                <option th:each="squadraIscritta : ${squadreIscritte}" th:value="${squadraIscritta.squadra.id}" th:text="${squadraIscritta.squadra.nome}"></option>-->
+<!--            </select>-->
+<!--            <span th:if="${#fields.hasErrors('squadraHomeId')}" th:errors="${form.squadraHomeId}"></span>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <label>Squadra ospite:</label>-->
+<!--            <select th:field="${form.squadraAwayId}" size="1">-->
+<!--                <option value="">Seleziona la squadra ospite</option>-->
+<!--                <option th:each="squadraIscritta : ${squadreIscritte}" th:value="${squadraIscritta.squadra.id}" th:text="${squadraIscritta.squadra.nome}"></option>-->
+<!--            </select>-->
+<!--            <span th:if="${#fields.hasErrors('squadraAwayId')}" th:errors="${form.squadraAwayId}"></span>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <label>Data e ora:</label> <span><input type="datetime-local" th:field="${form.data}"/></span>-->
+<!--            <span th:if="${#fields.hasErrors('data')}" th:errors="${form.data}"></span>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <label>Luogo:</label> <span><input type="text" th:field="${form.luogo}"/></span>-->
+<!--            <span th:if="${#fields.hasErrors('luogo')}" th:errors="${form.luogo}"></span>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <label>Arbitro</label>-->
+<!--            <select th:field="${form.arbitroId}" size="1">-->
+<!--                <option value="">Selezionare un arbitro</option>-->
+<!--                <option th:each="arbitro : ${arbitri}" th:value="${arbitro.id}" th:text="|${arbitro.nome} ${arbitro.cognome}|"></option>-->
+<!--            </select>-->
+<!--            <span th:if="${#fields.hasErrors('arbitroId')}" th:errors="${form.arbitroId}"></span>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <span><button type="submit">Conferma</button></span>-->
+<!--        </p>-->
+<!--    </form>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Calcio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea partita - SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/form.css}">
 </head>
+
 <body>
-    <p>
-        <a th:href="@{/tornei/{id}(id=${id})}">Vai al torneo</a>
-    </p>
-    <h1>Crea una partita</h1>
-    <form th:action="@{/admin/tornei/{id}/crea-partita(id=${id})}" method="POST" th:object="${form}">
-        <div th:if="${#fields.hasGlobalErrors()}">
-            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
+
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+
+            <div sec:authorize="isAnonymous()" class="nav-auth">
+                <a href="/login">Login</a>
+                <a href="/register" class="btn btn-small">Registrazione</a>
+            </div>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline btn-small">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="form-main">
+    <section class="form-section">
+        <div class="container">
+            <div class="page-actions">
+                <a th:href="@{/tornei/{id}(id=${id})}" class="back-link">← Vai al torneo</a>
+            </div>
+
+            <div class="form-page-header">
+                <span class="eyebrow">Area amministratore</span>
+                <h1>Crea una partita</h1>
+                <p>Inserisci i dati della nuova partita del torneo.</p>
+            </div>
+
+            <div class="form-card">
+                <form th:action="@{/admin/tornei/{id}/crea-partita(id=${id})}" method="POST" th:object="${form}" class="site-form">
+                    <div th:if="${#fields.hasGlobalErrors()}" class="form-errors">
+                        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="squadraHomeId">Squadra in casa</label>
+                        <select id="squadraHomeId" th:field="${form.squadraHomeId}" size="1">
+                            <option value="">Seleziona la squadra in casa</option>
+                            <option th:each="squadraIscritta : ${squadreIscritte}"
+                                    th:value="${squadraIscritta.squadra.id}"
+                                    th:text="${squadraIscritta.squadra.nome}">
+                            </option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('squadraHomeId')}"
+                              th:errors="${form.squadraHomeId}"
+                              class="field-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="squadraAwayId">Squadra ospite</label>
+                        <select id="squadraAwayId" th:field="${form.squadraAwayId}" size="1">
+                            <option value="">Seleziona la squadra ospite</option>
+                            <option th:each="squadraIscritta : ${squadreIscritte}"
+                                    th:value="${squadraIscritta.squadra.id}"
+                                    th:text="${squadraIscritta.squadra.nome}">
+                            </option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('squadraAwayId')}"
+                              th:errors="${form.squadraAwayId}"
+                              class="field-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data">Data e ora</label>
+                        <input id="data"
+                               type="datetime-local"
+                               th:field="${form.data}">
+                        <span th:if="${#fields.hasErrors('data')}"
+                              th:errors="${form.data}"
+                              class="field-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="luogo">Luogo</label>
+                        <input id="luogo"
+                               type="text"
+                               th:field="${form.luogo}">
+                        <span th:if="${#fields.hasErrors('luogo')}"
+                              th:errors="${form.luogo}"
+                              class="field-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="arbitroId">Arbitro</label>
+                        <select id="arbitroId" th:field="${form.arbitroId}" size="1">
+                            <option value="">Seleziona un arbitro</option>
+                            <option th:each="arbitro : ${arbitri}"
+                                    th:value="${arbitro.id}"
+                                    th:text="|${arbitro.nome} ${arbitro.cognome}|">
+                            </option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('arbitroId')}"
+                              th:errors="${form.arbitroId}"
+                              class="field-error"></span>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn">Conferma</button>
+                        <button type="button" class="btn btn-secondary" onclick="history.back()">Annulla</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <p>
-            <label>Squadra in casa:</label>
-            <select th:field="${form.squadraHomeId}" size="1">
-                <option value="">Seleziona la squadra in casa</option>
-                <option th:each="squadraIscritta : ${squadreIscritte}" th:value="${squadraIscritta.squadra.id}" th:text="${squadraIscritta.squadra.nome}"></option>
-            </select>
-            <span th:if="${#fields.hasErrors('squadraHomeId')}" th:errors="${form.squadraHomeId}"></span>
-        </p>
-        <p>
-            <label>Squadra ospite:</label>
-            <select th:field="${form.squadraAwayId}" size="1">
-                <option value="">Seleziona la squadra ospite</option>
-                <option th:each="squadraIscritta : ${squadreIscritte}" th:value="${squadraIscritta.squadra.id}" th:text="${squadraIscritta.squadra.nome}"></option>
-            </select>
-            <span th:if="${#fields.hasErrors('squadraAwayId')}" th:errors="${form.squadraAwayId}"></span>
-        </p>
-        <p>
-            <label>Data e ora:</label> <span><input type="datetime-local" th:field="${form.data}"/></span>
-            <span th:if="${#fields.hasErrors('data')}" th:errors="${form.data}"></span>
-        </p>
-        <p>
-            <label>Luogo:</label> <span><input type="text" th:field="${form.luogo}"/></span>
-            <span th:if="${#fields.hasErrors('luogo')}" th:errors="${form.luogo}"></span>
-        </p>
-        <p>
-            <label>Arbitro</label>
-            <select th:field="${form.arbitroId}" size="1">
-                <option value="">Selezionare un arbitro</option>
-                <option th:each="arbitro : ${arbitri}" th:value="${arbitro.id}" th:text="|${arbitro.nome} ${arbitro.cognome}|"></option>
-            </select>
-            <span th:if="${#fields.hasErrors('arbitroId')}" th:errors="${form.arbitroId}"></span>
-        </p>
-        <p>
-            <span><button type="submit">Conferma</button></span>
-        </p>
-    </form>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
+    </div>
+</footer>
 </body>
 </html>

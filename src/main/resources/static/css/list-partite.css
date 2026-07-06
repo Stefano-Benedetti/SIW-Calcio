@@ -115,3 +115,12 @@
         grid-template-columns: 1fr;
     }
 }
+
+.played-match-header .match-list-title {
+    justify-content: flex-start;
+    width: fit-content;
+}
+
+.played-match-header .item-arrow {
+    margin-left: 0px;
+}

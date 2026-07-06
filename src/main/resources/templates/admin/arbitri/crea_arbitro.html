@@ -1,33 +1,134 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<p>-->
+<!--    <a href="/">Vai alla home</a>-->
+<!--</p>-->
+<!--<h1>Aggiungi un arbitro</h1>-->
+<!--<form th:action="@{/admin/arbitri/crea}" method="POST" th:object="${arbitro}">-->
+<!--    <div th:if="${#fields.hasGlobalErrors()}">-->
+<!--        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>-->
+<!--    </div>-->
+<!--    <p>-->
+<!--        <label>Nome:</label> <span><input type="text" th:field="${arbitro.nome}"/></span>-->
+<!--        <span th:if="${#fields.hasErrors('nome')}" th:errors="${arbitro.nome}"></span>-->
+<!--    </p>-->
+<!--    <p>-->
+<!--        <label>Cognome:</label> <span><input type="text" th:field="${arbitro.cognome}"/></span>-->
+<!--        <span th:if="${#fields.hasErrors('cognome')}" th:errors="${arbitro.cognome}"></span>-->
+<!--    </p>-->
+<!--    <p>-->
+<!--        <label>Codice arbitrale:</label> <span><input type="number" th:field="${arbitro.codiceArbitrale}"/></span>-->
+<!--        <span th:if="${#fields.hasErrors('codiceArbitrale')}" th:errors="${arbitro.codiceArbitrale}"></span>-->
+<!--    </p>-->
+<!--    <p>-->
+<!--        <span><button type="submit">Conferma</button></span>-->
+<!--    </p>-->
+<!--</form>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Calcio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aggiungi arbitro - SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/form.css}">
 </head>
+
 <body>
-<p>
-    <a href="/">Vai alla home</a>
-</p>
-<h1>Aggiungi un arbitro</h1>
-<form th:action="@{/admin/arbitri/crea}" method="POST" th:object="${arbitro}">
-    <div th:if="${#fields.hasGlobalErrors()}">
-        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
+
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+
+            <div sec:authorize="isAnonymous()" class="nav-auth">
+                <a href="/login">Login</a>
+                <a href="/register" class="btn btn-small">Registrazione</a>
+            </div>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline btn-small">Logout</button>
+            </form>
+        </nav>
     </div>
-    <p>
-        <label>Nome:</label> <span><input type="text" th:field="${arbitro.nome}"/></span>
-        <span th:if="${#fields.hasErrors('nome')}" th:errors="${arbitro.nome}"></span>
-    </p>
-    <p>
-        <label>Cognome:</label> <span><input type="text" th:field="${arbitro.cognome}"/></span>
-        <span th:if="${#fields.hasErrors('cognome')}" th:errors="${arbitro.cognome}"></span>
-    </p>
-    <p>
-        <label>Codice arbitrale:</label> <span><input type="number" th:field="${arbitro.codiceArbitrale}"/></span>
-        <span th:if="${#fields.hasErrors('codiceArbitrale')}" th:errors="${arbitro.codiceArbitrale}"></span>
-    </p>
-    <p>
-        <span><button type="submit">Conferma</button></span>
-    </p>
-</form>
+</header>
+
+<main class="form-main">
+    <section class="form-section">
+        <div class="container">
+            <div class="page-actions">
+                <button type="button" class="back-link back-button" onclick="history.back()">
+                    ← Torna indietro
+                </button>
+            </div>
+
+            <div class="form-page-header">
+                <span class="eyebrow">Area amministratore</span>
+                <h1>Aggiungi un arbitro</h1>
+                <p>Inserisci i dati del nuovo arbitro.</p>
+            </div>
+
+            <div class="form-card">
+                <form th:action="@{/admin/arbitri/crea}" method="POST" th:object="${arbitro}" class="site-form">
+                    <div th:if="${#fields.hasGlobalErrors()}" class="form-errors">
+                        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <input id="nome"
+                               type="text"
+                               th:field="${arbitro.nome}">
+                        <span th:if="${#fields.hasErrors('nome')}"
+                              th:errors="${arbitro.nome}"
+                              class="field-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cognome">Cognome</label>
+                        <input id="cognome"
+                               type="text"
+                               th:field="${arbitro.cognome}">
+                        <span th:if="${#fields.hasErrors('cognome')}"
+                              th:errors="${arbitro.cognome}"
+                              class="field-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codiceArbitrale">Codice arbitrale</label>
+                        <input id="codiceArbitrale"
+                               type="number"
+                               th:field="${arbitro.codiceArbitrale}">
+                        <span th:if="${#fields.hasErrors('codiceArbitrale')}"
+                              th:errors="${arbitro.codiceArbitrale}"
+                              class="field-error"></span>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn">Conferma</button>
+                        <button type="button" class="btn btn-secondary" onclick="history.back()">Annulla</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
+    </div>
+</footer>
 </body>
 </html>

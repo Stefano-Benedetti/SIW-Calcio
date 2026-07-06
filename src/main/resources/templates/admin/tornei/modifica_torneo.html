@@ -1,63 +1,233 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <p>-->
+<!--        <a th:href="@{/tornei/{id}(id=${id})}">Vai al torneo</a>-->
+<!--    </p>-->
+
+<!--    <h1>Modifica il torneo</h1>-->
+<!--    <form th:action="@{/admin/tornei/{id}/modifica(id=${id})}" method="POST" th:object="${torneo}">-->
+<!--        <div th:if="${#fields.hasGlobalErrors()}">-->
+<!--            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>-->
+<!--        </div>-->
+<!--        <p>-->
+<!--            <label>Nome:</label> <span><input type="text" th:field="${torneo.nome}"/></span>-->
+<!--            <span th:if="${#fields.hasErrors('nome')}" th:errors="${torneo.nome}"></span>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <label>Anno:</label> <span><input type="number" th:field="${torneo.anno}"/></span>-->
+<!--            <span th:if="${#fields.hasErrors('anno')}" th:errors="${torneo.anno}"></span>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <label>Descrizione:</label> <span><input type="text" th:field="${torneo.descrizione}"/></span>-->
+<!--            <span th:if="${#fields.hasErrors('descrizione')}" th:errors="${torneo.descrizione}"></span>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <span><button type="submit">Conferma</button></span>-->
+<!--        </p>-->
+<!--    </form>-->
+<!--    <h1>Aggiungi un'iscrizione</h1>-->
+<!--    <form th:action="@{/admin/tornei/{id}/iscrivi(id=${id})}" method="POST" th:object="${nuovaSquadra}">-->
+<!--        <p>-->
+<!--            <label>Squadre:</label>-->
+<!--            <select th:field="${nuovaSquadra.squadraId}" name="nuovaSquadraId" size="1">-->
+<!--                <option value="">Seleziona una squadra</option>-->
+<!--                <option th:each="squadraNonIscritta : ${squadreNonIscritte}" th:value="${squadraNonIscritta.id}" th:text="${squadraNonIscritta.nome}"></option>-->
+<!--            </select>-->
+<!--            <span th:if="${#fields.hasErrors('squadraId')}" th:errors="${nuovaSquadra.squadraId}"></span>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <span><button type="submit">Iscrivi</button></span>-->
+<!--        </p>-->
+<!--    </form>-->
+<!--    <h1>Rimuovi un'iscrizione</h1>-->
+<!--    <form th:action="@{/admin/tornei/{id}/disiscrivi(id=${id})}" method="POST" th:object="${squadra}">-->
+<!--        <p>-->
+<!--            <label>Iscrizioni:</label>-->
+<!--            <select th:field="${squadra.squadraId}" size="1">-->
+<!--                <option value="">Seleziona una squadra</option>-->
+<!--                <option th:each="squadraIscritta : ${squadreIscritte}" th:value="${squadraIscritta.squadra.id}" th:text="${squadraIscritta.squadra.nome}"></option>-->
+<!--            </select>-->
+<!--            <span th:if="${#fields.hasErrors('squadraId')}" th:errors="${squadra.squadraId}"></span>-->
+<!--        </p>-->
+<!--        ATTENZIONE: se disiscrivi una squadra da un torneo, tutte le partite e i punteggi di quella squadra saranno eliminati.-->
+<!--        <p>-->
+<!--            <span><button type="submit">Disiscrivi</button></span>-->
+<!--        </p>-->
+<!--    </form>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Calcio</title>
-</head>
-<body>
-    <p>
-        <a th:href="@{/tornei/{id}(id=${id})}">Vai al torneo</a>
-    </p>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica torneo - SIW Calcio</title>
 
-    <h1>Modifica il torneo</h1>
-    <form th:action="@{/admin/tornei/{id}/modifica(id=${id})}" method="POST" th:object="${torneo}">
-        <div th:if="${#fields.hasGlobalErrors()}">
-            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/form.css}">
+</head>
+
+<body>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
+
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+
+            <div sec:authorize="isAnonymous()" class="nav-auth">
+                <a href="/login">Login</a>
+                <a href="/register" class="btn btn-small">Registrazione</a>
+            </div>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline btn-small">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="form-main">
+    <section class="form-section">
+        <div class="container">
+            <div class="page-actions">
+                <a th:href="@{/tornei/{id}(id=${id})}" class="back-link">← Vai al torneo</a>
+            </div>
+
+            <div class="form-page-header">
+                <span class="eyebrow">Area amministratore</span>
+                <h1>Modifica torneo</h1>
+                <p>Aggiorna le informazioni del torneo e gestisci le squadre iscritte.</p>
+            </div>
+
+            <div class="forms-grid">
+                <section class="form-card">
+                    <div class="form-card-header">
+                        <h2>Dati del torneo</h2>
+                        <p>Modifica nome, anno e descrizione del torneo.</p>
+                    </div>
+
+                    <form th:action="@{/admin/tornei/{id}/modifica(id=${id})}" method="POST" th:object="${torneo}" class="site-form">
+                        <div th:if="${#fields.hasGlobalErrors()}" class="form-errors">
+                            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nome">Nome</label>
+                            <input id="nome"
+                                   type="text"
+                                   th:field="${torneo.nome}">
+                            <span th:if="${#fields.hasErrors('nome')}"
+                                  th:errors="${torneo.nome}"
+                                  class="field-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="anno">Anno</label>
+                            <input id="anno"
+                                   type="number"
+                                   th:field="${torneo.anno}">
+                            <span th:if="${#fields.hasErrors('anno')}"
+                                  th:errors="${torneo.anno}"
+                                  class="field-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="descrizione">Descrizione</label>
+                            <input id="descrizione"
+                                   type="text"
+                                   th:field="${torneo.descrizione}">
+                            <span th:if="${#fields.hasErrors('descrizione')}"
+                                  th:errors="${torneo.descrizione}"
+                                  class="field-error"></span>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn">Conferma modifiche</button>
+                            <button type="button" class="btn btn-secondary" onclick="history.back()">Annulla</button>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="form-card">
+                    <div class="form-card-header">
+                        <h2>Aggiungi un’iscrizione</h2>
+                        <p>Seleziona una squadra da iscrivere a questo torneo.</p>
+                    </div>
+
+                    <form th:action="@{/admin/tornei/{id}/iscrivi(id=${id})}" method="POST" th:object="${nuovaSquadra}" class="site-form">
+                        <div class="form-group">
+                            <label for="nuovaSquadraId">Squadre disponibili</label>
+                            <select id="nuovaSquadraId"
+                                    th:field="${nuovaSquadra.squadraId}"
+                                    name="nuovaSquadraId"
+                                    size="1">
+                                <option value="">Seleziona una squadra</option>
+                                <option th:each="squadraNonIscritta : ${squadreNonIscritte}"
+                                        th:value="${squadraNonIscritta.id}"
+                                        th:text="${squadraNonIscritta.nome}">
+                                </option>
+                            </select>
+                            <span th:if="${#fields.hasErrors('squadraId')}"
+                                  th:errors="${nuovaSquadra.squadraId}"
+                                  class="field-error"></span>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn">Iscrivi squadra</button>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="form-card danger-card">
+                    <div class="form-card-header">
+                        <h2>Rimuovi un’iscrizione</h2>
+                        <p>Seleziona una squadra da rimuovere dal torneo.</p>
+                    </div>
+
+                    <form th:action="@{/admin/tornei/{id}/disiscrivi(id=${id})}" method="POST" th:object="${squadra}" class="site-form">
+                        <div class="form-group">
+                            <label for="squadraId">Squadre iscritte</label>
+                            <select id="squadraId"
+                                    th:field="${squadra.squadraId}"
+                                    size="1">
+                                <option value="">Seleziona una squadra</option>
+                                <option th:each="squadraIscritta : ${squadreIscritte}"
+                                        th:value="${squadraIscritta.squadra.id}"
+                                        th:text="${squadraIscritta.squadra.nome}">
+                                </option>
+                            </select>
+                            <span th:if="${#fields.hasErrors('squadraId')}"
+                                  th:errors="${squadra.squadraId}"
+                                  class="field-error"></span>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>Attenzione:</strong>
+                            se disiscrivi una squadra da un torneo, tutte le partite e i punteggi di quella squadra saranno eliminati.
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-danger">Disiscrivi squadra</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
         </div>
-        <p>
-            <label>Nome:</label> <span><input type="text" th:field="${torneo.nome}"/></span>
-            <span th:if="${#fields.hasErrors('nome')}" th:errors="${torneo.nome}"></span>
-        </p>
-        <p>
-            <label>Anno:</label> <span><input type="number" th:field="${torneo.anno}"/></span>
-            <span th:if="${#fields.hasErrors('anno')}" th:errors="${torneo.anno}"></span>
-        </p>
-        <p>
-            <label>Descrizione:</label> <span><input type="text" th:field="${torneo.descrizione}"/></span>
-            <span th:if="${#fields.hasErrors('descrizione')}" th:errors="${torneo.descrizione}"></span>
-        </p>
-        <p>
-            <span><button type="submit">Conferma</button></span>
-        </p>
-    </form>
-    <h1>Aggiungi un'iscrizione</h1>
-    <form th:action="@{/admin/tornei/{id}/iscrivi(id=${id})}" method="POST" th:object="${nuovaSquadra}">
-        <p>
-            <label>Squadre:</label>
-            <select th:field="${nuovaSquadra.squadraId}" name="nuovaSquadraId" size="1">
-                <option value="">Seleziona una squadra</option>
-                <option th:each="squadraNonIscritta : ${squadreNonIscritte}" th:value="${squadraNonIscritta.id}" th:text="${squadraNonIscritta.nome}"></option>
-            </select>
-            <span th:if="${#fields.hasErrors('squadraId')}" th:errors="${nuovaSquadra.squadraId}"></span>
-        </p>
-        <p>
-            <span><button type="submit">Iscrivi</button></span>
-        </p>
-    </form>
-    <h1>Rimuovi un'iscrizione</h1>
-    <form th:action="@{/admin/tornei/{id}/disiscrivi(id=${id})}" method="POST" th:object="${squadra}">
-        <p>
-            <label>Iscrizioni:</label>
-            <select th:field="${squadra.squadraId}" size="1">
-                <option value="">Seleziona una squadra</option>
-                <option th:each="squadraIscritta : ${squadreIscritte}" th:value="${squadraIscritta.squadra.id}" th:text="${squadraIscritta.squadra.nome}"></option>
-            </select>
-            <span th:if="${#fields.hasErrors('squadraId')}" th:errors="${squadra.squadraId}"></span>
-        </p>
-        ATTENZIONE: se disiscrivi una squadra da un torneo, tutte le partite e i punteggi di quella squadra saranno eliminati.
-        <p>
-            <span><button type="submit">Disiscrivi</button></span>
-        </p>
-    </form>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
+    </div>
+</footer>
 </body>
 </html>

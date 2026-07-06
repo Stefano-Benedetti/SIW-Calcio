@@ -1,56 +1,193 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--  <p>-->
+<!--    <a th:href="@{/giocatori/{id}(id=${id})}">Vai al giocatore</a>-->
+<!--  </p>-->
+<!--  <h1>Modifica il giocatore</h1>-->
+<!--  <form th:action="@{/admin/giocatori/{id}/modifica(id=${id})}" method="POST" th:object="${form}">-->
+<!--    <div th:if="${#fields.hasGlobalErrors()}">-->
+<!--      <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>-->
+<!--    </div>-->
+<!--    <p>-->
+<!--      <label>Nome:</label> <span><input type="text" th:field="${form.nome}"/></span>-->
+<!--      <span th:if="${#fields.hasErrors('nome')}" th:errors="${form.nome}"></span>-->
+<!--    </p>-->
+<!--    <p>-->
+<!--      <label>Cognome:</label> <span><input type="text" th:field="${form.cognome}"/></span>-->
+<!--      <span th:if="${#fields.hasErrors('cognome')}" th:errors="${form.cognome}"></span>-->
+<!--    </p>-->
+<!--    <p>-->
+<!--      <label>Data di nascita:</label> <span><input type="date" th:field="${form.nascita}"/></span>-->
+<!--      <span th:if="${#fields.hasErrors('nascita')}" th:errors="${form.nascita}"></span>-->
+<!--    </p>-->
+<!--    <p>-->
+<!--      <label>Ruolo:</label>-->
+<!--      <span><select th:field="${form.ruolo}">-->
+<!--            <option value="">&#45;&#45;Scegli un ruolo&#45;&#45;</option>-->
+<!--            <option value="PORTIERE">portiere</option>-->
+<!--            <option value="DIFENSORE">difensore</option>-->
+<!--            <option value="CENTROCAMPISTA">centrocampista</option>-->
+<!--            <option value="ATTACCANTE">attaccante</option>-->
+<!--      </select></span>-->
+<!--      <span th:if="${#fields.hasErrors('ruolo')}" th:errors="${form.ruolo}"></span>-->
+<!--    </p>-->
+<!--    <p>-->
+<!--      <label>Altezza (centimetri):</label> <span><input type="number" th:field="${form.altezza}"/></span>-->
+<!--      <span th:if="${#fields.hasErrors('altezza')}" th:errors="${form.altezza}"></span>-->
+<!--    </p>-->
+<!--    <p>-->
+<!--      <label>Squadra:</label>-->
+<!--      <select th:field="${form.squadraId}" size="1">-->
+<!--        <option value="">Seleziona una squadra</option>-->
+<!--        <option th:each="squadra : ${squadre}" th:value="${squadra.id}" th:text="${squadra.nome}"></option>-->
+<!--      </select>-->
+<!--      <span th:if="${#fields.hasErrors('squadraId')}" th:errors="${form.squadraId}"></span>-->
+<!--    </p>-->
+<!--    <p>-->
+<!--      <span><button type="submit">Conferma</button></span>-->
+<!--    </p>-->
+<!--  </form>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>SIW Calcio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modifica giocatore - SIW Calcio</title>
+
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/form.css}">
 </head>
+
 <body>
-  <p>
-    <a th:href="@{/giocatori/{id}(id=${id})}">Vai al giocatore</a>
-  </p>
-  <h1>Modifica il giocatore</h1>
-  <form th:action="@{/admin/giocatori/{id}/modifica(id=${id})}" method="POST" th:object="${form}">
-    <div th:if="${#fields.hasGlobalErrors()}">
-      <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+<header class="site-header">
+  <div class="container header-content">
+    <a href="/" class="logo">SIW Calcio</a>
+
+    <nav class="main-nav">
+      <a href="/tornei">Tornei</a>
+      <a href="/squadre">Squadre</a>
+
+      <div sec:authorize="isAnonymous()" class="nav-auth">
+        <a href="/login">Login</a>
+        <a href="/register" class="btn btn-small">Registrazione</a>
+      </div>
+
+      <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+        <button type="submit" class="btn btn-outline btn-small">Logout</button>
+      </form>
+    </nav>
+  </div>
+</header>
+
+<main class="form-main">
+  <section class="form-section">
+    <div class="container">
+      <div class="page-actions">
+        <a th:href="@{/giocatori/{id}(id=${id})}" class="back-link">← Vai al giocatore</a>
+      </div>
+
+      <div class="form-page-header">
+        <span class="eyebrow">Area amministratore</span>
+        <h1>Modifica giocatore</h1>
+        <p>Aggiorna i dati del giocatore e la squadra di appartenenza.</p>
+      </div>
+
+      <div class="form-card">
+        <form th:action="@{/admin/giocatori/{id}/modifica(id=${id})}" method="POST" th:object="${form}" class="site-form">
+          <div th:if="${#fields.hasGlobalErrors()}" class="form-errors">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+          </div>
+
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input id="nome"
+                   type="text"
+                   th:field="${form.nome}">
+            <span th:if="${#fields.hasErrors('nome')}"
+                  th:errors="${form.nome}"
+                  class="field-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="cognome">Cognome</label>
+            <input id="cognome"
+                   type="text"
+                   th:field="${form.cognome}">
+            <span th:if="${#fields.hasErrors('cognome')}"
+                  th:errors="${form.cognome}"
+                  class="field-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="nascita">Data di nascita</label>
+            <input id="nascita"
+                   type="date"
+                   th:field="${form.nascita}">
+            <span th:if="${#fields.hasErrors('nascita')}"
+                  th:errors="${form.nascita}"
+                  class="field-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="ruolo">Ruolo</label>
+            <select id="ruolo" th:field="${form.ruolo}">
+              <option value="">Seleziona un ruolo</option>
+              <option value="PORTIERE">Portiere</option>
+              <option value="DIFENSORE">Difensore</option>
+              <option value="CENTROCAMPISTA">Centrocampista</option>
+              <option value="ATTACCANTE">Attaccante</option>
+            </select>
+            <span th:if="${#fields.hasErrors('ruolo')}"
+                  th:errors="${form.ruolo}"
+                  class="field-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="altezza">Altezza in centimetri</label>
+            <input id="altezza"
+                   type="number"
+                   th:field="${form.altezza}">
+            <span th:if="${#fields.hasErrors('altezza')}"
+                  th:errors="${form.altezza}"
+                  class="field-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="squadraId">Squadra</label>
+            <select id="squadraId" th:field="${form.squadraId}" size="1">
+              <option value="">Seleziona una squadra</option>
+              <option th:each="squadra : ${squadre}"
+                      th:value="${squadra.id}"
+                      th:text="${squadra.nome}">
+              </option>
+            </select>
+            <span th:if="${#fields.hasErrors('squadraId')}"
+                  th:errors="${form.squadraId}"
+                  class="field-error"></span>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn">Conferma modifiche</button>
+            <button type="button" class="btn btn-secondary" onclick="history.back()">Annulla</button>
+          </div>
+        </form>
+      </div>
     </div>
-    <p>
-      <label>Nome:</label> <span><input type="text" th:field="${form.nome}"/></span>
-      <span th:if="${#fields.hasErrors('nome')}" th:errors="${form.nome}"></span>
-    </p>
-    <p>
-      <label>Cognome:</label> <span><input type="text" th:field="${form.cognome}"/></span>
-      <span th:if="${#fields.hasErrors('cognome')}" th:errors="${form.cognome}"></span>
-    </p>
-    <p>
-      <label>Data di nascita:</label> <span><input type="date" th:field="${form.nascita}"/></span>
-      <span th:if="${#fields.hasErrors('nascita')}" th:errors="${form.nascita}"></span>
-    </p>
-    <p>
-      <label>Ruolo:</label>
-      <span><select th:field="${form.ruolo}">
-            <option value="">--Scegli un ruolo--</option>
-            <option value="PORTIERE">portiere</option>
-            <option value="DIFENSORE">difensore</option>
-            <option value="CENTROCAMPISTA">centrocampista</option>
-            <option value="ATTACCANTE">attaccante</option>
-      </select></span>
-      <span th:if="${#fields.hasErrors('ruolo')}" th:errors="${form.ruolo}"></span>
-    </p>
-    <p>
-      <label>Altezza (centimetri):</label> <span><input type="number" th:field="${form.altezza}"/></span>
-      <span th:if="${#fields.hasErrors('altezza')}" th:errors="${form.altezza}"></span>
-    </p>
-    <p>
-      <label>Squadra:</label>
-      <select th:field="${form.squadraId}" size="1">
-        <option value="">Seleziona una squadra</option>
-        <option th:each="squadra : ${squadre}" th:value="${squadra.id}" th:text="${squadra.nome}"></option>
-      </select>
-      <span th:if="${#fields.hasErrors('squadraId')}" th:errors="${form.squadraId}"></span>
-    </p>
-    <p>
-      <span><button type="submit">Conferma</button></span>
-    </p>
-  </form>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>SIW Calcio</p>
+  </div>
+</footer>
 </body>
 </html>

@@ -141,6 +141,7 @@
     border: 1px dashed var(--color-border);
     color: var(--color-muted);
     font-weight: 600;
+    text-align: center;
 }
 
 .related-list {
@@ -179,4 +180,25 @@
     border-color: rgba(31, 122, 58, 0.45);
     box-shadow: var(--shadow-sm);
     transform: translateY(-1px);
+}
+
+.back-button {
+    padding: 5px;
+    border: none;
+    background: none;
+    font: inherit;
+    cursor: pointer;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+    transition: color 0.2s ease;
+}
+
+.back-link:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
 }

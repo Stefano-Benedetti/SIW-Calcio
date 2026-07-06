@@ -150,24 +150,19 @@
 <main class="detail-main match-main">
     <section class="detail-section">
         <div class="container">
-            <div class="page-actions">
-                <a th:href="|/tornei/${partita.torneo.id}|" class="back-link">← Vai al torneo</a>
-            </div>
+            <button type="button" class="back-link back-button" onclick="history.back()">
+                ← Torna indietro
+            </button>
 
             <article class="detail-card match-card">
                 <div class="detail-header match-header">
                     <div>
-                        <span class="eyebrow">Scheda partita</span>
+                        <span class="eyebrow">Partita del torneo</span>
 
-                        <h1 class="match-title">
-                            <a th:href="|/squadre/${partita.squadraHome.id}|"
-                               th:text="${partita.squadraHome.nome}">
-                                SquadraHome
-                            </a>
-                            <span>-</span>
-                            <a th:href="|/squadre/${partita.squadraAway.id}|"
-                               th:text="${partita.squadraAway.nome}">
-                                SquadraAway
+                        <h1 class="match-tournament-title">
+                            <a th:href="|/tornei/${partita.torneo.id}|"
+                               th:text="|${partita.torneo.nome} ${partita.torneo.anno}|">
+                                Nome torneo 2026
                             </a>
                         </h1>
                     </div>
@@ -260,7 +255,6 @@
 
             <section class="comments-section">
                 <div class="comments-header">
-                    <span class="eyebrow">Discussione</span>
                     <h2>Commenti</h2>
                 </div>
 
@@ -270,19 +264,18 @@
 
                 <div th:if="${!partita.commenti.isEmpty()}" class="comments-wrapper">
 
+                    <!-- commenti dell'utente loggato -->
                     <div th:if="${username != null}" class="user-comments-block">
-                        <h3>I tuoi commenti</h3>
-
                         <ul class="comments-list">
                             <li th:each="c : ${partita.commenti}"
                                 th:if="${c.utente.username == username}"
                                 class="comment-card comment-card-own">
 
                                 <div class="comment-author">
-                                    <span th:text="${c.utente.username}">utente</span>
+                                    Tu
                                 </div>
 
-                                <p th:text="${c.testo}" class="comment-text">
+                                <p class="comment-text" th:text="${c.testo}">
                                     commento
                                 </p>
 
@@ -295,36 +288,37 @@
                                         <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
                                     </div>
 
-                                    <label class="sr-only">Modifica commento</label>
+                                    <label th:for="|testo-commento-${c.id}|" class="sr-only">Modifica commento</label>
 
-                                    <textarea th:field="${commento.testo}"
+                                    <textarea th:id="|testo-commento-${c.id}|"
+                                              th:field="${commento.testo}"
                                               rows="3"
-                                              th:text="${commento.testo}"
-                                              class="comment-textarea"></textarea>
+                                              maxlength="200"
+                                              class="comment-textarea"
+                                              th:text="${c.testo}"></textarea>
 
                                     <span th:if="${#fields.hasErrors('testo')}"
                                           th:errors="${commento.testo}"
                                           class="field-error"></span>
 
-                                    <button type="submit" class="btn btn-small">Modifica</button>
+                                    <button type="submit" class="btn btn-small">Salva modifica</button>
                                 </form>
                             </li>
                         </ul>
                     </div>
 
+                    <!-- altri commenti -->
                     <div class="other-comments-block">
-                        <h3>Altri commenti</h3>
-
                         <ul class="comments-list">
                             <li th:each="c : ${partita.commenti}"
                                 th:if="${username == null or c.utente.username != username}"
                                 class="comment-card">
 
-                                <div class="comment-author">
-                                    <span th:text="${c.utente.username}">utente</span>
+                                <div class="comment-author" th:text="${c.utente.username}">
+                                    utente
                                 </div>
 
-                                <p th:text="${c.testo}" class="comment-text">
+                                <p class="comment-text" th:text="${c.testo}">
                                     commento
                                 </p>
                             </li>
@@ -332,29 +326,37 @@
                     </div>
                 </div>
 
+                <!-- nuovo commento -->
                 <div th:if="${username != null}" class="new-comment-block">
                     <h3>Lascia un commento</h3>
 
                     <form th:action="@{/partite/{partitaId}/commenti/nuovo(partitaId=${partita.id})}"
                           method="post"
-                          th:object="${commentoNuovo}"
+                          th:object="${nuovoCommento}"
                           class="comment-form">
 
                         <div th:if="${#fields.hasGlobalErrors()}" class="form-errors">
                             <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
                         </div>
 
-                        <textarea th:field="${commentoNuovo.testo}"
+                        <label for="testo-nuovo-commento" class="sr-only">Nuovo commento</label>
+
+                        <textarea id="testo-nuovo-commento"
+                                  th:field="${nuovoCommento.testo}"
                                   rows="4"
-                                  placeholder="Scrivi qui..."
+                                  maxlength="200"
                                   class="comment-textarea"></textarea>
 
                         <span th:if="${#fields.hasErrors('testo')}"
-                              th:errors="${commentoNuovo.testo}"
+                              th:errors="${nuovoCommento.testo}"
                               class="field-error"></span>
 
-                        <button type="submit" class="btn">Pubblica</button>
+                        <button type="submit" class="btn">Pubblica commento</button>
                     </form>
+                </div>
+
+                <div th:if="${username == null}" class="empty-state login-comment-message">
+                    Accedi per lasciare un commento.
                 </div>
             </section>
         </div>

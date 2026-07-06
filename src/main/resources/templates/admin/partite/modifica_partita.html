@@ -1,41 +1,167 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>SIW Calcio</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <p>-->
+<!--        <a th:href="@{/partite/{id}(id=${id})}">Vai alla partita</a>-->
+<!--    </p>-->
+<!--    <h1>Inserisci il risultato della partita</h1>-->
+<!--    <h2>-->
+<!--        <span th:href="|/squadre/${partita.squadraHome.id}|"-->
+<!--           th:text="${partita.squadraHome.nome}">SquadraHome</span>-->
+<!--        - -->
+<!--        <span th:href="|/squadre/${partita.squadraAway.id}|"-->
+<!--           th:text="${partita.squadraAway.nome}">SquadraAway</span>-->
+<!--    </h2>-->
+<!--    <form th:action="@{/admin/partite/{id}/inserisci-risultato(id=${id})}" method="POST" th:object="${partita}">-->
+<!--        <div th:if="${#fields.hasGlobalErrors()}">-->
+<!--            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>-->
+<!--        </div>-->
+<!--        <p>-->
+<!--            <label>Goals prima squadra:</label> <span><input type="number" min="0" th:field="${partita.goalsHome}"/></span>-->
+<!--            <span th:if="${#fields.hasErrors('goalsHome')}" th:errors="${partita.goalsHome}"></span>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <label>Goals seconda squadra:</label> <span><input type="number" min="0" th:field="${partita.goalsAway}"/></span>-->
+<!--            <span th:if="${#fields.hasErrors('goalsAway')}" th:errors="${partita.goalsAway}"></span>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <span><button type="submit">Conferma</button></span>-->
+<!--        </p>-->
+<!--    </form>-->
+<!--    <p>ATTENZIONE: se elimini una partita già giocata, verranno eliminati anche i punteggi associati.-->
+<!--        <form th:action="@{/admin/partite/{id}/elimina(id=${id})}" method="POST">-->
+<!--            <button type="submit">Elimina</button>-->
+<!--        </form>-->
+<!--    </p>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Calcio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica partita - SIW Calcio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/form.css}">
 </head>
+
 <body>
-    <p>
-        <a th:href="@{/partite/{id}(id=${id})}">Vai alla partita</a>
-    </p>
-    <h1>Inserisci il risultato della partita</h1>
-    <h2>
-        <span th:href="|/squadre/${partita.squadraHome.id}|"
-           th:text="${partita.squadraHome.nome}">SquadraHome</span>
-        -
-        <span th:href="|/squadre/${partita.squadraAway.id}|"
-           th:text="${partita.squadraAway.nome}">SquadraAway</span>
-    </h2>
-    <form th:action="@{/admin/partite/{id}/inserisci-risultato(id=${id})}" method="POST" th:object="${partita}">
-        <div th:if="${#fields.hasGlobalErrors()}">
-            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo">SIW Calcio</a>
+
+        <nav class="main-nav">
+            <a href="/tornei">Tornei</a>
+            <a href="/squadre">Squadre</a>
+
+            <div sec:authorize="isAnonymous()" class="nav-auth">
+                <a href="/login">Login</a>
+                <a href="/register" class="btn btn-small">Registrazione</a>
+            </div>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline btn-small">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="form-main">
+    <section class="form-section">
+        <div class="container">
+            <div class="page-actions">
+                <a th:href="@{/partite/{id}(id=${id})}" class="back-link">← Vai alla partita</a>
+            </div>
+
+            <div class="form-page-header">
+                <span class="eyebrow">Area amministratore</span>
+                <h1>Inserisci il risultato della partita</h1>
+                <p>Aggiorna il risultato finale della partita selezionata.</p>
+            </div>
+
+            <div class="forms-grid">
+                <section class="form-card">
+                    <div class="form-card-header">
+                        <h2 class="match-form-title">
+                            <a th:href="|/squadre/${partita.squadraHome.id}|"
+                               th:text="${partita.squadraHome.nome}" class="text-link">SquadraHome</a>
+                            <span class="match-separator">-</span>
+                            <a th:href="|/squadre/${partita.squadraAway.id}|"
+                               th:text="${partita.squadraAway.nome}" class="text-link">SquadraAway</a>
+                        </h2>
+                        <p>Inserisci i goal segnati dalle due squadre.</p>
+                    </div>
+
+                    <form th:action="@{/admin/partite/{id}/inserisci-risultato(id=${id})}" method="POST" th:object="${partita}" class="site-form">
+                        <div th:if="${#fields.hasGlobalErrors()}" class="form-errors">
+                            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="goalsHome">
+                                Goal <span th:text="${partita.squadraHome.nome}">prima squadra</span>
+                            </label>
+                            <input id="goalsHome"
+                                   type="number"
+                                   min="0"
+                                   th:field="${partita.goalsHome}">
+                            <span th:if="${#fields.hasErrors('goalsHome')}"
+                                  th:errors="${partita.goalsHome}"
+                                  class="field-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="goalsAway">
+                                Goal <span th:text="${partita.squadraAway.nome}">seconda squadra</span>
+                            </label>
+                            <input id="goalsAway"
+                                   type="number"
+                                   min="0"
+                                   th:field="${partita.goalsAway}">
+                            <span th:if="${#fields.hasErrors('goalsAway')}"
+                                  th:errors="${partita.goalsAway}"
+                                  class="field-error"></span>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn">Conferma risultato</button>
+                            <button type="button" class="btn btn-secondary" onclick="history.back()">Annulla</button>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="form-card danger-card">
+                    <div class="form-card-header">
+                        <h2>Elimina partita</h2>
+                        <p>Rimuovi definitivamente questa partita dal torneo.</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>Attenzione:</strong>
+                        se elimini una partita già giocata, verranno eliminati anche i punteggi associati.
+                    </div>
+
+                    <form th:action="@{/admin/partite/{id}/elimina(id=${id})}" method="POST" class="site-form">
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-danger">Elimina partita</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
         </div>
-        <p>
-            <label>Goals prima squadra:</label> <span><input type="number" min="0" th:field="${partita.goalsHome}"/></span>
-            <span th:if="${#fields.hasErrors('goalsHome')}" th:errors="${partita.goalsHome}"></span>
-        </p>
-        <p>
-            <label>Goals seconda squadra:</label> <span><input type="number" min="0" th:field="${partita.goalsAway}"/></span>
-            <span th:if="${#fields.hasErrors('goalsAway')}" th:errors="${partita.goalsAway}"></span>
-        </p>
-        <p>
-            <span><button type="submit">Conferma</button></span>
-        </p>
-    </form>
-    <p>ATTENZIONE: se elimini una partita già giocata, verranno eliminati anche i punteggi associati.
-        <form th:action="@{/admin/partite/{id}/elimina(id=${id})}" method="POST">
-            <button type="submit">Elimina</button>
-        </form>
-    </p>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>SIW Calcio</p>
+    </div>
+</footer>
 </body>
 </html>

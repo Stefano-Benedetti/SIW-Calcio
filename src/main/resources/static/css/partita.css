@@ -174,6 +174,8 @@
     border-radius: var(--radius-md);
     background: #f8faf9;
     border: 1px solid var(--color-border);
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .comment-card-own {
@@ -190,6 +192,8 @@
 .comment-text {
     margin: 0;
     color: var(--color-text);
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .comment-form {
@@ -282,4 +286,26 @@
         flex-direction: column;
         align-items: flex-start;
     }
+}
+
+.login-comment-message {
+    margin-top: 24px;
+    text-align: center;
+}
+
+.detail-header.match-header .match-tournament-title {
+    margin: 0;
+    color: var(--color-secondary);
+    font-size: clamp(1.35rem, 3vw, 1.8rem);
+    line-height: 1.2;
+}
+
+.detail-header.match-header .match-tournament-title a {
+    color: var(--color-secondary);
+    transition: color 0.2s ease;
+}
+
+.detail-header.match-header .match-tournament-title a:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
 }

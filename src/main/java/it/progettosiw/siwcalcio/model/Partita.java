@@ -4,6 +4,7 @@ import it.progettosiw.siwcalcio.dto.PartitaForm;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
@@ -26,14 +27,16 @@ public class Partita {
     @Min(value = 0, message = "I goals non posso essere negativi")
     // la partita con più goals della storia è finita 149 - 0
     @Max(value = 150, message = "I goals non possono essere così tanti (spero...)")
+    @NotNull
     @Column(nullable = false)
-    private int goalsHome;
+    private Integer goalsHome;
 
     @Min(value = 0, message = "I goals non posso essere negativi")
     // la partita con più goals della storia è finita 149 - 0
     @Max(value = 150, message = "I goals non possono essere così tanti (spero...)")
+    @NotNull
     @Column(nullable = false)
-    private int goalsAway;
+    private Integer goalsAway;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

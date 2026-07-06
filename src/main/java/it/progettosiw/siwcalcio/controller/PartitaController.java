@@ -45,7 +45,7 @@ public class PartitaController {
     @GetMapping("/partite/{id}")
     public String show(@PathVariable("id") Long id, Model model){
         model.addAttribute("commento", new Commento());
-        model.addAttribute("commentoNuovo", new Commento());
+        model.addAttribute("nuovoCommento", new Commento());
         model.addAttribute("partita", this.partitaService.getPartitaById(id));
         UserDetails userDetails = utenteService.getCurrentUserDetails();
         if (userDetails!=null)
