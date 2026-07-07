@@ -290,18 +290,22 @@
 
                                     <label th:for="|testo-commento-${c.id}|" class="sr-only">Modifica commento</label>
 
-                                    <textarea th:id="|testo-commento-${c.id}|"
-                                              th:field="${commento.testo}"
-                                              rows="3"
-                                              maxlength="200"
-                                              class="comment-textarea"
-                                              th:text="${c.testo}"></textarea>
+                                    <div class="comment-edit-row">
+                                        <input th:id="|testo-commento-${c.id}|"
+                                               type="text"
+                                               name="testo"
+                                               maxlength="200"
+                                               class="comment-edit-input"
+                                               th:value="${c.testo}">
+
+                                        <button type="submit" class="btn btn-small">
+                                            Salva
+                                        </button>
+                                    </div>
 
                                     <span th:if="${#fields.hasErrors('testo')}"
                                           th:errors="${commento.testo}"
                                           class="field-error"></span>
-
-                                    <button type="submit" class="btn btn-small">Salva modifica</button>
                                 </form>
                             </li>
                         </ul>
@@ -343,7 +347,7 @@
 
                         <textarea id="testo-nuovo-commento"
                                   th:field="${nuovoCommento.testo}"
-                                  rows="4"
+                                  rows="3"
                                   maxlength="200"
                                   class="comment-textarea"></textarea>
 
