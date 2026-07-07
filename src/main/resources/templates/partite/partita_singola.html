@@ -150,9 +150,7 @@
 <main class="detail-main match-main">
     <section class="detail-section">
         <div class="container">
-            <button type="button" class="back-link back-button" onclick="history.back()">
-                ← Torna indietro
-            </button>
+            <a th:href="|/tornei/${partita.torneo.id}|" class="back-link">← Vai al torneo</a>
 
             <article class="detail-card match-card">
                 <div class="detail-header match-header">

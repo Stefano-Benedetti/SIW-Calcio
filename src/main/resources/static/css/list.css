@@ -103,6 +103,12 @@
         flex-direction: column;
     }
 
+    .list-header-actions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
     .list-page-header .btn {
         width: 100%;
     }
@@ -110,4 +116,11 @@
     .item-link {
         padding: 18px 20px;
     }
+}
+
+.list-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }

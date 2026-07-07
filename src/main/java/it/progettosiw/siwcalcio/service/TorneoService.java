@@ -25,6 +25,11 @@ public class TorneoService {
     }
 
     @Transactional(readOnly = true)
+    public List<Torneo> getAllTorneiOrdinatiPerAnno(){
+        return this.torneoRepository.findAllByOrderByAnnoDesc();
+    }
+
+    @Transactional(readOnly = true)
     public Torneo getTorneoById(Long id){
         Optional<Torneo> torneoOpt = this.torneoRepository.findById(id);
         if(torneoOpt.isEmpty()){

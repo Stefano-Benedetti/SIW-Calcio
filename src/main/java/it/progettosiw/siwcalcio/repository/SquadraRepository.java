@@ -16,4 +16,6 @@ public interface SquadraRepository extends CrudRepository<Squadra,Long> {
         WHERE si.id IS NULL
     """)
     List<Squadra> findSquadreNonIscritteAlTorneo(@Param("torneoId") Long torneoId);
+
+    List<Squadra> findAllByOrderByNomeAsc();
 }

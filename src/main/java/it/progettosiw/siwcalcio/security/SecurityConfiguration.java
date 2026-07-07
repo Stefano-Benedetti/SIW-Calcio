@@ -4,6 +4,7 @@ import it.progettosiw.siwcalcio.model.RuoloAutorizzazione;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -40,13 +41,20 @@ public class SecurityConfiguration {
     @Bean
     protected SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.authorizeHttpRequests(authorize -> {
-            authorize.requestMatchers(HttpMethod.GET, "/", "/index", "/register", "/login",
+        httpSecurity
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(authorize -> {
+            authorize.requestMatchers(HttpMethod.GET, "/", "/js/**", "/index", "/register", "/login",
                     "/tornei", "/tornei/*/**", "/partite/**", "/squadre", "/squadre/**","/giocatori/**",
-                    "/css/**", "/images/**", "/favicon.ico").permitAll();
+                    "/css/**", "/images/**", "/favicon.ico","/error").permitAll();
+
+            authorize.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**","/api/**","/react/**").permitAll();
+
             authorize.requestMatchers(HttpMethod.POST, "/register", "/login").permitAll();
+
             authorize.requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(RuoloAutorizzazione.ADMIN.name());
             authorize.requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(RuoloAutorizzazione.ADMIN.name());
+
             authorize.requestMatchers(HttpMethod.POST, "/partite/*/commenti/nuovo",
                     "/partite/*/commenti/*/modifica")
                     .hasAnyAuthority(RuoloAutorizzazione.USER.name(), RuoloAutorizzazione.ADMIN.name());

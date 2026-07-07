@@ -35,6 +35,11 @@ public class SquadraService {
     }
 
     @Transactional(readOnly = true)
+    public List<Squadra> getAllSquadreOrdinatePerNome(){
+        return (List<Squadra>)this.squadraRepository.findAllByOrderByNomeAsc();
+    }
+
+    @Transactional(readOnly = true)
     public List<Squadra> getSquadreNonIscritteAlTorneo(Long torneoId){
         return this.squadraRepository.findSquadreNonIscritteAlTorneo(torneoId);
     }

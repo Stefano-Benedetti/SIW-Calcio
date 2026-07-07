@@ -66,11 +66,17 @@
                     <p>Consulta le squadre registrate e scopri i giocatori che ne fanno parte.</p>
                 </div>
 
-                <a sec:authorize="hasAuthority('ADMIN')"
-                   href="/admin/squadre/crea"
-                   class="btn">
-                    Crea squadra
-                </a>
+                <div class="list-header-actions">
+                    <a href="/react/squadre" class="btn btn-secondary">
+                        Vista React
+                    </a>
+
+                    <a sec:authorize="hasAuthority('ADMIN')"
+                       href="/admin/squadre/crea"
+                       class="btn">
+                        Crea squadra
+                    </a>
+                </div>
             </div>
 
             <div th:if="${squadre.isEmpty()}" class="empty-state">

@@ -66,11 +66,17 @@
                     <p>Consulta i tornei pubblicati da SIW Calcio.</p>
                 </div>
 
-                <a sec:authorize="hasAuthority('ADMIN')"
-                   href="/admin/tornei/crea"
-                   class="btn">
-                    Crea torneo
-                </a>
+                <div class="list-header-actions">
+                    <a href="/react/tornei" class="btn btn-secondary">
+                        Vista React
+                    </a>
+
+                    <a sec:authorize="hasAuthority('ADMIN')"
+                       href="/admin/tornei/crea"
+                       class="btn">
+                        Crea torneo
+                    </a>
+                </div>
             </div>
 
             <div th:if="${tornei.isEmpty()}" class="empty-state">
