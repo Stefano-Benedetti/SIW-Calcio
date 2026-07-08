@@ -1,14 +1,13 @@
 package it.progettosiw.siwcalcio;
 
-import it.progettosiw.siwcalcio.model.Commento;
-import it.progettosiw.siwcalcio.model.Partita;
-import it.progettosiw.siwcalcio.model.SquadraIscritta;
-import it.progettosiw.siwcalcio.model.Torneo;
+import it.progettosiw.siwcalcio.model.*;
 import it.progettosiw.siwcalcio.repository.PartitaRepository;
+import it.progettosiw.siwcalcio.repository.SquadraRepository;
 import it.progettosiw.siwcalcio.repository.TorneoRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
@@ -17,13 +16,16 @@ import java.util.List;
 @SpringBootApplication
 public class SiwCalcioApplication implements CommandLineRunner {
 
-    private PartitaRepository partitaRepository;
+    private final PartitaRepository partitaRepository;
 
-    private TorneoRepository torneoRepository;
+    private final TorneoRepository torneoRepository;
 
-    public SiwCalcioApplication(PartitaRepository partitaRepository, TorneoRepository torneoRepository) {
+    private final SquadraRepository squadraRepository;
+
+    public SiwCalcioApplication(PartitaRepository partitaRepository, TorneoRepository torneoRepository, SquadraRepository squadrarepository) {
         this.partitaRepository = partitaRepository;
         this.torneoRepository = torneoRepository;
+        this.squadraRepository = squadrarepository;
     }
 
     public static void main(String[] args) {
@@ -33,51 +35,39 @@ public class SiwCalcioApplication implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        testPartitaSenzaCommenti();
-        testPartitaConCommenti();
-
-        testTorneoSenzaIscrizioni();
-        testTorneoConIscrizioni();
+//        System.out.println("---INIZIO TEST---");
+//        testPartitaConArbitroETorneo();
+//        //testPartitaSenzaArbitroETorneo();
+//        System.out.println("---FINE TEST---");
+        test();
     }
 
-    private void testPartitaSenzaCommenti() {
-        StopWatch watch = new StopWatch();
-        watch.start("testPartitaSenzaCommenti");
-        Partita p = partitaRepository.findById(1L).get();
-        List<Commento> commenti = p.getCommenti();
-        System.out.println(commenti.toString());
-        watch.stop();
-        System.out.println(watch.prettyPrint());
-    }
+//    private void testPartitaConArbitroETorneo() {
+//        StopWatch watch = new StopWatch();
+//        watch.start("testPartitaConArbitroETorneo");
+//        Partita p = partitaRepository.findById(1L).get();
+//        p.getArbitro().getId();   //<<<<< caso in cui devo caricare tutta la pagina della partita
+//        p.getTorneo().getId();    //<<<<<
+//        p.getSquadraAway().getNome();
+//        p.getSquadraHome().getNome();
+//        watch.stop();
+//        System.out.println(watch.prettyPrint());
+//    }
+//
+//    private void testPartitaSenzaArbitroETorneo() {
+//        StopWatch watch = new StopWatch();
+//        watch.start("testPartitaSenzaArbitroETorneo");
+//        Partita p = partitaRepository.findPartitaById(1L).get();
+//        p.getArbitro().getId();   //<<<<< caso in cui devo caricare tutta la pagina della partita
+//        p.getTorneo().getId();    //<<<<<
+//        p.getSquadraAway().getNome();
+//        p.getSquadraHome().getNome();
+//        watch.stop();
+//        System.out.println(watch.prettyPrint());
+//    }
 
-    private void testPartitaConCommenti() {
-        StopWatch watch = new StopWatch();
-        watch.start("testPartitaConCommenti");
-        Partita p = partitaRepository.findWithCommentiById(1L).get();
-        List<Commento> commenti = p.getCommenti();
-        System.out.println(commenti.toString());
-        watch.stop();
-        System.out.println(watch.prettyPrint());
-    }
+    private void test(){
 
-    private void testTorneoSenzaIscrizioni(){
-        StopWatch watch = new StopWatch();
-        watch.start("testTorneoSenzaIscrizioni");
-        Torneo t = torneoRepository.findById(1L).get();
-        List<SquadraIscritta> iscrizioni = t.getIscrizioni();
-        System.out.println(iscrizioni.toString());
-        watch.stop();
-        System.out.println(watch.prettyPrint());
-    }
-
-    private void testTorneoConIscrizioni(){
-        StopWatch watch = new StopWatch();
-        watch.start("testTorneoConIscrizioni");
-        Torneo t = torneoRepository.findWithIscrizioniById(1L).get();
-        List<SquadraIscritta> iscrizioni = t.getIscrizioni();
-        System.out.println(iscrizioni.toString());
-        watch.stop();
-        System.out.println(watch.prettyPrint());
     }
 
 }

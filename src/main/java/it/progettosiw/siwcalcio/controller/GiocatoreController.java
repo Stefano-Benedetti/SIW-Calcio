@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class GiocatoreController {
 
-    private GiocatoreService giocatoreService;
+    private final GiocatoreService giocatoreService;
 
-    private SquadraService squadraService;
+    private final SquadraService squadraService;
 
-    private EtaGiocatoreValidator etaGiocatoreValidator;
+    private final EtaGiocatoreValidator etaGiocatoreValidator;
 
     public GiocatoreController(GiocatoreService giocatoreService, SquadraService squadraService, EtaGiocatoreValidator etaGiocatoreValidator) {
         this.giocatoreService = giocatoreService;

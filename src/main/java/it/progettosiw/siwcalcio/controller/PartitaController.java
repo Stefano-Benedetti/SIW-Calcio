@@ -22,15 +22,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class PartitaController {
 
-    private PartitaService partitaService;
+    private final PartitaService partitaService;
 
-    private TorneoService torneoService;
+    private final TorneoService torneoService;
 
-    private ArbitroService arbitroService;
+    private final ArbitroService arbitroService;
 
-    private UtenteService utenteService;
+    private final UtenteService utenteService;
 
-    private DataPartitaValidator dataPartitaValidator;
+    private final DataPartitaValidator dataPartitaValidator;
 
     public PartitaController(PartitaService partitaService, TorneoService torneoService,
                              ArbitroService arbitroService, UtenteService utenteService,

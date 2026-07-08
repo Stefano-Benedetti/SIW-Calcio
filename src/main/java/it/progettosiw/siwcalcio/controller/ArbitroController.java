@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class ArbitroController {
 
-    private ArbitroService arbitroService;
+    private final ArbitroService arbitroService;
 
     public ArbitroController(ArbitroService arbitroService) {
         this.arbitroService = arbitroService;

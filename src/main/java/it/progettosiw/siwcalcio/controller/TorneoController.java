@@ -22,11 +22,11 @@ import java.util.List;
 @Controller
 public class TorneoController {
 
-    private TorneoService torneoService;
-    private PartitaService partitaService;
-    private SquadraService squadraService;
-    private SquadraIscrittaService squadraIscrittaService;
-    private AnnoTorneoValidator annoTorneoValidator;
+    private final TorneoService torneoService;
+    private final PartitaService partitaService;
+    private final SquadraService squadraService;
+    private final SquadraIscrittaService squadraIscrittaService;
+    private final AnnoTorneoValidator annoTorneoValidator;
 
     public TorneoController(TorneoService torneoService, PartitaService partitaService, SquadraService squadraService,
                             SquadraIscrittaService squadraIscrittaService, AnnoTorneoValidator annoTorneoValidator){

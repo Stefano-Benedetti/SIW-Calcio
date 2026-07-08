@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class CommentoController {
 
-    private CommentoService commentoService;
+    private final CommentoService commentoService;
 
-    private PartitaService partitaService;
+    private final PartitaService partitaService;
 
-    private UtenteService utenteService;
+    private final UtenteService utenteService;
 
     public CommentoController(CommentoService commentoService, PartitaService partitaService, UtenteService utenteService) {
         this.commentoService = commentoService;

@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class SquadraController {
 
-    private SquadraService squadraService;
+    private final SquadraService squadraService;
 
-    private AnnoFondazioneValidator annoFondazioneValidator;
+    private final AnnoFondazioneValidator annoFondazioneValidator;
 
     public SquadraController(SquadraService squadraService, AnnoFondazioneValidator annoFondazioneValidator) {
         this.squadraService = squadraService;

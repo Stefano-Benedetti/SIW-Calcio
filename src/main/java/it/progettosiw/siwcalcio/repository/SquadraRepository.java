@@ -1,6 +1,7 @@
 package it.progettosiw.siwcalcio.repository;
 
 import it.progettosiw.siwcalcio.model.Squadra;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

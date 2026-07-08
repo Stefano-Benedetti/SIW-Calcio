@@ -42,7 +42,7 @@ public class Partita {
     @Column(nullable = false)
     private StatoPartita stato;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Arbitro arbitro;
 
@@ -58,7 +58,7 @@ public class Partita {
     @JoinColumn(nullable = false)
     private Squadra squadraAway;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Torneo torneo;
 

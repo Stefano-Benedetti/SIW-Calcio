@@ -31,4 +31,10 @@ public interface PartitaRepository extends CrudRepository<Partita,Long> {
 
     @EntityGraph(attributePaths = "commenti")
     Optional<Partita> findWithCommentiById(Long id);
+
+    @EntityGraph(attributePaths = {"arbitro", "torneo"})
+    Optional <Partita> findById(Long id);
+
+    @Query("SELECT p FROM Partita p WHERE p.id = :id")
+    Optional<Partita> findPartitaById(@Param("id") Long id);
 }
