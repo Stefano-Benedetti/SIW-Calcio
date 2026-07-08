@@ -35,41 +35,21 @@ public class SiwCalcioApplication implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-//        System.out.println("---INIZIO TEST---");
-//        testPartitaConArbitroETorneo();
-//        //testPartitaSenzaArbitroETorneo();
-//        System.out.println("---FINE TEST---");
-        test();
+        System.out.println("---INIZIO TEST---");
+        testSquadreConGiocatoriOSenza();
+        System.out.println("---FINE TEST---");
     }
 
-//    private void testPartitaConArbitroETorneo() {
-//        StopWatch watch = new StopWatch();
-//        watch.start("testPartitaConArbitroETorneo");
-//        Partita p = partitaRepository.findById(1L).get();
-//        p.getArbitro().getId();   //<<<<< caso in cui devo caricare tutta la pagina della partita
-//        p.getTorneo().getId();    //<<<<<
-//        p.getSquadraAway().getNome();
-//        p.getSquadraHome().getNome();
-//        watch.stop();
-//        System.out.println(watch.prettyPrint());
-//    }
-//
-//    private void testPartitaSenzaArbitroETorneo() {
-//        StopWatch watch = new StopWatch();
-//        watch.start("testPartitaSenzaArbitroETorneo");
-//        Partita p = partitaRepository.findPartitaById(1L).get();
-//        p.getArbitro().getId();   //<<<<< caso in cui devo caricare tutta la pagina della partita
-//        p.getTorneo().getId();    //<<<<<
-//        p.getSquadraAway().getNome();
-//        p.getSquadraHome().getNome();
-//        watch.stop();
-//        System.out.println(watch.prettyPrint());
-//    }
-
-    private void test(){
+    private void testSquadreConGiocatoriOSenza() {
         StopWatch watch = new StopWatch();
-        watch.start("test");
+
+        watch.start("testSquadreConGiocatoriOSenza");
+        List<Squadra> ls = (List<Squadra>) squadraRepository.findAll();
+        ls.get(1).getNome();
         watch.stop();
+
+        //modificare giocatori a eager per il test
+
         System.out.println(watch.prettyPrint());
     }
 

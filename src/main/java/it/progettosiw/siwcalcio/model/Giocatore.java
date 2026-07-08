@@ -29,7 +29,7 @@ public class Giocatore {
     @Column(nullable = false)
     private int altezza;    //centimetri
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(nullable = false)
     private Squadra squadra;
 

@@ -32,7 +32,7 @@ public class Squadra {
     @Column(nullable = false)
     private String citta;
 
-    @OneToMany(mappedBy = "squadra", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "squadra", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Giocatore> giocatori;
 
     @OneToMany(mappedBy = "squadra")    //la rimozione delle iscrizioni è gestita separatamente

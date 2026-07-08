@@ -29,9 +29,6 @@ public interface PartitaRepository extends CrudRepository<Partita,Long> {
 
     List<Partita> findPartitasByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(Long torneoId, Long squadraId, Long torneoId2, Long squadraId2);
 
-    @EntityGraph(attributePaths = "commenti")
-    Optional<Partita> findWithCommentiById(Long id);
-
     @EntityGraph(attributePaths = {"arbitro", "torneo"})
     Optional <Partita> findById(Long id);
 

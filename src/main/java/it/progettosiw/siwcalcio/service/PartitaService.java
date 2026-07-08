@@ -51,13 +51,6 @@ public class PartitaService {
     }
 
     @Transactional(readOnly = true)
-    public Partita getPartitaByIdWithCommenti(Long id){
-        Optional<Partita> partitaOpt = this.partitaRepository.findWithCommentiById(id);
-        if(partitaOpt.isEmpty()) throw new PartitaNonTrovataException("partita non trovata");
-        return partitaOpt.get();
-    }
-
-    @Transactional(readOnly = true)
     public List<Partita> getCalendarioPerTorneo(Long torneoId){
         return this.partitaRepository.findPartitasByTorneoIdAndStatoOrderByDataAsc(torneoId, StatoPartita.SCHEDULED);
     }
