@@ -14,6 +14,6 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("SIW Calcio API")
                         .version("v1")
-                        .description("API REST per la gestione di tornei di calcio amatoriale"));
+                        .description("API REST per la visione dei tornei e delle squadre di SIW Calcio"));
     }
 }
