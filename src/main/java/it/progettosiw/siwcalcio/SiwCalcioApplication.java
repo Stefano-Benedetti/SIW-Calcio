@@ -67,7 +67,10 @@ public class SiwCalcioApplication implements CommandLineRunner {
 //    }
 
     private void test(){
-
+        StopWatch watch = new StopWatch();
+        watch.start("test");
+        watch.stop();
+        System.out.println(watch.prettyPrint());
     }
 
 }
