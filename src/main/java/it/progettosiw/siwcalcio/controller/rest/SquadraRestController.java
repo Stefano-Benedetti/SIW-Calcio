@@ -24,7 +24,7 @@ public class SquadraRestController {
     }
 
     @GetMapping
-    public List<SquadraRestDto> getTornei() {
+    public List<SquadraRestDto> getSquadre() {
 
         List<SquadraRestDto> risposta = new ArrayList<SquadraRestDto>();
 
