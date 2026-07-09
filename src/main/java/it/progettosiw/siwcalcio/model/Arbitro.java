@@ -30,6 +30,12 @@ public class Arbitro {
 
     public Arbitro(){}
 
+    public Arbitro(String nome, String cognome, Long codiceArbitrale) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.codiceArbitrale = codiceArbitrale;
+    }
+
     public Long getId() {
         return id;
     }

@@ -15,11 +15,6 @@ INSERT INTO credenziali (id, username, password, ruolo, utente_id) VALUES (nextv
 
 
 
--- =========================
--- IMPORT DATI SIW CALCIO
--- NB: utenti e credenziali non vengono inseriti
--- NB: gli ID seguono la logica delle sequenze Hibernate del progetto
--- =========================
 
 
 -- =========================

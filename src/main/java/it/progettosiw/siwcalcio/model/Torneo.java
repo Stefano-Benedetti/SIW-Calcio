@@ -40,6 +40,12 @@ public class Torneo {
 
     public Torneo(){}
 
+    public Torneo(String nome, Year anno, String descrizione) {
+        this.nome = nome;
+        this.anno = anno;
+        this.descrizione = descrizione;
+    }
+
     public Long getId() {
         return id;
     }

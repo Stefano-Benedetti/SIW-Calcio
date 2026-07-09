@@ -19,4 +19,7 @@ public interface SquadraRepository extends CrudRepository<Squadra,Long> {
     List<Squadra> findSquadreNonIscritteAlTorneo(@Param("torneoId") Long torneoId);
 
     List<Squadra> findAllByOrderByNomeAsc();
+
+    @Query("SELECT DISTINCT s FROM Squadra s LEFT JOIN FETCH s.giocatori")
+    Iterable<Squadra> findAllWithGiocatori();
 }

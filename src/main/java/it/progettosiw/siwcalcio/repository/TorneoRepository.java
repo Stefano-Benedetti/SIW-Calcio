@@ -15,8 +15,9 @@ public interface TorneoRepository extends CrudRepository<Torneo,Long> {
 
     Optional<Torneo> findById(Long id);
 
-    @EntityGraph(attributePaths = "iscrizioni")
+    @EntityGraph(attributePaths = {"iscrizioni.squadra"})
     Optional<Torneo> findWithIscrizioniById(Long id);
 
     List<Torneo> findAllByOrderByAnnoDesc();
+
 }

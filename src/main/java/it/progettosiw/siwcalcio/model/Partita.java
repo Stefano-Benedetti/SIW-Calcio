@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,7 +41,7 @@ public class Partita {
     @Column(nullable = false)
     private StatoPartita stato;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(nullable = false)
     private Arbitro arbitro;
 
@@ -58,7 +57,7 @@ public class Partita {
     @JoinColumn(nullable = false)
     private Squadra squadraAway;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(nullable = false)
     private Torneo torneo;
 
@@ -71,6 +70,18 @@ public class Partita {
         this.data = pf.getData();
         this.luogo = pf.getLuogo();
         this.arbitro = arbitro;
+        this.squadraHome = squadraHome;
+        this.squadraAway = squadraAway;
+        this.torneo = torneo;
+    }
+
+    public Partita(Arbitro arbitro, StatoPartita stato, Integer goalsAway, Integer goalsHome, String luogo, LocalDateTime data, Squadra squadraHome, Squadra squadraAway, Torneo torneo) {
+        this.arbitro = arbitro;
+        this.stato = stato;
+        this.goalsAway = goalsAway;
+        this.goalsHome = goalsHome;
+        this.luogo = luogo;
+        this.data = data;
         this.squadraHome = squadraHome;
         this.squadraAway = squadraAway;
         this.torneo = torneo;

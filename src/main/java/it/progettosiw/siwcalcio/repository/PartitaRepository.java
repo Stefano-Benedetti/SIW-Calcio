@@ -28,10 +28,4 @@ public interface PartitaRepository extends CrudRepository<Partita,Long> {
     List<Partita> findPartitasByTorneoIdAndStatoOrderByDataAsc(Long torneoId, StatoPartita stato);
 
     List<Partita> findPartitasByTorneoIdAndSquadraHomeIdOrTorneoIdAndSquadraAwayId(Long torneoId, Long squadraId, Long torneoId2, Long squadraId2);
-
-    @EntityGraph(attributePaths = {"arbitro", "torneo"})
-    Optional <Partita> findById(Long id);
-
-    @Query("SELECT p FROM Partita p WHERE p.id = :id")
-    Optional<Partita> findPartitaById(@Param("id") Long id);
 }
