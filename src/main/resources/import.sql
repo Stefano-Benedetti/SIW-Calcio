@@ -181,11 +181,17 @@ INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextv
 INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 1, 101, 351);
 INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 0, 101, 451);
 
--- Coppa Autunno: torneo non ancora iniziato
+-- Coppa Autunno 2025
 INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 0, 151, 1);
 INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 0, 151, 101);
 INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 0, 151, 201);
 INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 0, 151, 301);
+
+-- Coppa Autunno 2026: torneo non ancora iniziato
+INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 0, 201, 1);
+INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 0, 201, 101);
+INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 0, 201, 201);
+INSERT INTO squadra_iscritta (id, vittorie, torneo_id, squadra_id) VALUES (nextval('squadra_iscritta_seq'), 0, 201, 301);
 
 
 -- =========================
@@ -232,8 +238,8 @@ INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id,
 -- Semifinali programmate
 -- Torneo non ancora iniziato
 -- =========================
-INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2025-09-12T17:00:00', 'Centro Sportivo SIW Roma', 0, 0, 'SCHEDULED', 201, 1, 101, 151);
-INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2025-09-13T18:30:00', 'Campo Laguna Venezia', 0, 0, 'SCHEDULED', 251, 201, 301, 151);
+INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2025-09-12T17:00:00', 'Centro Sportivo SIW Roma', 1, 0, 'PLAYED', 201, 1, 101, 151);
+INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2025-09-13T18:30:00', 'Campo Laguna Venezia', 0, 1, 'PLAYED', 251, 201, 301, 151);
 
 INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-09-12T17:00:00', 'Centro Sportivo SIW Roma', 0, 0, 'SCHEDULED', 201, 1, 101, 201);
 INSERT INTO partita (id, data, luogo, goals_home, goals_away, stato, arbitro_id, squadra_home_id, squadra_away_id, torneo_id) VALUES (nextval('partita_seq'), '2026-09-13T18:30:00', 'Campo Laguna Venezia', 0, 0, 'SCHEDULED', 251, 201, 301, 201);
