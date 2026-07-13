@@ -112,6 +112,18 @@ a {
   font-size: 0.9rem;
 }
 
+.btn-outline {
+  background: transparent;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-outline:hover {
+  background: #ffffff;
+  color: var(--color-secondary);
+  border-color: #ffffff;
+}
+
 .eyebrow {
   display: inline-block;
   margin-bottom: 10px;

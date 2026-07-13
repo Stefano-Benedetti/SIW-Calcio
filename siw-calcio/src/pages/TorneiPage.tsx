@@ -55,10 +55,6 @@ function TorneiPage() {
     <nav className="main-nav">
     <a href={`${backendBaseUrl}/tornei`}>Tornei</a>
     <a href={`${backendBaseUrl}/squadre`}>Squadre</a>
-    <a href={`${backendBaseUrl}/login`}>Login</a>
-    <a href={`${backendBaseUrl}/register`} className="btn btn-small">
-        Registrazione
-        </a>
         </nav>
         </div>
         </header>
