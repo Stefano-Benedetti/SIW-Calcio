@@ -22,20 +22,14 @@ import java.util.Optional;
 @SpringBootApplication
 public class SiwCalcioApplication implements CommandLineRunner {
 
-    private final PartitaRepository partitaRepository;
-
     private final TorneoRepository torneoRepository;
-
-    private final ArbitroRepository arbitroRepository;
 
     private final SquadraRepository squadraRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(SiwCalcioApplication.class);
 
-    public SiwCalcioApplication(PartitaRepository partitaRepository, TorneoRepository torneoRepository, ArbitroRepository arbitroRepository, SquadraRepository squadraRepository) {
-        this.partitaRepository = partitaRepository;
+    public SiwCalcioApplication(TorneoRepository torneoRepository, SquadraRepository squadraRepository) {
         this.torneoRepository = torneoRepository;
-        this.arbitroRepository = arbitroRepository;
         this.squadraRepository = squadraRepository;
     }
 
