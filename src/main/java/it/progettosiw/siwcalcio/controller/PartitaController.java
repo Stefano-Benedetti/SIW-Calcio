@@ -55,7 +55,6 @@ public class PartitaController {
 
     @GetMapping("/admin/tornei/{id}/crea-partita")
     public String getFormCreazionePartita(@PathVariable("id") Long id, Model model){
-        //torneo non trovato -> 404
         Torneo torneo = this.torneoService.getTorneoById(id);
         model.addAttribute("form", new PartitaForm());
         model.addAttribute("squadreIscritte", torneo.getIscrizioni());
@@ -66,7 +65,6 @@ public class PartitaController {
     @PostMapping("/admin/tornei/{id}/crea-partita")
     public String makeNewPartita(@Valid @ModelAttribute("form") PartitaForm form, BindingResult b,
                                  @PathVariable("id") Long torneoId, Model model){
-        //torneo non trovato -> 404
         this.dataPartitaValidator.validate(form,b);
         if (b.hasErrors()) {
             Torneo torneo = this.torneoService.getTorneoById(torneoId);

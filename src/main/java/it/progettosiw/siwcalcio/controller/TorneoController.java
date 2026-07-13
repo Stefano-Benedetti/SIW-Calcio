@@ -126,7 +126,6 @@ public class TorneoController {
     @PostMapping("/admin/tornei/{id}/iscrivi")
     public String aggiungiIscrizioneAlTorneo(@PathVariable("id") Long torneoId, @Valid @ModelAttribute("nuovaSquadra") IscrizioneForm iscForm,
                                              BindingResult b, Model model){
-        //try catch squadra con quell'id non esiste, reject
         if (b.hasErrors()) {
             Torneo torneo = this.torneoService.getTorneoById(torneoId);
             model.addAttribute("torneo", torneo);
