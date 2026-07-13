@@ -15,13 +15,13 @@ import java.util.Optional;
 @Service
 public class SquadraIscrittaService {
 
-    private SquadraIscrittaRepository squadraIscrittaRepository;
+    private final SquadraIscrittaRepository squadraIscrittaRepository;
 
-    private TorneoService torneoService;
+    private final TorneoService torneoService;
 
-    private SquadraRepository squadraRepository;
+    private final SquadraRepository squadraRepository;
 
-    private PartitaService partitaService;
+    private final PartitaService partitaService;
 
     public SquadraIscrittaService(SquadraIscrittaRepository squadraIscrittaRepository, TorneoService torneoService,
                                   SquadraRepository squadraRepository, PartitaService partitaService) {

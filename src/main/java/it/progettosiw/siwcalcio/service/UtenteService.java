@@ -20,9 +20,9 @@ import java.util.Optional;
 @Service
 public class UtenteService {
 
-    private CredenzialiRepository credenzialiRepository;
+    private final CredenzialiRepository credenzialiRepository;
 
-    private UtenteRepository utenteRepository;
+    private final UtenteRepository utenteRepository;
 
     public UtenteService(CredenzialiRepository credenzialiRepository, UtenteRepository utenteRepository){
         this.credenzialiRepository = credenzialiRepository;

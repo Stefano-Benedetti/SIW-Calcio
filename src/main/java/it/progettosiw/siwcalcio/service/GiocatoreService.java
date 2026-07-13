@@ -15,9 +15,9 @@ import java.util.Optional;
 @Service
 public class GiocatoreService {
 
-    private GiocatoreRepository giocatoreRepository;
+    private final GiocatoreRepository giocatoreRepository;
 
-    private SquadraRepository squadraRepository;
+    private final SquadraRepository squadraRepository;
 
     public GiocatoreService(GiocatoreRepository giocatoreRepository, SquadraRepository squadraRepository) {
         this.giocatoreRepository = giocatoreRepository;

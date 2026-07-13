@@ -12,8 +12,8 @@ import java.util.Optional;
 @Service
 public class SquadraService {
 
-    private SquadraRepository squadraRepository;
-    private SquadraIscrittaService squadraIscrittaService;
+    private final SquadraRepository squadraRepository;
+    private final SquadraIscrittaService squadraIscrittaService;
 
     public SquadraService(SquadraRepository squadraRepository, SquadraIscrittaService squadraIscrittaService) {
         this.squadraRepository = squadraRepository;

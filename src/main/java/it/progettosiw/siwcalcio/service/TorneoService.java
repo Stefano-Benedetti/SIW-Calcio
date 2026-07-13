@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class TorneoService {
 
-    private TorneoRepository torneoRepository;
+    private final TorneoRepository torneoRepository;
 
     public TorneoService(TorneoRepository torneoRepository){
         this.torneoRepository = torneoRepository;

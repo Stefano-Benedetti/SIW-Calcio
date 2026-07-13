@@ -14,11 +14,11 @@ import java.util.Optional;
 @Service
 public class CommentoService {
 
-    private CommentoRepository commentoRepository;
+    private final CommentoRepository commentoRepository;
 
-    private PartitaService partitaService;
+    private final PartitaService partitaService;
 
-    private UtenteService utenteService;
+    private final UtenteService utenteService;
 
     public CommentoService(CommentoRepository commentoRepository, PartitaService partitaService, UtenteService utenteService) {
         this.commentoRepository = commentoRepository;

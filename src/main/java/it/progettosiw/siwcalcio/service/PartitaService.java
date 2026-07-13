@@ -19,15 +19,15 @@ import java.util.Optional;
 @Service
 public class PartitaService {
 
-    private PartitaRepository partitaRepository;
+    private final PartitaRepository partitaRepository;
 
-    private SquadraRepository squadraRepository;
+    private final SquadraRepository squadraRepository;
 
-    private TorneoService torneoService;
+    private final TorneoService torneoService;
 
-    private ArbitroRepository arbitroRepository;
+    private final ArbitroRepository arbitroRepository;
 
-    private SquadraIscrittaRepository squadraIscrittaRepository;
+    private final SquadraIscrittaRepository squadraIscrittaRepository;
 
     public PartitaService(PartitaRepository partitaRepository, SquadraRepository squadraRepository,
                           TorneoService torneoService, ArbitroRepository arbitroRepository, SquadraIscrittaRepository squadraIscrittaRepository){

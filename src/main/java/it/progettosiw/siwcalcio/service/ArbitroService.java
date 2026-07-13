@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public class ArbitroService {
 
-    private ArbitroRepository arbitroRepository;
+    private final ArbitroRepository arbitroRepository;
 
     public ArbitroService(ArbitroRepository arbitroRepository){
         this.arbitroRepository = arbitroRepository;
