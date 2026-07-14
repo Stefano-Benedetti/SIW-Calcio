@@ -43,8 +43,8 @@ public class SiwCalcioApplication implements CommandLineRunner {
         // eseguire un test alla volta per evitare tempistiche inconsistenti
         // i tempi segnati sotto sono stati misurati da casa con un PC desktop potente
         logger.info("INIZIO TEST");
-        //testTorneoConSquadre();
-        testSquadreConGiocatoriOSenza();
+        testTorneoConSquadre();
+        //testSquadreConGiocatoriOSenza();
         logger.info("FINE TEST");
     }
 
@@ -55,8 +55,8 @@ public class SiwCalcioApplication implements CommandLineRunner {
 
         watch.start("testTorneoConSquadre");
 
-        Torneo t = torneoRepository.findById(1L).get();               // circa 60 ms con 2 query
-        //Torneo t = torneoRepository.findWithIscrizioniById(1L).get();   // circa 100 ms con 1 query pesante
+        //Torneo t = torneoRepository.findById(1L).get();               // circa 60 ms con 2 query
+        Torneo t = torneoRepository.findWithIscrizioniById(1L).get();   // circa 100 ms con 1 query pesante
 
         for(SquadraIscritta is : t.getIscrizioni()){
             is.getSquadra().getNome();
